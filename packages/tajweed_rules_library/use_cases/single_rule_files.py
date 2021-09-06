@@ -34,13 +34,13 @@ class SingleRuleFiles():
     for ayah in self.all_rules['data']:
       for rule_in_ayah in ayah['annotations']:
         if rule_in_ayah['rule'] == rule:
-          ayah_rule_info = self.parse_rule_location_details(ayah['surah'], ayah['ayah'], rule_in_ayah['start'], rule_in_ayah['end'])
+          ayah_rule_info = self.construct_rule_instance_location_map(ayah['surah'], ayah['ayah'], rule_in_ayah['start'], rule_in_ayah['end'])
           rules_locations[rule].append(ayah_rule_info)
           
     return rules_locations
   
   
-  def parse_rule_location_details(self, surah, ayah, start_index, end_index):
+  def construct_rule_location_map(self, surah, ayah, start_index, end_index):
     ayah_rule_info = {}
     ayah_rule_info["surah"] = surah
     ayah_rule_info["ayah"] = ayah
