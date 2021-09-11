@@ -1,0 +1,16 @@
+import json
+
+# TBD
+class S3Input():
+
+	def __init__(self, s3_file):
+		self
+		self.s3_file = s3_file
+
+	def save_file_content(self):
+		all_rules = {}
+		with open(self.s3_file) as input_file:
+			file_content = json.load(input_file)
+			all_rules["data"] = file_content
+			input_file.close()
+		return all_rules

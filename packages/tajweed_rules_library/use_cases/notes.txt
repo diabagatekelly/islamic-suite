@@ -1,4 +1,0 @@
-Used in all 3:
-    create_absolute_output_path
-    write_to_output_file
-    parse_rule_location_details
