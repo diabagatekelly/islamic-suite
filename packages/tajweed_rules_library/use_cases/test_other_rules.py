@@ -8,7 +8,6 @@ class TestOtherRules(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
     file_input_factory = InputFactory('').get_input()
-    print(file_input_factory)
     file_output_factory = OutputFactory('').get_output()
 
     OTHER_RULES_INPUT_FILE = 'C:\\Users\\kelly\\Documents\\Development Related\\Portfolio Projects\\islamic ed suite (angular + python + sql)\\tajweed-monorepo\\packages\\tajweed_rules_library\\specs\\other_rules_test_input.json'
@@ -34,5 +33,4 @@ class TestOtherRules(unittest.TestCase):
       ghunnah.close()
 
     cls.assertIsInstance(cls.ghunnah_file_content['ghunnah'], list)
-    print(cls.ghunnah_file_content['ghunnah'])
     # cls.assertEqual(cls.ghunnah_file_content['ghunnah'][0], {"ayah": 3, "surah": 2, "start": 63, "end": 66})
