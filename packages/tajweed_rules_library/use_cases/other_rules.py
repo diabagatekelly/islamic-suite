@@ -10,15 +10,13 @@ class OtherRules(Rule):
     self.input = input_factory
     self.output = output_factory
     self.rules = ["ghunnah", "idghaam_ghunnah", "idghaam_no_ghunnah", "idghaam_mutajanisayn",
-    "idghaam_mutaqaribayn", "idghaam_shafawi", "ikhfa", "ikhfa_shafawi", "idhaar",
-    "idhaar_shafawi", "iqlab", "madd_246", "madd_muttasil", "madd_munfasil", "madd_6", "qalqalah"]
+    "idghaam_mutaqaribayn", "idghaam_shafawi", "ikhfa", "ikhfa_shafawi", "iqlab", "madd_246", "madd_muttasil", "madd_munfasil", "madd_6", "qalqalah"]
 
   def generate_rule_files(self):
     for rule in self.rules:
       content_for_rule = self.extract_rule_data(rule)
       output_file = self.output.create_absolute_output_path(rule)
       self.output.write_to_output_file(content_for_rule, output_file)
-
       
   def extract_rule_data(self, rule):
     rules_locations = {}

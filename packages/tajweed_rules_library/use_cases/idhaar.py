@@ -12,7 +12,7 @@ class Idhaar(Rule):
     content_for_rule = {}
     idhaar_locations = []
 
-    quran = self.input.open_quran_file()
+    quran = self.input.read_quran_file()
     
     for line in quran:
       parsed_line = self.input.get_input().parse_quran_script(line)

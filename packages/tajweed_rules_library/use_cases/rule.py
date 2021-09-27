@@ -83,7 +83,6 @@ class Rule():
     ayah_rule_info["ayah"] = ayah
     ayah_rule_info["start"] = start_index
     ayah_rule_info["end"] = end_index
-
     return ayah_rule_info
  
 

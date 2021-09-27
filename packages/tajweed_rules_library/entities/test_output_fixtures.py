@@ -2,7 +2,7 @@ import unittest, os, json, shutil
 
 ROOT_DIR = 'C:\\Users\\kelly\\Documents\\Development Related\\Portfolio Projects\\islamic ed suite (angular + python + sql)\\tajweed-monorepo\\packages\\tajweed_rules_library'
 RELATIVE_SPECS_DIR = 'entities\\specs_fixtures'
-RELATIVE_OUTPUT_DIR = 'specs'
+RELATIVE_OUTPUT_DIR = 'entities\\output_files'
 RULES = ["ghunnah", "idghaam_ghunnah", "idghaam_no_ghunnah", "idghaam_mutajanisayn",
     "idghaam_mutaqaribayn", "idghaam_shafawi", "ikhfa", "ikhfa_shafawi", "idhaar",
     "idhaar_shafawi", "iqlab", "madd_246", "madd_muttasil", "madd_munfasil", "madd_6", "qalqalah", "idhaar", "idhaar_shafawi"]

@@ -15,8 +15,12 @@ class FileInput():
 			input_file.close()
 		return all_rules
 
-	def open_quran_file(self):
-		quran = open(self.input_file, 'r', encoding='utf-8')
+	def read_quran_file(self):
+		quran = []
+		quran_file = open(self.input_file, 'r', encoding='utf-8')
+		for line in quran_file.readlines():
+			quran.append(line)
+		quran_file.close()
 		return quran
 		
 	def parse_quran_script(self, line):
