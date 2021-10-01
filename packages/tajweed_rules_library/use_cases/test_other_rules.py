@@ -1,7 +1,7 @@
+import unittest, os, shutil
 from use_cases.other_rules import OtherRules
 from controllers.input_factory import InputFactory
 from presenters.output_factory import OutputFactory
-import unittest, os, shutil
 
 class TestOtherRules(unittest.TestCase):
   @classmethod
@@ -13,7 +13,7 @@ class TestOtherRules(unittest.TestCase):
     others_file_input = file_input_factory(OTHER_RULES_INPUT_FILE)
 
     cls.ROOT_DIR = 'C:\\Users\\kelly\\Documents\\Development Related\\Portfolio Projects\\islamic ed suite (angular + python + sql)\\tajweed-monorepo\\packages\\tajweed_rules_library'
-    cls.RELATIVE_DIR = 'use_cases\\specs'
+    cls.RELATIVE_DIR = 'use_cases\\other_specs'
 
     file_output = file_output_factory(cls.ROOT_DIR, cls.RELATIVE_DIR)
 

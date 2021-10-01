@@ -14,13 +14,13 @@ class Rule():
     return tanween_indices
 
   def get_all_rule_locations_for_letter_base(self, base):
-    if len(type) == 0:
-      return
+    if len(base) == 0:
+      return []
 
     noon_rules = []
 
     for index in base:
-      noon_idhaar = self.get_rule_location_details_for_letter_base(index, self.ayah_text, self.surah_number, self.ayah_number)
+      noon_idhaar = self.get_rule_location_details_for_letter_base(index)
       if noon_idhaar:
         noon_rules.append(noon_idhaar)
 
@@ -28,13 +28,13 @@ class Rule():
 
 
   def get_all_rule_locations_for_tanween_base(self, tanween_type, base):
-    if len(type) == 0:
-      return
+    if len(base) == 0:
+      return []
 
     tanween_rules = []
 
     for index in base:
-      tanween_idhaar = self.get_rule_location_details_for_tanween_base(tanween_type, index, self.ayah_text, self.surah_number, self.ayah_number)
+      tanween_idhaar = self.get_rule_location_details_for_tanween_base(tanween_type, index)
       if tanween_idhaar:
         tanween_rules.append(tanween_idhaar)
 
@@ -46,17 +46,17 @@ class Rule():
 
     rule_start_index = index
 
-    if not self.is_letter_at_index_still_inside_ayah(rule_start_index, self.ayah_text):
+    if not self.is_letter_at_index_still_inside_ayah(rule_start_index):
       return
 
     
-    if self.is_letter_at_index_followed_by_space(rule_start_index, self.ayah_text):
+    if self.is_letter_at_index_followed_by_space(rule_start_index):
       rule_end_index = self.get_rule_end_index(rule_start_index, 3)
-      if self.is_letter_after_noon_idhaar_letter(rule_end_index, self.ayah_text):
+      if self.is_letter_after_noon_idhaar_letter(rule_end_index):
         rule_info = self.construct_rule_location_map(self.surah_number, self.ayah_number, index, rule_end_index)
-    elif not self.is_letter_at_index_followed_by_space(index, self.ayah_text):
+    elif not self.is_letter_at_index_followed_by_space(index):
       rule_end_index = self.get_rule_end_index(rule_start_index, 2)
-      if self.is_letter_after_noon_idhaar_letter(rule_end_index, self.ayah_text):
+      if self.is_letter_after_noon_idhaar_letter(rule_end_index):
         rule_info = self.construct_rule_location_map(self.surah_number, self.ayah_number, index, rule_end_index)
 
     return rule_info
@@ -69,7 +69,7 @@ class Rule():
 
     if tanween_type != 'fatha':
       rule_end_index = self.get_rule_end_index(rule_start_index, 2)
-      if self.is_tanween_at_index_still_inside_ayah(rule_end_index, self.ayah_text) and self.is_letter_after_tanween_idhaar_letter(rule_end_index, self.ayah_text):
+      if self.is_tanween_at_index_still_inside_ayah(rule_end_index) and self.is_letter_after_tanween_idhaar_letter(rule_end_index):
         ayah_idhaar_info = self.construct_rule_location_map(self.surah_number, self.ayah_number, rule_start_index, rule_end_index)
     elif tanween_type == 'fatha':
       rule_end_index = self.get_rule_end_index(rule_start_index, 3)
@@ -85,8 +85,6 @@ class Rule():
     ayah_rule_info["end"] = end_index
     return ayah_rule_info
  
-
-
   def is_letter_at_index_followed_by_space(self, index):
     if self.ayah_text[index+2] == " ":
       return True

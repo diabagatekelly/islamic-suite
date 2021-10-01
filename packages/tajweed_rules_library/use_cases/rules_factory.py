@@ -3,7 +3,7 @@ from use_cases.idhaar import idhaar
 from use_cases.idhaar_shafawi import idhaar_shafawi
 
 class RulesFactory():
-  def __init__(self, rule):
+  def __init__(self, rule=''):
     self
     self.rule = rule
 
