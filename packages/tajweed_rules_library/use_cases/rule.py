@@ -46,7 +46,7 @@ class Rule():
 
     rule_start_index = index
 
-    if not self.is_letter_at_index_still_inside_ayah(rule_start_index):
+    if not self.is_letter_after_index_still_inside_ayah(rule_start_index):
       return
 
     
@@ -54,7 +54,7 @@ class Rule():
       rule_end_index = self.get_rule_end_index(rule_start_index, 3)
       if self.is_letter_after_noon_idhaar_letter(rule_end_index):
         rule_info = self.construct_rule_location_map(self.surah_number, self.ayah_number, index, rule_end_index)
-    elif not self.is_letter_at_index_followed_by_space(index):
+    elif not self.is_letter_at_index_followed_by_space(rule_start_index):
       rule_end_index = self.get_rule_end_index(rule_start_index, 2)
       if self.is_letter_after_noon_idhaar_letter(rule_end_index):
         rule_info = self.construct_rule_location_map(self.surah_number, self.ayah_number, index, rule_end_index)
@@ -68,12 +68,13 @@ class Rule():
     rule_start_index = index -1       
 
     if tanween_type != 'fatha':
-      rule_end_index = self.get_rule_end_index(rule_start_index, 2)
+      rule_end_index = self.get_rule_end_index(index, 2)
       if self.is_tanween_at_index_still_inside_ayah(rule_end_index) and self.is_letter_after_tanween_idhaar_letter(rule_end_index):
         ayah_idhaar_info = self.construct_rule_location_map(self.surah_number, self.ayah_number, rule_start_index, rule_end_index)
-    elif tanween_type == 'fatha':
-      rule_end_index = self.get_rule_end_index(rule_start_index, 3)
-      ayah_idhaar_info = self.construct_rule_location_map(self.surah_number, self.ayah_number, rule_start_index, rule_end_index)
+    elif tanween_type == 'fatha' and self.ayah_text[rule_start_index] != 'ة':
+      rule_end_index = self.get_rule_end_index(index, 3)
+      if self.is_tanween_at_index_still_inside_ayah(rule_end_index) and self.is_letter_after_tanween_idhaar_letter(rule_end_index-1):
+        ayah_idhaar_info = self.construct_rule_location_map(self.surah_number, self.ayah_number, rule_start_index, rule_end_index)
         
     return ayah_idhaar_info
 
@@ -88,22 +89,32 @@ class Rule():
   def is_letter_at_index_followed_by_space(self, index):
     if self.ayah_text[index+2] == " ":
       return True
+    else:
+      return False
 
-  def is_letter_at_index_still_inside_ayah(self, index):
+  def is_letter_after_index_still_inside_ayah(self, index):
     if index + 2 < len(self.ayah_text)-1:
       return True
+    else:
+      return False
 
-  def is_letter_after_noon_idhaar_letter(self, index):
-    if self.ayah_text[index] in 'هءأإحعخغ':
+  def is_letter_after_noon_idhaar_letter(self, end_index):
+    if self.ayah_text[end_index] in 'هءأإحعخغ':
       return True
+    else:
+      return False
 
   def is_letter_after_tanween_idhaar_letter(self, rule_end_index):
-    if  self.ayah_text[rule_end_index] in 'هءأإحعخغ':
+    if self.ayah_text[rule_end_index] in 'هءأإحعخغ':
       return True
+    else:
+      return False
 
   def is_tanween_at_index_still_inside_ayah(self, rule_end_index):
     if rule_end_index < len(self.ayah_text)-1:
       return True
+    else:
+      return False
 
   def get_rule_end_index(self, start_index, move_by_spaces):
     return start_index + move_by_spaces

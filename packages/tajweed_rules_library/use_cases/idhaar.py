@@ -26,7 +26,7 @@ class Idhaar(Rule):
       noon_idhaar_locations = rule.get_all_rule_locations_for_letter_base(noon_saakin_indices)
       idhaar_locations = idhaar_locations + noon_idhaar_locations
 
-      kasra_dummah_tanween_indices = rule.find_tanween_in_text('ٌٍ')
+      kasra_dummah_tanween_indices = rule.find_tanween_in_text('ٌٍ')
       kasra_dummah_tanween_idhaar_locations = rule.get_all_rule_locations_for_tanween_base('kasra', kasra_dummah_tanween_indices)
       idhaar_locations = idhaar_locations + kasra_dummah_tanween_idhaar_locations
 

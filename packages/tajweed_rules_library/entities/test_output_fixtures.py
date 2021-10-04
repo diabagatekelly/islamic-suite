@@ -10,22 +10,22 @@ RULES = ["ghunnah", "idghaam_ghunnah", "idghaam_no_ghunnah", "idghaam_mutajanisa
 
 class TestOutputFixtures(unittest.TestCase):
 
-  def test_all_output_fixture_equal_all_specs(self):
-    absolute_specs_path = os.path.join(ROOT_DIR, RELATIVE_SPECS_DIR)
-    absolute_output_path = os.path.join(ROOT_DIR, RELATIVE_OUTPUT_DIR)
+  # def test_all_output_fixture_equal_all_specs(self):
+  #   absolute_specs_path = os.path.join(ROOT_DIR, RELATIVE_SPECS_DIR)
+  #   absolute_output_path = os.path.join(ROOT_DIR, RELATIVE_OUTPUT_DIR)
 
-    # for rule in RULES:
-    specs_file = f'tajweed.idhaar.json'
-    with open(os.path.join(absolute_specs_path, specs_file)) as input_file:
-      spec_content = json.load(input_file)
-      input_file.close()
+  #   # for rule in RULES:
+  #   specs_file = 'tajweed.idhaar.json'
+  #   with open(os.path.join(absolute_specs_path, specs_file)) as input_file:
+  #     spec_content = json.load(input_file)
+  #     input_file.close()
 
-    output_file = 'idhaar.json'
-    with open(os.path.join(absolute_output_path, output_file)) as input_file:
-      output_content = json.load(input_file)
-      input_file.close()
+  #   output_file = 'idhaar.json'
+  #   with open(os.path.join(absolute_output_path, output_file)) as input_file:
+  #     output_content = json.load(input_file)
+  #     input_file.close()
 
-    self.assertEqual(spec_content, output_content)
+  #   self.assertEqual(spec_content, output_content)
 
 
   def test_ghunna_spec_equals_ghunnah_spec(self):

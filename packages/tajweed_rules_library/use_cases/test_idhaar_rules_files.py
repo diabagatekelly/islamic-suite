@@ -3,10 +3,10 @@ from use_cases.idhaar import Idhaar
 from controllers.input_factory import InputFactory
 from presenters.output_factory import OutputFactory
 
-SINGLE_RULE_CLASS_INPUT = 'C:\\Users\\kelly\\Documents\\Development Related\\Portfolio Projects\\islamic ed suite (angular + python + sql)\\tajweed-monorepo\\packages\\tajweed_rules_library\\entities\\input_fixtures\\tajweed_hafs_uthmani_pause_sajdah.json'
-IDHAAR_RULES_CLASS_INPUT_FILE = 'C:\\Users\\kelly\\Documents\\Development Related\\Portfolio Projects\\islamic ed suite (angular + python + sql)\\tajweed-monorepo\\packages\\tajweed_rules_library\\entities\\input_fixtures\\quran-uthmani.txt'
 ROOT_DIR = 'C:\\Users\\kelly\\Documents\\Development Related\\Portfolio Projects\\islamic ed suite (angular + python + sql)\\tajweed-monorepo\\packages\\tajweed_rules_library'
 RELATIVE_DIR = 'use_cases\\idhaar_specs'
+IDHAAR_INPUT_FILE = 'C:\\Users\\kelly\\Documents\\Development Related\\Portfolio Projects\\islamic ed suite (angular + python + sql)\\tajweed-monorepo\\packages\\tajweed_rules_library\\entities\\mock_fixtures\\idhaar_mock_input.txt'
+
 
 class TestIdhaarRuleFiles(unittest.TestCase):
   @classmethod
@@ -14,7 +14,6 @@ class TestIdhaarRuleFiles(unittest.TestCase):
     file_input_factory = InputFactory().get_input()
     file_output_factory = OutputFactory().get_output()
 
-    IDHAAR_INPUT_FILE = 'C:\\Users\\kelly\\Documents\\Development Related\\Portfolio Projects\\islamic ed suite (angular + python + sql)\\tajweed-monorepo\\packages\\tajweed_rules_library\\entities\\mock_fixtures\\idhaar_mock_input.txt'
     idhaar_file_input = file_input_factory(IDHAAR_INPUT_FILE)
 
     file_output = file_output_factory(ROOT_DIR, RELATIVE_DIR)
@@ -36,25 +35,32 @@ class TestIdhaarRuleFiles(unittest.TestCase):
     cls.idhaar_file_content = {}
     cls.idhaar_rules.generate_rule_file()
 
+    noon_or_tanween = 'ٌٍن'
+    idhaar_letters = 'هءأإحعخغ'
+
     with open(idhaar_file) as idhaar:
       cls.idhaar_file_content = json.load(idhaar)
       idhaar.close()
 
     cls.assertIsInstance(cls.idhaar_file_content['idhaar'], list)
-    cls.assertEqual(cls.idhaar_file_content['idhaar'][0], {"surah": 1, "ayah": 7, "start": 20, "end": 22})
 
+    quran_file = open(IDHAAR_INPUT_FILE, 'r', encoding='utf-8')
+    for line in quran_file.readlines():
+      segments = line.split('|')
+      ayah_number = int(segments[1])
+      ayah_text = segments[2].strip()
 
-  # def test_idhaar_shafawi_file_content_is_extracted_rule_data(cls):
-  #   absolute_specs_path = os.path.join(ROOT_DIR, RELATIVE_DIR)
-  #   idhaar_shafawi_file = os.path.join(absolute_specs_path, 'idhaar_shafawi.json')
-  #   cls.idhaar_shafawi_file_content = {}
+      starts_for_line = [rule['start'] for rule in cls.idhaar_file_content['idhaar'] if rule['ayah'] == ayah_number]
 
-  #   with open(idhaar_shafawi_file) as idhaar_shafawi:
-  #     cls.idhaar_shafawi_file_content = json.load(idhaar_shafawi)
-  #     idhaar_shafawi.close()
+      for start in starts_for_line:
+        cls.assertTrue(ayah_text[start] or ayah_text[start+1] in noon_or_tanween)
 
-  #   cls.assertIsInstance(cls.idhaar_shafawi_file_content['idhaar_shafawi'], list)
-  #   cls.assertEqual(cls.idhaar_shafawi_file_content['idhaar_shafawi'][0], {"surah": 1, "ayah": 2, "start": 5, "end": 7})
+      ends_for_line = [rule['end'] for rule in cls.idhaar_file_content['idhaar'] if rule['ayah'] == ayah_number]
+
+      for end in ends_for_line:
+        cls.assertTrue(ayah_text[end] in idhaar_letters)
+    quran_file.close()
+ 
 
     
     
