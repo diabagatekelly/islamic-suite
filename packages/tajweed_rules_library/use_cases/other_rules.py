@@ -1,9 +1,9 @@
 
-from use_cases.rule import Rule
+from use_cases.rule_mapping_helpers import RuleMappingHelpers
 from controllers.input_factory import InputFactory
 from presenters.output_factory import OutputFactory
 
-class OtherRules(Rule):
+class OtherRules(RuleMappingHelpers):
 
   def __init__(self, input_factory, output_factory):
     self

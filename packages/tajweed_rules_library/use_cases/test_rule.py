@@ -9,9 +9,9 @@ class TestRule(unittest.TestCase):
     cls.noon_saakin_ayah_text = 'وَقُل رَّبِّ أَعُوذُ بِكَ مِنْ هَمَزَاتِ الشَّيَاطِينِ'
     cls.noon_saakin_rule = Rule(surah_number, ayah_number, cls.noon_saakin_ayah_text)
 
-    surah_number = 23
-    ayah_number = 96
-    cls.noon_saakin_text_no_space = 'وَقُل رَّبِّ أَعُوذُ بِكَ مِنْهَمَزَاتِ الشَّيَاطِينِ'
+    surah_number = 108
+    ayah_number = 2
+    cls.noon_saakin_text_no_space = 'فَصَلِّ لِرَبِّكَ وَانۡحَرۡ'
     cls.noon_saakin_no_space_rule = Rule(surah_number, ayah_number, cls.noon_saakin_text_no_space)
 
     surah_number = 23
@@ -94,4 +94,4 @@ class TestRule(unittest.TestCase):
   def test_get_rule_location_details_for_letter_base(cls):
     noon_indices = cls.noon_saakin_rule.find_letter_in_text('ن')
     rule_info = cls.noon_saakin_rule.get_rule_location_details_for_letter_base(noon_indices[0])
-    cls.assertEquals(rule_info, {"surah": 23, "ayah": 96, "start": 28, "end": 31})
+    cls.assertEqual(rule_info, {"surah": 23, "ayah": 96, "start": 28, "end": 31})
