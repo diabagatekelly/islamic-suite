@@ -1,6 +1,6 @@
 from use_cases.other_rules import other_rules
-from use_cases.idhaar import idhaar
-from use_cases.idhaar_shafawi import idhaar_shafawi
+from use_cases.idhaar_rule import idhaar
+from use_cases.idhaar_shafawi_rule import idhaar_shafawi
 
 class RulesFactory():
   def __init__(self, rule=''):

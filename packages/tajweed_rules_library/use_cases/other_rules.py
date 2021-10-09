@@ -1,9 +1,8 @@
 
-from use_cases.rule_mapping_helpers import RuleMappingHelpers
 from controllers.input_factory import InputFactory
 from presenters.output_factory import OutputFactory
 
-class OtherRules(RuleMappingHelpers):
+class OtherRules():
 
   def __init__(self, input_factory, output_factory):
     self
@@ -29,7 +28,12 @@ class OtherRules(RuleMappingHelpers):
     for ayah in all_rules['data']:
       for rule_in_ayah in ayah['annotations']:
         if rule_in_ayah['rule'] == rule:
-          ayah_rule_info = self.construct_rule_location_map(ayah['surah'], ayah['ayah'], rule_in_ayah['start'], rule_in_ayah['end'])
+          ayah_rule_info = {
+            'surah': ayah['surah'],
+            'ayah': ayah['ayah'],
+            'start': rule_in_ayah['start'],
+            'end': rule_in_ayah['end']
+          }
           rules_locations[rule].append(ayah_rule_info)
           
     return rules_locations

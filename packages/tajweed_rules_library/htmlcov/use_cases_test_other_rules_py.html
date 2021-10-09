@@ -52,10 +52,10 @@
     </div>
 </div>
 <div id="source">
-    <p id="t1" class="run"><span class="n"><a href="#t1">1</a></span><span class="t"><span class="key">from</span> <span class="nam">use_cases</span><span class="op">.</span><span class="nam">other_rules</span> <span class="key">import</span> <span class="nam">OtherRules</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t2" class="run"><span class="n"><a href="#t2">2</a></span><span class="t"><span class="key">from</span> <span class="nam">controllers</span><span class="op">.</span><span class="nam">input_factory</span> <span class="key">import</span> <span class="nam">InputFactory</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t3" class="run"><span class="n"><a href="#t3">3</a></span><span class="t"><span class="key">from</span> <span class="nam">presenters</span><span class="op">.</span><span class="nam">output_factory</span> <span class="key">import</span> <span class="nam">OutputFactory</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t4" class="run"><span class="n"><a href="#t4">4</a></span><span class="t"><span class="key">import</span> <span class="nam">unittest</span><span class="op">,</span> <span class="nam">os</span><span class="op">,</span> <span class="nam">shutil</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t1" class="run"><span class="n"><a href="#t1">1</a></span><span class="t"><span class="key">import</span> <span class="nam">unittest</span><span class="op">,</span> <span class="nam">os</span><span class="op">,</span> <span class="nam">shutil</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t2" class="run"><span class="n"><a href="#t2">2</a></span><span class="t"><span class="key">from</span> <span class="nam">use_cases</span><span class="op">.</span><span class="nam">other_rules</span> <span class="key">import</span> <span class="nam">OtherRules</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t3" class="run"><span class="n"><a href="#t3">3</a></span><span class="t"><span class="key">from</span> <span class="nam">controllers</span><span class="op">.</span><span class="nam">input_factory</span> <span class="key">import</span> <span class="nam">InputFactory</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t4" class="run"><span class="n"><a href="#t4">4</a></span><span class="t"><span class="key">from</span> <span class="nam">presenters</span><span class="op">.</span><span class="nam">output_factory</span> <span class="key">import</span> <span class="nam">OutputFactory</span>&nbsp;</span><span class="r"></span></p>
     <p id="t5" class="pln"><span class="n"><a href="#t5">5</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t6" class="run"><span class="n"><a href="#t6">6</a></span><span class="t"><span class="key">class</span> <span class="nam">TestOtherRules</span><span class="op">(</span><span class="nam">unittest</span><span class="op">.</span><span class="nam">TestCase</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p id="t7" class="run"><span class="n"><a href="#t7">7</a></span><span class="t">  <span class="op">@</span><span class="nam">classmethod</span>&nbsp;</span><span class="r"></span></p>
@@ -67,7 +67,7 @@
     <p id="t13" class="run"><span class="n"><a href="#t13">13</a></span><span class="t">    <span class="nam">others_file_input</span> <span class="op">=</span> <span class="nam">file_input_factory</span><span class="op">(</span><span class="nam">OTHER_RULES_INPUT_FILE</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t14" class="pln"><span class="n"><a href="#t14">14</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t15" class="run"><span class="n"><a href="#t15">15</a></span><span class="t">    <span class="nam">cls</span><span class="op">.</span><span class="nam">ROOT_DIR</span> <span class="op">=</span> <span class="str">'C:\\Users\\kelly\\Documents\\Development Related\\Portfolio Projects\\islamic ed suite (angular + python + sql)\\tajweed-monorepo\\packages\\tajweed_rules_library'</span>&nbsp;</span><span class="r"></span></p>
-    <p id="t16" class="run"><span class="n"><a href="#t16">16</a></span><span class="t">    <span class="nam">cls</span><span class="op">.</span><span class="nam">RELATIVE_DIR</span> <span class="op">=</span> <span class="str">'use_cases\\specs'</span>&nbsp;</span><span class="r"></span></p>
+    <p id="t16" class="run"><span class="n"><a href="#t16">16</a></span><span class="t">    <span class="nam">cls</span><span class="op">.</span><span class="nam">RELATIVE_DIR</span> <span class="op">=</span> <span class="str">'use_cases\\other_specs'</span>&nbsp;</span><span class="r"></span></p>
     <p id="t17" class="pln"><span class="n"><a href="#t17">17</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p id="t18" class="run"><span class="n"><a href="#t18">18</a></span><span class="t">    <span class="nam">file_output</span> <span class="op">=</span> <span class="nam">file_output_factory</span><span class="op">(</span><span class="nam">cls</span><span class="op">.</span><span class="nam">ROOT_DIR</span><span class="op">,</span> <span class="nam">cls</span><span class="op">.</span><span class="nam">RELATIVE_DIR</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p id="t19" class="pln"><span class="n"><a href="#t19">19</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -113,7 +113,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v5.5</a>,
-            created at 2021-09-27 00:09 -0400
+            created at 2021-10-09 17:52 -0400
         </p>
     </div>
 </div>

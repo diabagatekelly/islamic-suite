@@ -1,5 +1,5 @@
 import unittest, os, json, shutil
-from use_cases.idhaar import Idhaar
+from use_cases.idhaar_rule import IdhaarRule
 from controllers.input_factory import InputFactory
 from presenters.output_factory import OutputFactory
 
@@ -18,7 +18,7 @@ class TestIdhaarRuleFiles(unittest.TestCase):
 
     file_output = file_output_factory(ROOT_DIR, RELATIVE_DIR)
 
-    cls.idhaar_rules = Idhaar(idhaar_file_input, file_output)
+    cls.idhaar_rules = IdhaarRule(idhaar_file_input, file_output)
 
   # @classmethod
   # def tearDownClass(cls):
