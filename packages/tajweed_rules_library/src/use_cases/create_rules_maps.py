@@ -1,10 +1,11 @@
 from src.entities.entities_map import EntitiesMap
 
+
 class CreateRulesMaps():
   def __init__(self, factory):
     self
     self.factory = factory
-    self.input_to_map_gateway = factory.get_input_to_map_gateway()
+    self.input_to_map_gateway = self.factory.get_input_to_map_gateway()
     self.input_system = self.factory.get_input_system()
 
   def create_rule_maps(self):
@@ -27,8 +28,8 @@ class CreateRulesMaps():
     entities_map = EntitiesMap()
     all_rules_locations = []
 
-    quran = self.input_system().read_file_by_lines()
-    
+    quran = self.input_system.read_file_by_lines()
+
     for line in quran:
       parsed_line = self.parse_quran_script(line)
       surah_number = parsed_line['surah_number']
@@ -46,8 +47,8 @@ class CreateRulesMaps():
   def save_rules_map(self, rule_name, rule_locations):
     content_for_rule = {}
     content_for_rule[rule_name] = rule_locations
-    output_file = self.input_system().create_absolute_output_path(rule_name)
-    self.input_system().write_to_file(content_for_rule, output_file)
+    output_file = self.input_system.create_absolute_output_path(rule_name)
+    self.input_system.write_to_file(content_for_rule, output_file)
 
   def parse_quran_script(self, line):
       segments = line.split('|')

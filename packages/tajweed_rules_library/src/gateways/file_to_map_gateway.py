@@ -1,11 +1,10 @@
-from src.gateways.local_file_system import LocalFileSystem
-
-class FileToMapGateway(LocalFileSystem):
-  def __init__(self):
+class FileToMapGateway():
+  def __init__(self, file_system):
     self
+    self.file_system = file_system
   
   def get_rule_names(self):
-    rule_names = self.get_files_in_dir()
+    rule_names = self.file_system.get_files_in_dir()
     rule_names_no_extension = [name.split('.')[0] for name in rule_names]
     return rule_names_no_extension
 

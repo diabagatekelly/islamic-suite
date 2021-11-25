@@ -4,7 +4,7 @@ from src.controllers.local_file_system_controller import LocalFileSystemControll
 def run_app(env):
   if env == 'dev':
     print(f'running in {env}')
-    return LocalFileSystemController()
+    return LocalFileSystemController(env='dev')
   elif env == 'prod':
     print('S3 coming soon')
     return

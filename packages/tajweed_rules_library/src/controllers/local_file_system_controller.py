@@ -1,12 +1,13 @@
-import os
 from src.factory import Factory
 from src.use_cases.create_rules_maps import CreateRulesMaps
 
 class LocalFileSystemController():
 
-  def __init__(self):
+  def __init__(self, env='', file_system={}):
     self
-    self.factory = Factory('dev')
+    self.env = env
+    self.file_system = file_system
+    self.factory = Factory(env=self.env, file_system=self.file_system)
     self.set_up_mapper()
 
   def set_up_mapper(self):

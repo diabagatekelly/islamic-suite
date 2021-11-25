@@ -5,13 +5,20 @@ INPUT_FILE = os.path.join(ROOT, 'fixtures/input_fixtures/quran-uthmani.txt')
 ENTITIES_DIR = os.path.join(ROOT, 'entities')
 OUTPUTS_DIR = os.path.join(ROOT, 'outputs')
 
+FILES_SYS = {
+	'root': ROOT,
+	'input_file': INPUT_FILE,
+	'entities_dir': ENTITIES_DIR,
+	'outputs_dir': OUTPUTS_DIR
+}
+
 class LocalFileSystem():
-	def __init__(self, root=ROOT, input_file=INPUT_FILE, entities_dir=ENTITIES_DIR, outputs_dir=OUTPUTS_DIR):
+	def __init__(self, files_sys=FILES_SYS):
 		self
-		self.root = root
-		self.input_file = input_file
-		self.outputs_dir = outputs_dir
-		self.entities_dir = entities_dir
+		self.root = files_sys['root']
+		self.input_file = files_sys['input_file']
+		self.entities_dir = files_sys['entities_dir']
+		self.outputs_dir = files_sys['outputs_dir']
 	
 	def get_files_in_dir(self):
 		filenames = []
