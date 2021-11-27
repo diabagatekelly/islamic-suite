@@ -27,9 +27,6 @@ pipeline {
       }
     }
     stage('Build') {
-      when {
-
-      }
       steps {
         echo 'Building entities rules JSON files'
         sh 'python -m src.app run_app prod sys.argv[3]'
