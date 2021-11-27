@@ -27,6 +27,9 @@ pipeline {
       }
     }
     stage('Build') {
+      when {
+
+      }
       steps {
         echo 'Building entities rules JSON files'
         sh 'python -m src.app run_app prod sys.argv[3]'
@@ -40,8 +43,6 @@ pipeline {
   }
 }
 
-
-#Build:single:  sh python -m src.app run_app prod ''
-#Build:all: sh 
-
-#Coverage: sh 
+// def String getEntityArgument() {
+//   return sys.argv[3]
+// }
