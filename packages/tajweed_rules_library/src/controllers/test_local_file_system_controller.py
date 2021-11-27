@@ -5,7 +5,7 @@ from src.controllers.local_file_system_controller import LocalFileSystemControll
 ROOT = os.path.abspath(os.path.join(os.getcwd(), 'src'))
 INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/idhaar_mock_input.txt')
 ENTITIES_DIR = os.path.join(ROOT, 'entities')
-OUTPUTS_DIR = os.path.join(ROOT, 'outputs', 'specs')
+OUTPUTS_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'outputs', 'specs')
 
 FILES_SYS = {
 	'root': ROOT,
@@ -17,14 +17,13 @@ FILES_SYS = {
 class TestLocalFileSystemController(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
-    if OUTPUTS_DIR:
-      shutil.rmtree(OUTPUTS_DIR)
-    os.mkdir(OUTPUTS_DIR)
+    if not os.path.exists(OUTPUTS_DIR):
+      os.makedirs(OUTPUTS_DIR)
 
   @classmethod
   def tearDownClass(cls):
     if OUTPUTS_DIR:
-      shutil.rmtree(OUTPUTS_DIR)
+      shutil.rmtree(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'outputs'))
 
   def test_init_controller_with_custom_file_sys(self):
     custom_file_system_controller = LocalFileSystemController(file_system=FILES_SYS)
