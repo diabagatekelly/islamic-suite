@@ -4,8 +4,8 @@ pipeline {
   stages {
     stage('Setup') {
       steps {
-        echo 'Testing..'
-        sh 'cd packages/tajweed_rules_library/ && source venv/Scripts/activate'
+        echo 'Setup..'
+        sh 'cd packages/tajweed_rules_library/ && python -m venv venv && source venv/Scripts/activate && pip install -r requirements.txt'
       }
     }
     stage('Test') {
