@@ -2,12 +2,12 @@ pipeline {
   agent any
   
   stages {
-    // stage('Setup') {
-    //   steps {
-    //     echo 'Testing..'
-    //     sh 'cd packages/tajweed_rules_library/ && source venv/Scripts/activate'
-    //   }
-    // }
+    stage('Setup') {
+      steps {
+        echo 'Testing..'
+        sh 'cd packages/tajweed_rules_library/ && source venv/Scripts/activate'
+      }
+    }
     stage('Test') {
       steps {
         echo 'Testing..'
