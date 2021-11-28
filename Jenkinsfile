@@ -2,12 +2,6 @@ pipeline {
   agent any
 
   stages {
-    when {
-      anyOf {
-        branch 'prod'
-        branch 'PR-*'
-      }
-    }
     stage('Setup') {
       steps {
         echo 'Testing..'
