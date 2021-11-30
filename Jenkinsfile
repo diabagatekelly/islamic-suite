@@ -13,7 +13,9 @@ pipeline {
     stage('Test') {
       steps {
         echo 'Testing..'
-        sh 'python -m unittest -v'
+        dir('packages/tajweed_rules_library') {
+          sh 'python -m unittest -v'
+        }
       }
     }
     stage('Test:coverage') {
