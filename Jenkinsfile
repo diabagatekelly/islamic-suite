@@ -21,7 +21,9 @@ pipeline {
     stage('Test:coverage') {
       steps {
         echo 'Test coverage'
-        sh 'coverage run -m unittest && coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py'
+        dir('packages/tajweed_rules_library') {
+          sh 'coverage run -m unittest && coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py'
+        }
       }
     }
     stage('Build') {
