@@ -28,7 +28,7 @@ pipeline {
 
                     // Get the input
                     def userInput = input(
-                            id: 'userInput', message: 'Enter '' or rule:',
+                            id: 'userInput', message: "Enter '' or rule:",
                             parameters: [
                               string(defaultValue: '',
                                 description: 'Rule',
