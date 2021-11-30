@@ -40,7 +40,7 @@ pipeline {
 
             // Echo to console
             echo("IQA Sheet Path: ${inputRule}")
-            sh "python -m src.app run_app prod ${inputRule}"
+            sh "python -m src.app run_app dev ${inputRule}"
           }
         }
       }
