@@ -7,7 +7,7 @@ pipeline {
       stages {
         dir('packages/tajweed_rules_library') {
           script {
-            python -m venv venv && source venv/Scripts/activate && pip install -r requirements.txt
+            'python -m venv venv && source venv/Scripts/activate && pip install -r requirements.txt'
           }
            stage('Test') {
           steps {
