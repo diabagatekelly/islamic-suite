@@ -36,7 +36,7 @@ pipeline {
               ])
 
             // Save to variables. Default to empty string if not found.
-            inputRule = userInput.Config?: ''
+            inputRule = userInput?:''
 
             // Echo to console
             echo("IQA Sheet Path: ${inputRule}")
