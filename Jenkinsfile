@@ -21,7 +21,27 @@ pipeline {
     stage('Build') {
       steps {
         echo 'Building entities rules JSON files'
-        sh 'python -m src.app run_app prod sys.argv[3]'
+                  script {
+
+                    // Variables for input
+                    def inputRule
+
+                    // Get the input
+                    def userInput = input(
+                            id: 'userInput', message: 'Enter '' or rule:',
+                            parameters: [
+                              string(defaultValue: '',
+                                description: 'Rule',
+                                name: 'rule'),
+                            ])
+
+                    // Save to variables. Default to empty string if not found.
+                    inputRule = userInput.rule?: ''
+
+                    // Echo to console
+                    echo("IQA Sheet Path: ${inputRule}")
+                }
+        sh "python -m src.app run_app prod ${inputRule}"
       }
     }
     // stage('Push to') {
