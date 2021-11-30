@@ -35,7 +35,7 @@ pipeline {
 
 
                 }
-              }]
+              }
       // steps {
       //   echo 'Setup..'
       //     dir('packages/tajweed_rules_library') {
