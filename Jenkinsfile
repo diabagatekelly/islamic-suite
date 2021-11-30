@@ -6,7 +6,7 @@ pipeline {
       steps {
         echo 'Setup..'
           dir('packages/tajweed_rules_library') {
-            sh 'python -m venv venv && source venv/Scripts/activate && pip install -r requirements.txt'
+            sh 'python -m venv venv && source venv/Scripts/activate'
           }
       }
     }
@@ -22,7 +22,7 @@ pipeline {
       steps {
         echo 'Test coverage'
         dir('packages/tajweed_rules_library') {
-          sh 'coverage run -m unittest && coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py'
+          sh 'pip install -r requirements.txt && coverage run -m unittest && coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py'
         }
       }
     }
