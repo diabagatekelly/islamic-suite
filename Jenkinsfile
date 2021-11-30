@@ -32,11 +32,11 @@ pipeline {
               parameters: [
                 string(defaultValue: '',
                   description: 'Rule',
-                  name: 'rule'),
+                  name: 'Config'),
               ])
 
             // Save to variables. Default to empty string if not found.
-            inputRule = userInput.rule?: ''
+            inputRule = userInput.Config?: ''
 
             // Echo to console
             echo("IQA Sheet Path: ${inputRule}")
