@@ -9,11 +9,6 @@ pipeline {
   
   stages {
     stage('Test remote build') {
-      when {
-        anyOf {
-          branch 'main'
-        }
-      }
       steps {
         echo 'Test remote start..'
         dir('packages/tajweed_rules_library') {
