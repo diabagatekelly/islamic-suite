@@ -11,7 +11,7 @@ pipeline {
     stage('Test') {
       when {
         anyOf {
-          branch 'prod'
+          branch 'main'
         }
       }
       steps {
@@ -24,7 +24,7 @@ pipeline {
     stage('Test:coverage') {
       when {
         anyOf {
-          branch 'prod'
+          branch 'main'
         }
       }
       steps {
@@ -37,7 +37,7 @@ pipeline {
     stage('Build') {
       when {
         anyOf {
-          branch 'prod'
+          branch 'main'
         }
       }
       steps {

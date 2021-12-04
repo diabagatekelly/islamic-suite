@@ -1,6 +1,8 @@
 import sys
 from src.controllers.local_file_system_controller import LocalFileSystemController
 
+ENTITY = ''
+
 def run_app(env='dev', entity=''):
   if env == 'dev':
     print(f'running in {env}')
