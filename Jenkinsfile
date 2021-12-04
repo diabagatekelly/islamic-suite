@@ -1,8 +1,19 @@
+S3bucket = 'tajweed-app'
+
 pipeline {
+  environment {
+    prodAcctNum = "709910515242"
+  }
+
   agent any
   
   stages {
     stage('Test') {
+      when {
+        anyOf {
+          branch 'prod'
+        }
+      }
       steps {
         echo 'Testing..'
         dir('packages/tajweed_rules_library') {
@@ -11,6 +22,11 @@ pipeline {
       }
     }
     stage('Test:coverage') {
+      when {
+        anyOf {
+          branch 'prod'
+        }
+      }
       steps {
         echo 'Test coverage'
         dir('packages/tajweed_rules_library') {
@@ -19,24 +35,31 @@ pipeline {
       }
     }
     stage('Build') {
+      when {
+        anyOf {
+          branch 'prod'
+        }
+      }
       steps {
         echo 'Building entities rules JSON files'
         dir('packages/tajweed_rules_library') {
           script {
-            // Variables for input
-            def inputRule
+            def ENTITY = readFile encoding: 'utf-8', file: 'packages/tajweed_rules_library/src/app.py'
+            echo(ENTITY)
+            // // Variables for input
+            // def inputRule
 
-            // Get the input
-            def userInput = input(
-              id: 'userInput', message: "Enter '' or rule:",
-              parameters: [
-                string(defaultValue: '',
-                  description: 'Rule',
-                  name: 'Config'),
-              ])
+            // // Get the input
+            // def userInput = input(
+            //   id: 'userInput', message: "Enter '' or rule:",
+            //   parameters: [
+            //     string(defaultValue: '',
+            //       description: 'Rule',
+            //       name: 'Config'),
+            //   ])
 
-            // Save to variables. Default to empty string if not found.
-            inputRule = userInput?:''
+            // // Save to variables. Default to empty string if not found.
+            // inputRule = userInput?:''
 
             // Echo to console
             echo("IQA Sheet Path: ${inputRule}")
