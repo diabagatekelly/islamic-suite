@@ -20,6 +20,7 @@ pipeline {
       when {
         anyOf {
           branch 'main'
+          branch 'PR-*'
         }
       }
       steps {
