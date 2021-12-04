@@ -30,8 +30,7 @@ jobs:
     # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
-    general:
-      build_dir: ~/tajweed-app/packages/tajweed_rules_library  # If you're requirements.txt isn't in the root directory.
+    working_directory: ~/tajweed-app/packages/tajweed_rules_library  # If you're requirements.txt isn't in the root directory.
     steps:
       - checkout
       - python/install-packages:
