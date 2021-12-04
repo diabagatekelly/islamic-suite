@@ -44,8 +44,9 @@ pipeline {
         echo 'Building entities rules JSON files'
         dir('packages/tajweed_rules_library') {
           script {
-            def ENTITY = readFile encoding: 'utf-8', file: 'packages/tajweed_rules_library/src/app.py'
-            echo(ENTITY)
+            def file = readFile encoding: 'utf-8', file: 'src/app.py'
+            echo(file)
+            echo(file.ENTITY)
             // // Variables for input
             // def inputRule
 
