@@ -8,6 +8,19 @@ pipeline {
   agent any
   
   stages {
+    stage('Test remote build') {
+      when {
+        anyOf {
+          branch 'main'
+        }
+      }
+      steps {
+        echo 'Test remote start..'
+        dir('packages/tajweed_rules_library') {
+          sh "build 'tajweed-app'"
+        }
+      }
+    }
     stage('Test') {
       when {
         anyOf {
@@ -46,23 +59,7 @@ pipeline {
           script {
             def entity = readFile encoding: 'utf-8', file: 'src/prod_build_entities_list.txt'
             echo(entity)
-            // // Variables for input
-            // def inputRule
-
-            // // Get the input
-            // def userInput = input(
-            //   id: 'userInput', message: "Enter '' or rule:",
-            //   parameters: [
-            //     string(defaultValue: '',
-            //       description: 'Rule',
-            //       name: 'Config'),
-            //   ])
-
-            // // Save to variables. Default to empty string if not found.
-            // inputRule = userInput?:''
-
-            // Echo to console
-            echo("IQA Sheet Path: ${entity}")
+   
             sh "python -m src.app run_app prod ${entity}"
           }
         }
