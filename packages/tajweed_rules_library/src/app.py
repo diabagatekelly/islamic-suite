@@ -1,12 +1,14 @@
 import sys
 from src.controllers.local_file_system_controller import LocalFileSystemController
 
+ENTITY = ''
+
 def run_app(env='dev', entity=''):
   if env == 'dev':
     print(f'running in {env}')
     return LocalFileSystemController(env='dev', entity=entity)
   elif env == 'prod':
-    print('S3 coming soon')
+    print('S3 coming soon!')
     return
 
 run_app(env=sys.argv[2], entity=sys.argv[3])
