@@ -44,9 +44,8 @@ pipeline {
         echo 'Building entities rules JSON files'
         dir('packages/tajweed_rules_library') {
           script {
-            def file = readFile encoding: 'utf-8', file: 'src/app.py'
-            echo(file)
-            echo(file.ENTITY)
+            def entity = readFile encoding: 'utf-8', file: 'src/prod_build_entities_list.txt'
+            echo(entity)
             // // Variables for input
             // def inputRule
 
@@ -63,8 +62,8 @@ pipeline {
             // inputRule = userInput?:''
 
             // Echo to console
-            echo("IQA Sheet Path: ${inputRule}")
-            sh "python -m src.app run_app prod ${inputRule}"
+            echo("IQA Sheet Path: ${entity}")
+            sh "python -m src.app run_app prod ${entity}"
           }
         }
       }
