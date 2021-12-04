@@ -39,8 +39,7 @@ jobs:
       - run:
           name: Run tests
           # This assumes pytest is installed via the install-package step above
-          app-dir: ~/project/packages/tajweed_rules_library
-          command: python -m unittest
+          command: python -m unittest discover -v
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
