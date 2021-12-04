@@ -35,11 +35,11 @@ pipeline {
       }
     }
     stage('Build') {
-      when {
-        anyOf {
-          branch 'main'
-        }
-      }
+      // when {
+      //   anyOf {
+      //     branch 'main'
+      //   }
+      // }
       steps {
         echo 'Building entities rules JSON files'
         dir('packages/tajweed_rules_library') {
