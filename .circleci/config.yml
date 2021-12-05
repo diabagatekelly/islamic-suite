@@ -30,6 +30,8 @@ jobs:
     # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
+    environment:
+      TEST_ENTITY: 'ikhfa_shafawi'
     steps:
       - checkout
       - python/install-packages:
@@ -50,7 +52,7 @@ jobs:
           name: Building entities rules JSON files
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
-          command: echo python src/prod_build_entities_list.txt
+          command: python -m src.app run_app prod $TEST_ENTITY
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
