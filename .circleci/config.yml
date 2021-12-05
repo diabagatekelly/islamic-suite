@@ -2,9 +2,6 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-setup:
-
-
 # Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
 # See: https://circleci.com/docs/2.0/orb-intro/
 orbs:
@@ -49,14 +46,16 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: coverage run -m unittest && coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py
       - run:
-          filters:  # using regex filters requires the entire branch to match
-            branches:
-              only:  # only branches matching the below regex filters will run
-                - main
-          name: Building entities rules JSON files test
+          name: Building entities rules JSON files
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
-          command: python -m src.app run_app prod $TEST_ENTITY
+          command: |
+                  if [ "$CIRCLE_BRANCH" = "develop" ]; then
+                      circleci-agent step halt
+                  fi
+                  if [ "$CIRCLE_BRANCH" = "main" ]; then
+                      python -m src.app run_app prod $TEST_ENTITY
+                  fi
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
