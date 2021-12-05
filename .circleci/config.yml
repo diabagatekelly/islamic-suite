@@ -53,7 +53,9 @@ jobs:
                   if [ "$CIRCLE_BRANCH" = "develop" ]; then
                       circleci-agent step halt
                   fi
-                  python -m src.app run_app prod $TEST_ENTITY
+                  if [ "$CIRCLE_BRANCH" = "main" ]; then
+                      python -m src.app run_app prod $TEST_ENTITY
+                  fi
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
