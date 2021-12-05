@@ -27,6 +27,8 @@ jobs:
     # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
+    environment:
+      TEST_ENTITY: 'ikhfa_shafawi'
     steps:
       - checkout
       - python/install-packages:
@@ -43,8 +45,17 @@ jobs:
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: coverage run -m unittest && coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py
+      - run:
+          filters:  # using regex filters requires the entire branch to match
+            branches:
+              only:  # only branches matching the below regex filters will run
+                - main
+          name: Building entities rules JSON files
+          working_directory: ~/project/packages/tajweed_rules_library
+          # This assumes pytest is installed via the install-package step above
+          command: python -m src.app run_app prod $TEST_ENTITY
 
-  s3-deploy: # This is the name of the job, feel free to change it to better match what you're trying to do!
+    build-and-test: # This is the name of the job, feel free to change it to better match what you're trying to do!
     # These next lines defines a Docker executors: https://circleci.com/docs/2.0/executor-types/
     # You can specify an image from Dockerhub or use one of the convenience images from CircleCI's Developer Hub
     # A list of available CircleCI Docker convenience images are available here: https://circleci.com/developer/images/image/cimg/python
@@ -66,10 +77,28 @@ jobs:
           app-dir: ~/project/packages/tajweed_rules_library  # If you're requirements.txt isn't in the root directory.
           # pip-dependency-file: test-requirements.txt  # if you have a different name for your requirements file, maybe one that combines your runtime and test requirements.
       - run:
+          name: Run tests
+          working_directory: ~/project/packages/tajweed_rules_library
+          # This assumes pytest is installed via the install-package step above
+          command: python -m unittest -v 
+      - run:
+          name: Run test coverage
+          working_directory: ~/project/packages/tajweed_rules_library
+          # This assumes pytest is installed via the install-package step above
+          command: coverage run -m unittest && coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py
+      - run:
+          filters:  # using regex filters requires the entire branch to match
+            branches:
+              only:  # only branches matching the below regex filters will run
+                - main
           name: Building entities rules JSON files
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
-          command: python -m src.app run_app prod $TEST_ENTITY
+          command: |
+                  if [ "$CIRCLE_BRANCH" = "develop" ]; then
+                      circleci-agent step halt
+                  fi
+                  python -m src.app run_app prod $TEST_ENTITY
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -77,14 +106,4 @@ workflows:
   sample: # This is the name of the workflow, feel free to change it to better match your workflow.
     # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - build-and-test:
-        filters:
-          branches:
-            only:
-              - develop
-              - main
-      - s3-deploy:
-        filters:
-          branches:
-            only:
-              - main
+      - build-and-test
