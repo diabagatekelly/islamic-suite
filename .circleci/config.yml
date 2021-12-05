@@ -78,13 +78,13 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-and-test
-        filters:
-          branches:
-            only:
+        filters
+          branches
+            only
               - develop
               - main
       - s3-deploy
-        filters:
-          branches:
-            only:
+        filters
+          branches
+            only
               - main
