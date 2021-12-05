@@ -49,7 +49,7 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: coverage run -m unittest && coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py
       - run:
-          name: Building entities rules JSON files
+          name: Building entities rules JSON files test
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: python -m src.app run_app prod $TEST_ENTITY
