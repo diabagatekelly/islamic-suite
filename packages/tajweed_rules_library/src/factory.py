@@ -3,24 +3,16 @@ from src.gateways.file_to_map_gateway import FileToMapGateway
 
 # In the future I might add a S3 file handler
 class Factory():
-  def __init__(self, env='', file_system={}, entity=''):
+  def __init__(self, env='local'):
     self
     self.env = env
-    self.file_system = file_system
-    self.entity = entity
+    
+  def get_file_system(self):
+    if self.env == 'local':
+      return LocalFileSystem()
+    elif self.env == 'online':
+      return 'online file Urls'
+   
+  def get_file_to_map_gateway(self):
+      return FileToMapGateway()
 
-  def get_input_system(self):
-    if self.env == 'dev':
-      return LocalFileSystem(entity=self.entity)
-    elif self.env == 'prod':
-      return 'prod'
-    else:
-      return LocalFileSystem(files_sys=self.file_system, entity=self.entity)
-
-  def get_input_to_map_gateway(self):
-    if self.env == 'dev':
-      return FileToMapGateway(LocalFileSystem(entity=self.entity))
-    elif self.env == 'prod':
-      return 'prod'
-    else:
-      return FileToMapGateway(LocalFileSystem(files_sys=self.file_system, entity=self.entity))

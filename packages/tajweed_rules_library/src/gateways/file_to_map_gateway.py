@@ -1,13 +1,11 @@
 class FileToMapGateway():
-  def __init__(self, file_system):
-    self
-    self.file_system = file_system
   
-  def get_rule_names(self):
-    rule_names = self.file_system.get_files_in_dir()
-    rule_names_no_extension = [name.split('.')[0] for name in rule_names]
-    return rule_names_no_extension
+  def __init__(self):
+    self
 
+  def get_name_from_file(self, file_name):
+    return file_name.split('.')[0]
+  
   def get_rule_class_from_name(self, rule_name):
     split_name = rule_name.split('_')
     class_name = ''

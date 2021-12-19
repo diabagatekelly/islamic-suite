@@ -1,4 +1,9 @@
 packages/*/venv
 packages/*/*/__pycache__
 packages/*/*/*/__pycache__
+packages/*/*/*/*/__pycache__
+packages/*/*/*/*/*/__pycache__
+packages/*/*/*/*/*/*/__pycache__
 packages/*/htmlcov
+packages/*/.coverage
+packages/server

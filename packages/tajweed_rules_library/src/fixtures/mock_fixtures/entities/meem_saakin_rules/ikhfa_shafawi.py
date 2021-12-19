@@ -1,4 +1,4 @@
-class IdghaamShafawi():
+class IkhfaShafawi():
   def __init__(self, surah_number, ayah_number, ayah_text):
     self
     self.surah_number = surah_number
@@ -12,6 +12,7 @@ class IdghaamShafawi():
       return []
 
     all_rule_locations = []
+
     for sukoon_index in meem_saakin_indices:
       rule_location = self.get_rule_location_details(sukoon_index)
       if rule_location:
@@ -52,8 +53,7 @@ class IdghaamShafawi():
     return starting_letter_index + 2
 
   def is_ending_letter_an_idghaam_letter(self, ending_letter_index):
-    if self.ayah_text[ending_letter_index] == "م":
+    if self.ayah_text[ending_letter_index] == "ب":
       return True
     else:
       return False
-

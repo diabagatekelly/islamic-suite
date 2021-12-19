@@ -1,32 +1,34 @@
 from src.entities.entities_map import EntitiesMap
 
 class CreateRulesMaps():
-  def __init__(self, factory):
+  def __init__(self, factory, files_and_dirs):
     self
     self.factory = factory
-    self.input_to_map_gateway = self.factory.get_input_to_map_gateway()
-    self.input_system = self.factory.get_input_system()
+    self.files_and_dirs = files_and_dirs
 
-  def create_rule_maps(self):
-    rule_names = self._get_rule_names()
+  # Methods from factory
+  def _file_to_rule_maps(self):
+    return self.factory.get_file_to_map_gateway()
 
-    for rule_name in rule_names:
+  def _file_system(self):  
+    return self.factory.get_file_system()
+
+  def create_rule_maps(self, rule_maps_to_create):
+    for rule_name in rule_maps_to_create:
+      print(rule_name)
       class_name = self._get_class_from_rule_name(rule_name)
       self._create_single_rule_map(rule_name, class_name)
   
-  def _get_rule_names(self):
-    rule_names = self.input_to_map_gateway.get_rule_names()
-    return rule_names
 
   def _get_class_from_rule_name(self, rule_name):
-    class_name = self.input_to_map_gateway.get_rule_class_from_name(rule_name) 
+    class_name = self._file_to_rule_maps().get_rule_class_from_name(rule_name) 
     return class_name
 
   def _create_single_rule_map(self, rule_name, class_name):
     entities_map = EntitiesMap()
     all_rules_locations = []
 
-    quran = self.input_system.read_file_by_lines()
+    quran = self._file_system().read_file_by_lines(self.files_and_dirs['input_file'])
 
     for line in quran:
       parsed_line = self._parse_quran_script(line)
@@ -58,8 +60,8 @@ class CreateRulesMaps():
   def _save_rules_map(self, rule_name, rule_locations):
     content_for_rule = {}
     content_for_rule[rule_name] = rule_locations
-    output_file = self.input_system.create_absolute_output_path(rule_name)
-    self.input_system.write_to_file(content_for_rule, output_file)
+    output_file = self._file_system().create_absolute_path(self.files_and_dirs, rule_name)
+    self._file_system().write_to_file(content_for_rule, output_file)
 
    
     

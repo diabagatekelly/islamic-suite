@@ -1,10 +1,12 @@
 import unittest, os, shutil
 from unittest.mock import patch
 from src.controllers.local_file_system_controller import LocalFileSystemController
+from src.use_cases.create_rules_maps import CreateRulesMaps
+from src.use_cases.choose_rule_maps_to_create import ChooseRuleMapsToCreate
 
 ROOT = os.path.abspath(os.path.join(os.getcwd(), 'src'))
 INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/idhaar_mock_input.txt')
-ENTITIES_DIR = os.path.join(ROOT, 'entities')
+ENTITIES_DIR = os.path.join(ROOT, 'fixtures/mock_fixtures/entities')
 OUTPUTS_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'outputs', 'specs')
 
 FILES_SYS = {
@@ -25,15 +27,14 @@ class TestLocalFileSystemController(unittest.TestCase):
     if OUTPUTS_DIR:
       shutil.rmtree(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'outputs'))
 
-  def test_init_controller_with_custom_file_sys(self):
-    custom_file_system_controller = LocalFileSystemController(file_system=FILES_SYS)
-    controller_factory = custom_file_system_controller.factory
-    local_file_system = controller_factory.get_input_system()
-    self.assertEqual(local_file_system.input_file, os.path.join(ROOT, 'fixtures/mock_fixtures/idhaar_mock_input.txt'))
+  def test_init_controller_with_local_factory(self):
+    local_file_controller = LocalFileSystemController(files=FILES_SYS)
+    self.assertEqual(local_file_controller.factory.env, 'local')
 
-  @patch.object(LocalFileSystemController, 'set_up_mapper')
-  def test_set_up_mapper_called_on_init(self, mock):
-    LocalFileSystemController(file_system=FILES_SYS)
+  @patch.object(CreateRulesMaps, 'create_rule_maps')
+  def test_create_rule_maps_called(self, mock):
+    local_file_sys = LocalFileSystemController(files=FILES_SYS)
+    local_file_sys.create_rule_maps()
     mock.assert_called()
 
     
