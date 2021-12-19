@@ -1,5 +1,5 @@
 import unittest, os, shutil, json
-from src.gateways.local_file_system import LocalFileSystem
+from src.gateways.file_system import FileSystem
 
 ROOT = os.path.abspath(os.path.join(os.getcwd(), 'src'))
 INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/idhaar_mock_input.txt')
@@ -13,9 +13,9 @@ FILES_SYS = {
 	'outputs_dir': OUTPUTS_DIR
 }
 
-mock_file_system = LocalFileSystem()
+mock_file_system = FileSystem()
 
-class TestLocalFileSystem(unittest.TestCase):
+class TestFileSystem(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
     if not os.path.exists(OUTPUTS_DIR):

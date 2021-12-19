@@ -1,6 +1,6 @@
-import os, json, time
+import os, json, shutil
 
-class LocalFileSystem():
+class FileSystem():
 	def __init__(self):
 		self
 
@@ -56,3 +56,6 @@ class LocalFileSystem():
 		with open(path, "w") as outfile:
 			json.dump(content, outfile)
 			outfile.close()
+
+	def copy_file_from_original_to_target_dir(self, original, target):
+		shutil.copyfile(original, target)

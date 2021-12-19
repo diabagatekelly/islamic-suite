@@ -1,4 +1,4 @@
-from src.gateways.local_file_system import LocalFileSystem
+from src.gateways.file_system import FileSystem
 from src.gateways.file_to_map_gateway import FileToMapGateway
 
 # In the future I might add a S3 file handler
@@ -8,8 +8,8 @@ class Factory():
     self.env = env
     
   def get_file_system(self):
-    if self.env == 'local':
-      return LocalFileSystem()
+    if self.env in ['local', 'prod']:
+      return FileSystem()
     elif self.env == 'online':
       return 'online file Urls'
    

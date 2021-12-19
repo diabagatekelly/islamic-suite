@@ -1,6 +1,6 @@
 import unittest, os, shutil
 from unittest.mock import patch
-from src.controllers.local_file_system_controller import LocalFileSystemController
+from src.controllers.local_controller import LocalController
 from src.use_cases.create_rules_maps import CreateRulesMaps
 from src.use_cases.choose_rule_maps_to_create import ChooseRuleMapsToCreate
 
@@ -16,7 +16,7 @@ FILES_SYS = {
 	'outputs_dir': OUTPUTS_DIR
 }
 
-class TestLocalFileSystemController(unittest.TestCase):
+class TestLocalController(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
     if not os.path.exists(OUTPUTS_DIR):
@@ -28,12 +28,12 @@ class TestLocalFileSystemController(unittest.TestCase):
       shutil.rmtree(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'outputs'))
 
   def test_init_controller_with_local_factory(self):
-    local_file_controller = LocalFileSystemController(files=FILES_SYS)
+    local_file_controller = LocalController(files=FILES_SYS)
     self.assertEqual(local_file_controller.factory.env, 'local')
 
   @patch.object(CreateRulesMaps, 'create_rule_maps')
   def test_create_rule_maps_called(self, mock):
-    local_file_sys = LocalFileSystemController(files=FILES_SYS)
+    local_file_sys = LocalController(files=FILES_SYS)
     local_file_sys.create_rule_maps()
     mock.assert_called()
 

@@ -12,9 +12,15 @@ class ChooseRuleMapsToCreate():
     return self.factory.get_file_system()
 
   def get_list_of_rule_maps_to_create(self):
-    existing_rules_with_no_updates = self._get_existing_rules_with_no_updates()
-    all_rules = self._get_all_rule_names()
-    return [rule for rule in all_rules if rule not in existing_rules_with_no_updates]
+    if self.factory.env == 'local':
+      existing_rules_with_no_updates = self._get_existing_rules_with_no_updates()
+      all_rules = self._get_all_rule_names()
+      return [rule for rule in all_rules if rule not in existing_rules_with_no_updates]
+    elif self.factory.env == 'prod':
+      existing_prod_rules_with_no_updates = self._get_existing_rules_with_no_updates()
+      all_local_rules_outputs = self._get_transformed_rule_definitions_file_info()
+      print([rule for rule in all_local_rules_outputs if rule['name'] not in existing_prod_rules_with_no_updates])
+      return [rule for rule in all_local_rules_outputs if rule['name'] not in existing_prod_rules_with_no_updates]
 
   def _get_all_rule_names(self):
     all_rule_names = [rule['name'] for rule in self._get_transformed_rule_definitions_file_info()]
@@ -38,7 +44,6 @@ class ChooseRuleMapsToCreate():
     last_existing_rule_file_update = self._get_existing_rules_file_last_update(rule_name)
     return last_rule_definition_file_update >= last_existing_rule_file_update
 
-
   def _get_rule_definition_file_last_update(self, rule_name):
     rule_definition_file_path = [file["absolute_path"] for file in self._get_transformed_rule_definitions_file_info() if file["name"] == rule_name]
     return self._file_system().get_file_last_update_date(rule_definition_file_path[0])
@@ -47,7 +52,6 @@ class ChooseRuleMapsToCreate():
     existing_rule_file_path = [file["absolute_path"] for file in self._get_transformed_existing_rules_file_info() if file["name"] == rule_name]
     return self._file_system().get_file_last_update_date(existing_rule_file_path[0])
 
-
   def _get_transformed_rule_definitions_file_info(self):
     all_files = self._get_all_rule_definitions_file_info()
     for file_details in all_files:
@@ -55,7 +59,10 @@ class ChooseRuleMapsToCreate():
     return all_files
 
   def _get_all_rule_definitions_file_info(self):
-    return self._file_system().get_files_in_directory(self.files_and_dirs['entities_dir'])
+    if self.factory.env == 'local':
+      return self._file_system().get_files_in_directory(self.files_and_dirs['entities_dir'])
+    elif self.factory.env == 'prod':
+      return self._file_system().get_files_in_directory(self.files_and_dirs['local_outputs'])
   
   def _get_transformed_existing_rules_file_info(self):
     files = self._get_all_existing_rules_file_info()
@@ -64,7 +71,10 @@ class ChooseRuleMapsToCreate():
     return files
 
   def _get_all_existing_rules_file_info(self):
-    return self._file_system().get_files_in_directory(self.files_and_dirs['outputs_dir'])
+    if self.factory.env == 'local':
+      return self._file_system().get_files_in_directory(self.files_and_dirs['outputs_dir'])
+    elif self.factory.env == 'prod':
+      return self._file_system().get_files_in_directory(self.files_and_dirs['outputs_dir'])
 
   def _get_rule_name_from_file(self, file_name):
     return self._file_to_rule_maps().get_name_from_file(file_name)

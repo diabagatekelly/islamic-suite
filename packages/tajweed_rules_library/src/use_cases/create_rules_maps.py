@@ -14,15 +14,21 @@ class CreateRulesMaps():
     return self.factory.get_file_system()
 
   def create_rule_maps(self, rule_maps_to_create):
-    for rule_name in rule_maps_to_create:
-      print(rule_name)
-      class_name = self._get_class_from_rule_name(rule_name)
-      self._create_single_rule_map(rule_name, class_name)
+    for rule in rule_maps_to_create:
+      if self.factory.env == 'local':
+        print(rule)
+        class_name = self._get_class_from_rule_name(rule)
+        self._create_single_rule_map(rule, class_name)
+      elif self.factory.env == 'prod':
+        target_path = self._file_system().create_absolute_path(self.files_and_dirs, rule['name'])
+        self._copy_file_to_prod_output(rule['absolute_path'], target_path)
   
-
   def _get_class_from_rule_name(self, rule_name):
     class_name = self._file_to_rule_maps().get_rule_class_from_name(rule_name) 
     return class_name
+
+  def _copy_file_to_prod_output(self, original, target):
+    return self._file_system().copy_file_from_original_to_target_dir(original, target)
 
   def _create_single_rule_map(self, rule_name, class_name):
     entities_map = EntitiesMap()

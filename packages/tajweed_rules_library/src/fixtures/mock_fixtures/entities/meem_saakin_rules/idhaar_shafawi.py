@@ -59,4 +59,3 @@ class IdhaarShafawi():
     if self.ayah_text[ending_letter_index] not in 'مب':
       return True
     else:
-      return False

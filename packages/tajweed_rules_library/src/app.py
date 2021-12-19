@@ -1,12 +1,18 @@
-import sys
-from src.controllers.local_file_system_controller import LocalFileSystemController
+from src.controllers.prod_controller import ProdController
+from src.controllers.local_controller import LocalController
 
 def build_dev():
-  print(f'running in local')
-  local_controller = LocalFileSystemController(env='local')
+  print(f'build local')
+  local_controller = LocalController(env='local')
   local_controller.create_rule_maps()
 
+def build_prod():
+  print(f'build prod')
+  prod_controller = ProdController(env='prod')
+  prod_controller.create_rule_maps()
+
 build_dev()
+build_prod()
 
 #pseudo build_prod()
 #  s3 FILESYSTEM which will run logic to see which files to create 

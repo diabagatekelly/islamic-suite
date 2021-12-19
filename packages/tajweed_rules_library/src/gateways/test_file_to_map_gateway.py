@@ -1,6 +1,6 @@
 import unittest, os, shutil, json
 from src.gateways.file_to_map_gateway import FileToMapGateway
-from src.gateways.local_file_system import LocalFileSystem
+from src.gateways.file_system import FileSystem
 
 ROOT = os.path.abspath(os.path.join(os.getcwd(), 'src'))
 INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/idhaar_mock_input.txt')

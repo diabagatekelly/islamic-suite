@@ -16,7 +16,7 @@ FILES_SYS = {
 	'outputs_dir': OUTPUTS_DIR
 }
     
-class LocalFileSystemController():
+class LocalController():
   def __init__(self, env='local', files=FILES_SYS):
     self
     self.factory = Factory(env)
