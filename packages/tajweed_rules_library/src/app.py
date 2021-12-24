@@ -1,5 +1,12 @@
+import sys
 from src.controllers.prod_controller import ProdController
 from src.controllers.local_controller import LocalController
+
+def run_app(env):
+  if env == 'local':
+    build_dev()
+  elif env == 'prod':
+    build_prod()
 
 def build_dev():
   print(f'build local')
@@ -8,11 +15,11 @@ def build_dev():
 
 def build_prod():
   print(f'build prod')
+  build_dev()
   prod_controller = ProdController(env='prod')
   prod_controller.create_rule_maps()
 
-build_dev()
-build_prod()
+run_app(sys.argv[2])
 
 #pseudo build_prod()
 #  s3 FILESYSTEM which will run logic to see which files to create 

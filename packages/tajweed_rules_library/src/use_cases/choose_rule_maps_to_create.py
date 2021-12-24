@@ -19,7 +19,6 @@ class ChooseRuleMapsToCreate():
     elif self.factory.env == 'prod':
       existing_prod_rules_with_no_updates = self._get_existing_rules_with_no_updates()
       all_local_rules_outputs = self._get_transformed_rule_definitions_file_info()
-      print([rule for rule in all_local_rules_outputs if rule['name'] not in existing_prod_rules_with_no_updates])
       return [rule for rule in all_local_rules_outputs if rule['name'] not in existing_prod_rules_with_no_updates]
 
   def _get_all_rule_names(self):
