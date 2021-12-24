@@ -53,8 +53,8 @@ jobs:
                   fi
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
                       python -m src.app run_app prod
-                      print $ENV
-                      print $RULE_LIST
+                      echo $ENV
+                      echo $RULE_LIST
                   fi
 
 # Invoke jobs via workflows
