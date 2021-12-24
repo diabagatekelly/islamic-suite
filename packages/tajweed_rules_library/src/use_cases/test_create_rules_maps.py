@@ -31,14 +31,14 @@ prod_choose_rules_to_create = ChooseRuleMapsToCreate(prod_mock_factory, PROD_FIL
 
 class TestCreateRulesMaps(unittest.TestCase):
   @classmethod
-  def setUpClass(cls):
+  def setUp(cls):
     if not os.path.exists(OUTPUTS_DIR):
       os.mkdir(OUTPUTS_DIR)
       os.mkdir(os.path.join(OUTPUTS_DIR, 'specs'))
       os.mkdir(os.path.join(OUTPUTS_DIR, 'dist'))
 
   @classmethod
-  def tearDownClass(cls):
+  def tearDown(cls):
     if OUTPUTS_DIR:
       shutil.rmtree(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'create_outputs'))
 
@@ -50,8 +50,28 @@ class TestCreateRulesMaps(unittest.TestCase):
     self.assertTrue(os.path.exists(os.path.join(OUTPUTS_DIR, 'specs', 'ikhfa_shafawi.json')))
 
   def test_create_rule_maps_for_prod(self):
+    rules_to_create = local_choose_rules_to_create.get_list_of_rule_maps_to_create()
+    local_create_rule_maps.create_rule_maps(rules_to_create)
     rules_to_create = prod_choose_rules_to_create.get_list_of_rule_maps_to_create()
     prod_create_rule_maps.create_rule_maps(rules_to_create)
     self.assertTrue(os.path.exists(os.path.join(OUTPUTS_DIR, 'dist', 'idghaam_shafawi.json')))
     self.assertTrue(os.path.exists(os.path.join(OUTPUTS_DIR, 'dist', 'idhaar_shafawi.json')))
     self.assertTrue(os.path.exists(os.path.join(OUTPUTS_DIR, 'dist', 'ikhfa_shafawi.json')))
+
+  def test_sys_variables_created_for_local(self):
+    rules_to_create = local_choose_rules_to_create.get_list_of_rule_maps_to_create()
+    local_create_rule_maps.create_rule_maps(rules_to_create)
+    env = os.getenv('ENV')
+    rules = os.environ.get('RULE_LIST')
+    self.assertEqual(env, 'local')
+    self.assertEqual(rules, '[]')
+
+  def test_sys_variables_created_for_prod(self):
+    rules_to_create = local_choose_rules_to_create.get_list_of_rule_maps_to_create()
+    local_create_rule_maps.create_rule_maps(rules_to_create)
+    rules_to_create = prod_choose_rules_to_create.get_list_of_rule_maps_to_create()
+    prod_create_rule_maps.create_rule_maps(rules_to_create)
+    env = os.getenv('ENV')
+    rules = os.environ.get('RULE_LIST')
+    self.assertEqual(env, 'prod')
+    self.assertEqual(rules, "['idghaam_shafawi', 'idhaar_shafawi', 'ikhfa_shafawi']")
