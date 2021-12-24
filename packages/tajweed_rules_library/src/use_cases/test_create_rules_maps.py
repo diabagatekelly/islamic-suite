@@ -74,4 +74,6 @@ class TestCreateRulesMaps(unittest.TestCase):
     env = os.getenv('ENV')
     rules = os.environ.get('RULE_LIST')
     self.assertEqual(env, 'prod')
-    self.assertEqual(rules, "['idghaam_shafawi', 'idhaar_shafawi', 'ikhfa_shafawi']")
+    self.assertTrue('idghaam_shafawi' in rules)
+    self.assertTrue('idhaar_shafawi' in rules)
+    self.assertTrue('ikhfa_shafawi' in rules)

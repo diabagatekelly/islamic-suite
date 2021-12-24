@@ -28,7 +28,7 @@ jobs:
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
     environment:
-      TEST_ENTITY: 'ikhfa_shafawi'
+      ENV: 'ikhfa_shafawi'
     steps:
       - checkout
       - python/install-packages:
@@ -54,7 +54,9 @@ jobs:
                       circleci-agent step halt
                   fi
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
-                      python -m src.app run_app prod $TEST_ENTITY
+                      python -m src.app run_app prod
+                      print $ENV
+                      print $RULE_LIST
                   fi
 
 # Invoke jobs via workflows
