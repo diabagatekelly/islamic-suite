@@ -57,9 +57,11 @@ jobs:
                       export MY_ENV_VAR=$RULES >> $BASH_ENV
                       echo $RULES
                   fi
+          environment: 
+            RULES: $RULES
       - run:
           name: "What was my custom environment variable?"
-          command: echo $MY_ENV_VAR
+          command: echo $RULES
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
