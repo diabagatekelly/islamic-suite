@@ -59,7 +59,7 @@ jobs:
                   arr=(${VERY_IMPORTANT})
                   for var in "${arr[@]}"
                   do
-                    echo var
+                    echo $var
                   done
 
 
