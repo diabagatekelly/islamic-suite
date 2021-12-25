@@ -60,7 +60,7 @@ jobs:
           command: echo $BASH_ENV
       - run:
           name: "What was my custom rules variable?"
-          command: echo $RULES
+          command: echo ${RULES}
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
