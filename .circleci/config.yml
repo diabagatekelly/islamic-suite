@@ -53,8 +53,8 @@ jobs:
                   fi
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
                       RULES=$(python -m src.app run_app prod)
+                      echo 'export MY_ENV_VAR=${RULES}' >> $BASH_ENV
                       echo $RULES
-                      echo 'export MY_ENV_VAR="${RULES}"' >> $BASH_ENV
                   fi
       - run:
           name: "What was my custom environment variable?"
