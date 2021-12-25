@@ -53,7 +53,7 @@ jobs:
                   fi
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
                       python -m src.app run_app prod
-                      ENV='local'
+                      ENV='locality'
                       echo $ENV
                   fi
 
