@@ -47,24 +47,11 @@ jobs:
           name: Building entities rules JSON files
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
-          command: |
-                  if [ "$CIRCLE_BRANCH" = "develop" ]; then
-                      circleci-agent step halt
-                  fi
-                  if [ "$CIRCLE_BRANCH" = "main" ]; then
-                      RULES=$(python -m src.app run_app prod)
-                      LIST: $RULES
-                      echo 'export VERY_IMPORTANT=$RULES' >> $BASH_ENV
-                      source $BASH_ENV
-                  fi
-                  arr=(${VERY_IMPORTANT})
-                  for var in "${arr[@]}"
-                  do
-                    echo $var
-                  done
+          command: RULES=$(python -m src.app run_app prod); echo 'export VERY_IMPORTANT=$RULES' >> $BASH_ENV; source $BASH_ENV
+                 
       - run:
           name: GEt env var
-          command: echo $LIST
+          command: echo $VERY_IMPORTANT
 
 
 # Invoke jobs via workflows
