@@ -55,7 +55,7 @@ jobs:
                   fi
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
                       RULES=$(python -m src.app run_app prod)
-                      echo 'export VERY_IMPORTANT=$(RULES)' >> $BASH_ENV
+                      echo 'export VERY_IMPORTANT=$RULES' >> $BASH_ENV
                       source $BASH_ENV
                   fi
                   echo $RULES
