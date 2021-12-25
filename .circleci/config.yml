@@ -55,14 +55,15 @@ jobs:
                   fi
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
                       RULES=$(python -m src.app run_app prod)
-                      $Rules=$RULES
+                      echo 'export VERY_IMPORTANT=$(python -m src.app run_app prod)' >> $BASH_ENV
+                      source $BASH_ENV
                   fi
                   echo $RULES
                   for var in $RULES
                   do
                     echo "$var"
                   done
-                  echo ${Rules}
+                  echo ${VERY_IMPORTANT}
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
