@@ -59,7 +59,7 @@ jobs:
                   echo ${VERY_IMPORTANT}
       - run:
           name: Get my environment var
-          command: echo i am $VERY_IMPORTANT
+          command: echo i am ${VERY_IMPORTANT}
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
