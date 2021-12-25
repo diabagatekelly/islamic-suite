@@ -57,7 +57,7 @@ jobs:
                   echo $RULES
                   for var in $RULES
                   do
-                    echo var
+                    echo $var
                   done
 
 # Invoke jobs via workflows
