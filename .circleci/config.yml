@@ -53,11 +53,12 @@ jobs:
                   fi
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
                       RULES=$(python -m src.app run_app prod)
-                      echo 'I am $RULES'
+                      echo $RULES
+                      echo 'export MY_ENV_VAR="${RULES}"' >> $BASH_ENV
                   fi
       - run:
           name: "What was my custom environment variable?"
-          command: echo $RULES
+          command: echo $MY_ENV_VAR
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
