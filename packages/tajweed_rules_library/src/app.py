@@ -1,4 +1,4 @@
-import sys, os, subprocess
+import sys, os
 from src.controllers.prod_controller import ProdController
 from src.controllers.local_controller import LocalController
 
@@ -20,8 +20,6 @@ def build_prod():
   prod_controller.create_rule_maps()
 
 run_app(sys.argv[2])
-print('local', os.getenv('ENV'))
-print('list', os.environ.get('RULE_LIST'))
 
 #pseudo build_prod()
 #  s3 FILESYSTEM which will run logic to see which files to create 
