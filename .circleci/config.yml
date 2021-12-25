@@ -47,7 +47,7 @@ jobs:
           name: Building entities rules JSON files
           working_directory: ~/project/packages/tajweed_rules_library
           environment:
-            Rules: ''
+            Rules: 'i am env rules'
           # This assumes pytest is installed via the install-package step above
           command: |
                   if [ "$CIRCLE_BRANCH" = "develop" ]; then
@@ -55,9 +55,9 @@ jobs:
                   fi
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
                       RULES=$(python -m src.app run_app prod)
+                      echo $Rules
                   fi
                   echo $RULES
-                  ${Rules} = $RULES
                   for var in $RULES
                   do
                     echo "$var"
