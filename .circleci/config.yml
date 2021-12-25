@@ -46,8 +46,6 @@ jobs:
       - run:
           name: Building entities rules JSON files
           working_directory: ~/project/packages/tajweed_rules_library
-          environment:
-            Rules: 'i am env rules'
           # This assumes pytest is installed via the install-package step above
           command: |
                   if [ "$CIRCLE_BRANCH" = "develop" ]; then
