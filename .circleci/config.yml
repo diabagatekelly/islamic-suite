@@ -49,7 +49,8 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: |
                   RULES=$(python -m src.app run_app prod)
-                  echo arr($RULES)[0]
+                  arr=($RULES)
+                  echo arr[0]
     
 
 # Invoke jobs via workflows
