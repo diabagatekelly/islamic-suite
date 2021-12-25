@@ -56,7 +56,7 @@ jobs:
                       echo 'export VERY_IMPORTANT=$RULES' >> $BASH_ENV
                       source $BASH_ENV
                   fi
-                  arr=(${VERY_IMPORTANT}}
+                  arr=(${VERY_IMPORTANT})
                   for var in "${arr[@]}"
                   do
                     echo var
