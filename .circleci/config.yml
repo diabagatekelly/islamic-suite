@@ -51,9 +51,9 @@ jobs:
             Rules: "$(python -m src.app run_app prod)"
             Test: 'i am a test'
           command: RULES=$(python -m src.app run_app prod); echo $Rules; echo $Test
-      - run:
-          name: GEt env var
-          command: echo ${Rules} ${Test}
+          - run:
+              name: GEt env var
+              command: echo ${Rules} ${Test}
 
 
 # Invoke jobs via workflows
