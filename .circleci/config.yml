@@ -54,8 +54,8 @@ jobs:
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
                       RULES=$(python -m src.app run_app prod)
                   fi
-                  echo RULES
-                  for var in RULES
+                  echo $RULES
+                  for var in $RULES
                   do
                     echo var
                   done
