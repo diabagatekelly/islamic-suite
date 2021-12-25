@@ -46,8 +46,6 @@ jobs:
       - run:
           name: Building entities rules JSON files
           working_directory: ~/project/packages/tajweed_rules_library
-          environment:
-            RULES: ''
           # This assumes pytest is installed via the install-package step above
           command: |
                   if [ "$CIRCLE_BRANCH" = "develop" ]; then
@@ -57,8 +55,10 @@ jobs:
                       python -m src.app run_app prod
                       echo 'export MY_ENV_VAR="FOO"' >> $BASH_ENV
                       python -m src.set_env get_rules
-                      echo $MY_ENV_VAR
                   fi
+      - run:
+        name: "What was my custom environment variable?"
+        command: echo ${MY_ENV_VAR}
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
