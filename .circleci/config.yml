@@ -53,7 +53,7 @@ jobs:
             Test: 'i am a test'
       - run:
           name: GEt env var
-          command: echo $VERY_IMPORTANT; $Rules, $Test
+          command: echo $VERY_IMPORTANT $Rules $Test
 
 
 # Invoke jobs via workflows
