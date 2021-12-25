@@ -9,17 +9,17 @@ def run_app(env):
     build_prod()
 
 def build_dev():
-  print(f'build local')
   local_controller = LocalController(env='local')
   local_controller.create_rule_maps()
 
 def build_prod():
-  print(f'build prod')
   build_dev()
   prod_controller = ProdController(env='prod')
   prod_controller.create_rule_maps()
+  print(os.environ.get('RULE_LIST'))
 
 run_app(sys.argv[2])
+
 
 #pseudo build_prod()
 #  s3 FILESYSTEM which will run logic to see which files to create 
