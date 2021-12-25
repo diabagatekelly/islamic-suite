@@ -57,7 +57,7 @@ jobs:
                   fi
       - run:
           name: "What was my custom environment variable?"
-          command: echo ${RULES}
+          command: echo $RULES
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
