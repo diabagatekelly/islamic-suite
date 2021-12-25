@@ -53,6 +53,7 @@ jobs:
                   fi
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
                       RULES=$(python -m src.app run_app prod)
+                      LIST: $RULES
                       echo 'export VERY_IMPORTANT=$RULES' >> $BASH_ENV
                       source $BASH_ENV
                   fi
@@ -61,6 +62,9 @@ jobs:
                   do
                     echo $var
                   done
+      - run:
+        - name: GEt env var
+        - command: echo $LIST
 
 
 # Invoke jobs via workflows
