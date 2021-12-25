@@ -63,8 +63,8 @@ jobs:
                     echo $var
                   done
       - run:
-        name: GEt env var
-        command: echo $LIST
+          name: GEt env var
+          command: echo $LIST
 
 
 # Invoke jobs via workflows
