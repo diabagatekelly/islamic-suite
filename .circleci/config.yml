@@ -53,7 +53,7 @@ jobs:
                   fi
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
                       python -m src.app run_app prod
-                      RULES=python -m src.set_env get_rules
+                      python -m src.set_env get_rules >> $RULES
                       echo $RULES
                   fi
 
