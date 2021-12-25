@@ -55,8 +55,9 @@ jobs:
                   fi
                   if [ "$CIRCLE_BRANCH" = "main" ]; then
                       python -m src.app run_app prod
-                      python -m src.set_env get_rules >> $RULES
-                      echo $RULES
+                      echo 'export MY_ENV_VAR="FOO"' >> $BASH_ENV
+                      python -m src.set_env get_rules
+                      echo ${MY_ENV_VAR}
                   fi
 
 # Invoke jobs via workflows
