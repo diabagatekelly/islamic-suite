@@ -66,18 +66,21 @@ jobs:
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
     steps:
-      - checkout
-      - python/install-packages:
-          pkg-manager: pip
-          app-dir: ~/project/packages/tajweed_rules_library
-      - aws-s3/copy: 
-          arguments: |
-            --cache-control "max-age=86400"
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
-          from: '~/project/$CHANGES'
-          to: 's3://tajweed-app/library/outputs/$NAME'
+      - unless:
+          condition: [ $CHANGES = "" ]
+          steps:
+            - checkout
+            - python/install-packages:
+                pkg-manager: pip
+                app-dir: ~/project/packages/tajweed_rules_library
+            - aws-s3/copy: 
+                arguments: |
+                  --cache-control "max-age=86400"
+                aws-access-key-id: AWS_ACCESS_KEY_ID
+                aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+                aws-region: AWS_REGION
+                from: '~/project/$CHANGES'
+                to: 's3://tajweed-app/library/outputs/$NAME'
   
           
 
@@ -91,9 +94,6 @@ workflows:
       - s3-deploy:
           requires:
             - build-and-test
-          when:
-            - not:
-              - equal: [ $CHANGES, "" ]
           filters:
             branches:
               only: develop
