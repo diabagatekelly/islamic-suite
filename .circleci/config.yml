@@ -55,10 +55,10 @@ jobs:
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: |
-                  for word in $CHANGES;
-                  do;
-                    IFS='/'; 
-                    read -a strarr <<< $word;
+                  for word in $CHANGES
+                  do
+                    IFS='/'
+                    read -a strarr >> $word
                     for val in ${strarr[@]}
                     do
                       echo $val
