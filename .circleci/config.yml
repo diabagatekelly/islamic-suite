@@ -61,7 +61,7 @@ jobs:
                     echo 'export CHANGES$N=word' >> $BASH_ENV
                     ((N=N+1))
                   done
-                  echo $word in $CHANGES
+                  echo $CHANGES[0]
       # - aws-s3/sync: |
       #     for word in $CHANGES
       #     do
