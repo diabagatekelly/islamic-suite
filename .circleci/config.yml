@@ -57,9 +57,9 @@ jobs:
           command: |
                   for word in $CHANGES
                   do
-                    echo 'export $(cut -d'.' -f2 \<<< $word)=$(cut -d'/' -f5 \<<< $word)' >> BASH_ENV
+                    echo 'export $(cut -d'.' -f1 \<<< $(cut -d'/' -f5 \<<< $word))=$(cut -d'/' -f5 \<<< $word)' >> BASH_ENV
                   done
-                  echo $(cut -d'.' -f2 \<<< $word)
+                  echo $idghaam_shafawi
       # - aws-s3/sync: 
       #     from: $word
       #     to: 's3://tajweed-app/library/outputs/'$(cut -d'/' -f5 \<<< $word)
