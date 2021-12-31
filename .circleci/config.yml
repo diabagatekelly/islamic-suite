@@ -65,13 +65,11 @@ jobs:
           command: |
             echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
             if [ "$CHANGES" = " " ]; then
-              echo $CHANGES
               circleci-agent step halt
             fi
-            if [ "$CHANGES" = " " ]; then
-              echo $CHANGES
-              circleci-agent step halt
-            fi
+            echo $CHANGES
+            echo git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/
+
       - aws-s3/sync: 
           arguments: |
             --cache-control "max-age=86400"
