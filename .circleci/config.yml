@@ -70,19 +70,19 @@ jobs:
       - python/install-packages:
           pkg-manager: pip
           app-dir: ~/project/packages/tajweed_rules_library
-    - aws-s3/sync: 
-        arguments: |
-          --acl public-read \
-          --cache-control "max-age=86400"
-        aws-access-key-id: AWS_ACCESS_KEY_ID
-        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-        from: src/dist
-        to: 's3://tajweed-app/library/outputs'
-    - aws-s3/COPY: 
-        from: '~/project/packages/tajweed_rules_library/src/dist/idghaam_shafawi.json'
-        to: 's3://tajweed-app/library/outputs/idghaam_shafawi.json'
-        overwrite: true
-  
+      - aws-s3/sync: 
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400"
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          from: src/dist
+          to: 's3://tajweed-app/library/outputs'
+      - aws-s3/COPY: 
+          from: '~/project/packages/tajweed_rules_library/src/dist/idghaam_shafawi.json'
+          to: 's3://tajweed-app/library/outputs/idghaam_shafawi.json'
+          overwrite: true
+    
           
 
                   
