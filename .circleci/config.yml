@@ -77,7 +77,7 @@ jobs:
             --cache-control "max-age=86400"
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: 'us-east-2'
+          aws-region: AWS_REGION
           from: src/dist
           to: 's3://tajweed-app'
       - aws-s3/copy: 
