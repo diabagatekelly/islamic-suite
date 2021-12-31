@@ -13,6 +13,7 @@ def build_dev():
   local_controller.create_rule_maps()
 
 def build_prod():
+  print('running prod')
   build_dev()
   prod_controller = ProdController(env='prod')
   prod_controller.create_rule_maps()
