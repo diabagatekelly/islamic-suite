@@ -58,13 +58,25 @@ jobs:
               echo 'export NAME=$(cut -d'/' -f5 \<<< $CHANGES)' >> $BASH_ENV
               echo $NAME
   s3-deploy:        
+    docker:
+      - image: cimg/python:3.8
+    # Checkout the code as the first step. This is a dedicated CircleCI step.
+    # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.
+    # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
+    # Then run your tests!
+    # CircleCI will report the results back to your VCS provider.
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+          app-dir: ~/project/packages/tajweed_rules_library
     - aws-s3/sync: 
         arguments: |
           --acl public-read \
           --cache-control "max-age=86400"
         aws-access-key-id: AWS_ACCESS_KEY_ID
         aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-        from: bucket
+        from: src/dist
         to: 's3://tajweed-app/library/outputs'
     - aws-s3/COPY: 
         from: '~/project/packages/tajweed_rules_library/src/dist/idghaam_shafawi.json'
