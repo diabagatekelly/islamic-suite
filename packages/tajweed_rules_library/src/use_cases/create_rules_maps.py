@@ -1,5 +1,4 @@
 from src.entities.entities_map import EntitiesMap
-import os
 
 class CreateRulesMaps():
   def __init__(self, factory, files_and_dirs):
@@ -15,7 +14,6 @@ class CreateRulesMaps():
     return self.factory.get_file_system()
 
   def create_rule_maps(self, rule_maps_to_create):
-    self._setup_sys_variables(rule_maps_to_create)
     for rule in rule_maps_to_create:
       if self.factory.env == 'local':
         print(rule)
@@ -70,12 +68,5 @@ class CreateRulesMaps():
     content_for_rule[rule_name] = rule_locations
     output_file = self._file_system().create_absolute_path(self.files_and_dirs, rule_name)
     self._file_system().write_to_file(content_for_rule, output_file)
-
-  def _setup_sys_variables(self, rules):
-    os.environ['ENV'] = self.factory.env
-    if self.factory.env == 'local':
-      os.environ['RULE_LIST'] = str([])
-    elif self.factory.env == 'prod':
-      os.environ['RULE_LIST'] = str([rule['name'] for rule in rules])
    
     

@@ -57,23 +57,3 @@ class TestCreateRulesMaps(unittest.TestCase):
     self.assertTrue(os.path.exists(os.path.join(OUTPUTS_DIR, 'dist', 'idghaam_shafawi.json')))
     self.assertTrue(os.path.exists(os.path.join(OUTPUTS_DIR, 'dist', 'idhaar_shafawi.json')))
     self.assertTrue(os.path.exists(os.path.join(OUTPUTS_DIR, 'dist', 'ikhfa_shafawi.json')))
-
-  def test_sys_variables_created_for_local(self):
-    rules_to_create = local_choose_rules_to_create.get_list_of_rule_maps_to_create()
-    local_create_rule_maps.create_rule_maps(rules_to_create)
-    env = os.getenv('ENV')
-    rules = os.environ.get('RULE_LIST')
-    self.assertEqual(env, 'local')
-    self.assertEqual(rules, '[]')
-
-  def test_sys_variables_created_for_prod(self):
-    rules_to_create = local_choose_rules_to_create.get_list_of_rule_maps_to_create()
-    local_create_rule_maps.create_rule_maps(rules_to_create)
-    rules_to_create = prod_choose_rules_to_create.get_list_of_rule_maps_to_create()
-    prod_create_rule_maps.create_rule_maps(rules_to_create)
-    env = os.getenv('ENV')
-    rules = os.environ.get('RULE_LIST')
-    self.assertEqual(env, 'prod')
-    self.assertTrue('idghaam_shafawi' in rules)
-    self.assertTrue('idhaar_shafawi' in rules)
-    self.assertTrue('ikhfa_shafawi' in rules)

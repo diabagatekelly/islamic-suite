@@ -16,7 +16,6 @@ def build_prod():
   build_dev()
   prod_controller = ProdController(env='prod')
   prod_controller.create_rule_maps()
-  print(os.environ.get('RULE_LIST'))
 
 run_app(sys.argv[2])
 
