@@ -48,8 +48,9 @@ jobs:
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: |
-                  files = git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist
+                  files = $(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist)
                   echo files
+                  
     
 
 # Invoke jobs via workflows
