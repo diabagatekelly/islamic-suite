@@ -57,7 +57,8 @@ jobs:
           command: |
             n=1
             name=FILE$n
-            IFS= read -r -d '' $name \<<< 'babibab'
+            echo $name
+            IFS= read -r -d $name' $word[0] \<<< 'babibab'
             echo $FILE1
           
       # - aws-s3/sync: 
