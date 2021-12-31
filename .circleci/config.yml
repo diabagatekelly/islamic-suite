@@ -65,7 +65,7 @@ jobs:
           command: |
             echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
             echo $CHANGES
-            if [ "$CHANGES" = "" ]; then
+            if [ "$CHANGES" = " " ]; then
                 circleci-agent step halt
             fi
       - aws-s3/sync: 
