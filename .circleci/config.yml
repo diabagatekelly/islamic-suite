@@ -79,7 +79,7 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
           from: '~/project/packages/tajweed_rules_library/src/dist'
-          to: 's3://tajweed-app'
+          to: 's3://tajweed-app/library/outputs'
       - aws-s3/copy: 
           from: '~/project/packages/tajweed_rules_library/src/dist/idghaam_shafawi.json'
           to: 's3://tajweed-app/library/outputs/idghaam_shafawi.json'
