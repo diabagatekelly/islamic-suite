@@ -57,19 +57,19 @@ jobs:
           command: |
               echo 'export NAME=$(cut -d'/' -f5 \<<< $CHANGES)' >> $BASH_ENV
               echo $NAME
-          
-      - aws-s3/sync: 
-          arguments: |
-            --acl public-read \
-            --cache-control "max-age=86400"
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          from: bucket
-          to: 's3://tajweed-app/library/outputs'
-      - aws-s3/COPY: 
-          from: '~/project/packages/tajweed_rules_library/src/dist/idghaam_shafawi.json'
-          to: 's3://tajweed-app/library/outputs/idghaam_shafawi.json'
-          overwrite: true
+  s3-deploy:        
+    - aws-s3/sync: 
+        arguments: |
+          --acl public-read \
+          --cache-control "max-age=86400"
+        aws-access-key-id: AWS_ACCESS_KEY_ID
+        aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+        from: bucket
+        to: 's3://tajweed-app/library/outputs'
+    - aws-s3/COPY: 
+        from: '~/project/packages/tajweed_rules_library/src/dist/idghaam_shafawi.json'
+        to: 's3://tajweed-app/library/outputs/idghaam_shafawi.json'
+        overwrite: true
   
           
 
@@ -83,3 +83,4 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-and-test
+      - s3-deploy
