@@ -57,6 +57,11 @@ jobs:
           command: |
             echo $CHANGES
             echo 'export NAME=$(cut -d'/' -f5 \<<< $CHANGES)' >> $BASH_ENV
+            if [[$CHANGES == ""]]; then
+              echo 'export RUN_AWS=false' >> $BASH_ENV
+            else
+              echo 'export RUN_AWS=true' >> $BASH_ENV
+            fi
   s3-deploy:        
     docker:
       - image: cimg/python:3.8
@@ -67,7 +72,7 @@ jobs:
     # CircleCI will report the results back to your VCS provider.
     steps:
       - unless:
-          condition: [ $CHANGES = "" ]
+          condition: $RUN_AWS
           steps:
             - checkout
             - python/install-packages:
