@@ -64,8 +64,12 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: |
             echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
+      - run:
+          name: Test env var
+          working_directory: ~/project/packages/tajweed_rules_library
+          # This assumes pytest is installed via the install-package step above
+          command: |
             echo $CHANGES
-
       - aws-s3/sync: 
           arguments: |
             --cache-control "max-age=86400"
