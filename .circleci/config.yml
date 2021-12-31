@@ -57,9 +57,9 @@ jobs:
           command: |
                   for word in $CHANGES
                   do
-                    IFS='/' 
-                    read -a strarr <<< $word
-                    for val in "${strarr[@]}"
+                    IFS='/'; 
+                    read -a strarr <<< $word;
+                    for val in ${strarr[@]}
                     do
                       echo $val
                     done
