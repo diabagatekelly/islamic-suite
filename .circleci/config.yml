@@ -49,7 +49,14 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: |
                   CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)
-                  echo 'i am' $CHANGES
+                  echo 'export MY_ENV_VAR=test' >> $BASH_ENV
+
+      - run:
+          name: Test environment variable
+          working_directory: ~/project/packages/tajweed_rules_library
+          # This assumes pytest is installed via the install-package step above
+          command: |
+                  echo $MY_ENV_VAR
                   
     
 
