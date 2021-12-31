@@ -57,12 +57,12 @@ jobs:
           command: |
                   for word in $CHANGES
                   do
-                    while IFS='/' read -ra ADDR
+                    IFS='/' 
+                    read -a strarr <<< $word
+                    for val in "${strarr[@]}"
                     do
-                      for i in "${ADDR[@]}"
-                        echo $i
-                      done
-                    done <<< $word
+                      echo $val
+                    done
                   done
       # - aws-s3/sync:
       #     from: $CHANGES
