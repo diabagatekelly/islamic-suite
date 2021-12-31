@@ -66,21 +66,27 @@ jobs:
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
     steps:
-      - unless:
-          condition: [ $CHANGES = "" ]
-          steps:
-            - checkout
-            - python/install-packages:
-                pkg-manager: pip
-                app-dir: ~/project/packages/tajweed_rules_library
-            - aws-s3/copy: 
-                arguments: |
-                  --cache-control "max-age=86400"
-                aws-access-key-id: AWS_ACCESS_KEY_ID
-                aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-                aws-region: AWS_REGION
-                from: '~/project/$CHANGES'
-                to: 's3://tajweed-app/library/outputs/$NAME'
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+          app-dir: ~/project/packages/tajweed_rules_library
+      - run:
+          name: Kill job if not recent updates
+          working_directory: ~/project/packages/tajweed_rules_library
+          # This assumes pytest is installed via the install-package step above
+          command: |
+            echo changes $CHANGES
+            if [ "$CHANGES" = "" ]; then
+                circleci-agent step halt
+            fi
+      - aws-s3/copy: 
+          arguments: |
+            --cache-control "max-age=86400"
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_REGION
+          from: '~/project/$CHANGES'
+          to: 's3://tajweed-app/library/outputs/$NAME'
   
           
 
