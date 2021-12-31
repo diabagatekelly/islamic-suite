@@ -63,29 +63,26 @@ jobs:
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: |
-                  echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
-      - run:
-          name: Test environment variable
-          working_directory: ~/project/packages/tajweed_rules_library
-          # This assumes pytest is installed via the install-package step above
-          command: |
-              echo 'export NAME=$(cut -d'/' -f5 \<<< $CHANGES)' >> $BASH_ENV
-              echo $NAME
-      - aws-s3/sync: 
-          arguments: |
-            --cache-control "max-age=86400"
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
-          from: '~/project/packages/tajweed_rules_library/src/dist'
-          to: 's3://tajweed-app/library/outputs'
-      - aws-s3/copy: 
-          from: '~/project/packages/tajweed_rules_library/src/dist/idghaam_shafawi.json'
-          to: 's3://tajweed-app/library/outputs/idghaam_shafawi.json'
-  
-          
+            echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
+            echo $CHANGES
+            if [ "$CHANGES" = "" ]; then
+                circleci-agent step halt
+            fi
+        - aws-s3/sync: 
+            arguments: |
+              --cache-control "max-age=86400"
+            aws-access-key-id: AWS_ACCESS_KEY_ID
+            aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+            aws-region: AWS_REGION
+            from: '~/project/packages/tajweed_rules_library/src/dist'
+            to: 's3://tajweed-app/library/outputs'
+        - aws-s3/copy: 
+            from: '~/project/packages/tajweed_rules_library/src/dist/idghaam_shafawi.json'
+            to: 's3://tajweed-app/library/outputs/idghaam_shafawi.json'
+    
+            
 
-                  
+                    
     
 
 # Invoke jobs via workflows
