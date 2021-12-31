@@ -56,5 +56,3 @@ class IdghaamShafawi():
       return True
     else:
       return False
-
-# test change
