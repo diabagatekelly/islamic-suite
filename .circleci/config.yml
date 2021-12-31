@@ -86,7 +86,7 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
           from: '~/project/$CHANGES'
-          to: 's3://tajweed-app/library/outputs/$NAME'
+          to: 's3://tajweed-app/library/rule_maps/$NAME'
   
           
 
