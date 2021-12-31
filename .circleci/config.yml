@@ -55,9 +55,9 @@ jobs:
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: |
-              echo 'export PATH=$(cut -d' ' -f1 \<<< $CHANGES)' >> BASH_ENV
+              echo 'export PATHN=$(cut -d' ' -f1 \<<< $CHANGES)' >> BASH_ENV
               echo 'export NAME=$(cut -d'/' -f5 \<<< $NAME)' >> BASH_ENV
-              echo $PATH, NAME
+              echo $PATHN, $NAME
 
             
           
