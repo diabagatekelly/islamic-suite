@@ -79,10 +79,9 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: src/dist
           to: 's3://tajweed-app/library/outputs'
-      - aws-s3/COPY: 
+      - aws-s3/copy: 
           from: '~/project/packages/tajweed_rules_library/src/dist/idghaam_shafawi.json'
           to: 's3://tajweed-app/library/outputs/idghaam_shafawi.json'
-          overwrite: true
   
           
 
