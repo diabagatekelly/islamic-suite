@@ -57,7 +57,10 @@ jobs:
           command: |
                   for word in $CHANGES
                   do
-                    echo $word
+                    IFS='/' read -ra ADDR <<< "$word"
+                    for i in "${ADDR[@]}"; do
+                      # process "$i"
+                    done
                   done
       # - aws-s3/sync:
       #     from: $CHANGES
