@@ -57,7 +57,7 @@ jobs:
           command: |
                   N=0
                   for word in $CHANGES
-                  Nstr={N}
+                  Nstr=${N}
                   do
                     echo 'export Nstr=$(cut -d'/' -f5 \<<< $word)' >> BASH_ENV
                     ((N=N+1))
