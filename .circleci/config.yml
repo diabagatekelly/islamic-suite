@@ -55,27 +55,13 @@ jobs:
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: |
-              PATHN=$CHANGES
               NAME=$(cut -d'/' -f5 \<<< $PATHN)
               echo $PATHN, $NAME
-
-            
           
-      # - aws-s3/sync: 
-      #     name: S3 Deploy
-      #     command: |
-      #             for word in $CHANGES
-      #             do
-      #               echo 'export FILE=$(cut -d'/' -f5 \<<< $word)'' >> BASH_ENV
-      #             done
-      #             echo $FILE
-      #     from: |
-      #       for word in $CHANGES
-      #       do
-      #         echo $
-      #       done
-      #     to: 's3://tajweed-app/library/outputs/'$(cut -d'/' -f5 \<<< $word)
-      #     overwrite: true
+      - aws-s3/sync: 
+          from: $CHANGES
+          to: 's3://tajweed-app/library/outputs/'$(cut -d'/' -f5 \<<< CHANGES)
+          overwrite: true
   
           
 
