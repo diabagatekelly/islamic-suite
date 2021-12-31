@@ -82,7 +82,7 @@ jobs:
           from: '~/project/packages/tajweed_rules_library/src/dist/idghaam_shafawi.json'
           to: 's3://tajweed-app/library/outputs/idghaam_shafawi.json'
           overwrite: true
-    
+  
           
 
                   
