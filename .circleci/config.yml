@@ -44,7 +44,19 @@ jobs:
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: coverage run -m unittest && coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py
-
+      - run:
+          name: Get path of updated JSON files
+          working_directory: ~/project/packages/tajweed_rules_library
+          # This assumes pytest is installed via the install-package step above
+          command: |
+            echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
+      - run:
+          name: Get name of updated JSON rule from file path
+          working_directory: ~/project/packages/tajweed_rules_library
+          # This assumes pytest is installed via the install-package step above
+          command: |
+            echo $CHANGES
+            echo 'export NAME=$(cut -d'/' -f5 \<<< $CHANGES)' >> $BASH_ENV
   s3-deploy:        
     docker:
       - image: cimg/python:3.8
@@ -59,24 +71,22 @@ jobs:
           pkg-manager: pip
           app-dir: ~/project/packages/tajweed_rules_library
       - run:
-          name: Building entities rules JSON files
+          name: Kill job if not recent updates
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: |
-            echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
-            echo $CHANGES
-            if [ "$CHANGES" = " " ]; then
-              circleci-agent step halt
+            echo changes $CHANGES
+            if [ "$CHANGES" = "" ]; then
+                circleci-agent step halt
             fi
-
-      - aws-s3/sync: 
+      - aws-s3/copy: 
           arguments: |
             --cache-control "max-age=86400"
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
-          from: '~/project/packages/tajweed_rules_library/src/dist'
-          to: 's3://tajweed-app/library/outputs'
+          from: '~/project/$CHANGES'
+          to: 's3://tajweed-app/library/outputs/$NAME'
   
           
 
