@@ -16,7 +16,6 @@ class CreateRulesMaps():
   def create_rule_maps(self, rule_maps_to_create):
     for rule in rule_maps_to_create:
       if self.factory.env == 'local':
-        print(rule)
         class_name = self._get_class_from_rule_name(rule)
         self._create_single_rule_map(rule, class_name)
       elif self.factory.env == 'prod':
