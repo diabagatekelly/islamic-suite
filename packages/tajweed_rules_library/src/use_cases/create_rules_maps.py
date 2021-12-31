@@ -19,6 +19,7 @@ class CreateRulesMaps():
         class_name = self._get_class_from_rule_name(rule)
         self._create_single_rule_map(rule, class_name)
       elif self.factory.env == 'prod':
+        print(rule['name'])
         target_path = self._file_system().create_absolute_path(self.files_and_dirs, rule['name'])
         self._copy_file_to_prod_output(rule['absolute_path'], target_path)
   
