@@ -63,13 +63,11 @@ jobs:
                     ((N=N+1))
                   done
                   echo $0
-      - aws-s3/sync: |
-          for word in $CHANGES
-          do
-            from: $word
-            to: 's3://tajweed-app/library/outputs/'$(cut -d'/' -f5 \<<< $word)
-            overwrite: true
-          done
+      # - aws-s3/sync: 
+      #     from: $word
+      #     to: 's3://tajweed-app/library/outputs/'$(cut -d'/' -f5 \<<< $word)
+      #     overwrite: true
+  
           
 
                   
