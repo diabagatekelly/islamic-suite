@@ -57,6 +57,7 @@ jobs:
           command: |
               echo 'export NAME=$(cut -d'/' -f5 \<<< $CHANGES)' >> $BASH_ENV
               echo $NAME
+jobs:
   s3-deploy:        
     docker:
       - image: cimg/python:3.8
