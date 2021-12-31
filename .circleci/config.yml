@@ -57,12 +57,7 @@ jobs:
           command: |
                   for word in $CHANGES
                   do
-                    IFS='/'
-                    read -a strarr << $word
-                    for val in ${strarr[@]}
-                    do
-                      echo $val
-                    done
+                    echo $(cut -d'/' $word)
                   done
       # - aws-s3/sync:
       #     from: $CHANGES
