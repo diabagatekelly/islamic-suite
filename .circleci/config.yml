@@ -64,9 +64,7 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: |
             echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
-            if [ "$CHANGES" = " " ]; then
-              circleci-agent step halt
-            fi
+            echo $CHANGES
 
       - aws-s3/sync: 
           arguments: |
