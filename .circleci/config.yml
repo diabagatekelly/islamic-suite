@@ -91,6 +91,8 @@ workflows:
     jobs:
       - build-and-test
       - s3-deploy
+        requires: 
+          - build-and-test
         filters:
           branches:
             only: develop
