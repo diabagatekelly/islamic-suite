@@ -55,9 +55,10 @@ jobs:
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: |
-            name=1
+            n=1
+            name=FILE$n
             IFS= read -r -d '' "$name" \<<< 'babibab'
-            echo "$1" 
+            echo "$FILE1" 
           
       # - aws-s3/sync: 
       #     name: S3 Deploy
