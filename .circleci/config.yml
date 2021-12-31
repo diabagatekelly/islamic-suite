@@ -56,7 +56,7 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: |
               PATHN=$CHANGES[0]
-              NAME=$(cut -d'/' -f5 \<<< $PATHN)'
+              NAME=$(cut -d'/' -f5 \<<< $PATHN)
               echo $PATHN, $NAME
 
             
