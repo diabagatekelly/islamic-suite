@@ -63,7 +63,7 @@ jobs:
                     echo 'export ((N=N+1))=$(cut -d'/' -f5 \<<< $word)' >> BASH_ENV
                     echo 'export ($(N=N+1))=$(cut -d'/' -f5 \<<< $word)' >> BASH_ENV
                   done
-                  echo $1Number, $2Number, $number1, $number2
+                  echo $1Number, $2Number, 1, 2
       # - aws-s3/sync: 
       #     from: $word
       #     to: 's3://tajweed-app/library/outputs/'$(cut -d'/' -f5 \<<< $word)
