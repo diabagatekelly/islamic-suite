@@ -58,10 +58,10 @@ jobs:
                   N=1
                   for word in $CHANGES
                   do
-                    echo 'export N=$(cut -d'/' -f5 \<<< $word)' >> BASH_ENV
+                    echo 'export O$N=$(cut -d'/' -f5 \<<< $word)' >> BASH_ENV
                     ((N=N+1))
                   done
-                  echo $N
+                  echo $O1
       # - aws-s3/sync: 
       #     from: $word
       #     to: 's3://tajweed-app/library/outputs/'$(cut -d'/' -f5 \<<< $word)
