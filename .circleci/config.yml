@@ -55,7 +55,7 @@ jobs:
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: |
-              PATHN=$CHANGES[0]
+              PATHN=$CHANGES
               NAME=$(cut -d'/' -f5 \<<< $PATHN)
               echo $PATHN, $NAME
 
