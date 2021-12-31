@@ -70,6 +70,7 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: |
             echo $CHANGES
+            echo 'export NAME=$(cut -d'/' -f5 \<<< $CHANGES)' >> $BASH_ENV
       - aws-s3/sync: 
           arguments: |
             --cache-control "max-age=86400"
@@ -78,6 +79,9 @@ jobs:
           aws-region: AWS_REGION
           from: '~/project/packages/tajweed_rules_library/src/dist'
           to: 's3://tajweed-app/library/outputs'
+      - aws-s3/copy: 
+          from: '~/project/$CHANGES'
+          to: 's3://tajweed-app/library/outputs/$NAME'
   
           
 
