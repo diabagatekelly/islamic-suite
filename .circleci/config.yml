@@ -55,8 +55,10 @@ jobs:
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: |
-                  arr = ($CHANGES)
-                  echo ${arr[0]}
+                  for word in $CHANGES
+                  do
+                    echo $word
+                  done
       # - aws-s3/sync:
       #     from: $CHANGES
       #     to: 's3://tajweed-app/library/outputs/'
