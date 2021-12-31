@@ -58,7 +58,7 @@ jobs:
                   for word in $CHANGES
                   do
                     FILE=$(cut -d'/' -f5 \<<< $word)
-                    echo 'export FILE1 \<<< FILE' >> BASH_ENV
+                    echo 'export FILE1 \<<< $FILE' >> BASH_ENV
                   done
                   echo $FILE1
       # - aws-s3/sync: 
