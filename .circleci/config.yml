@@ -65,7 +65,6 @@ jobs:
           command: |
             echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
             echo $CHANGES
-            echo git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/
             if [ "$CHANGES" = " " ]; then
               circleci-agent step halt
             fi
