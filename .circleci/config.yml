@@ -58,7 +58,7 @@ jobs:
             n=1
             name=FILE$n
             IFS= read -r -d '' "$name" \<<< 'babibab'
-            echo $FILE1"
+            echo $FILE1
           
       # - aws-s3/sync: 
       #     name: S3 Deploy
