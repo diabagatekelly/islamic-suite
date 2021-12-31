@@ -61,7 +61,7 @@ jobs:
                     ((N=N+1))
                     echo number$N
                     echo 'export `$N\Number`=$(cut -d'/' -f5 \<<< $word)' >> BASH_ENV
-                    echo 'export number$N=$(cut -d'/' -f5 \<<< $word)' >> BASH_ENV
+                    echo 'export 'number$N'=$(cut -d'/' -f5 \<<< $word)' >> BASH_ENV
                   done
                   echo $1Number, $2Number, $number1, $number2
       # - aws-s3/sync: 
