@@ -10,7 +10,7 @@ orbs:
   # so you dont have to copy and paste it everywhere.
   # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
   python: circleci/python@1.2
-  # aws-s3: circleci/aws-s3@x.y.z
+  aws-s3: circleci/aws-s3@3.0.0
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -59,13 +59,14 @@ jobs:
                   do
                     echo $(cut -d'/' -f5 \<<< $word)
                   done
-      # - aws-s3/sync:
-      #     from: $CHANGES
-      #     to: 's3://tajweed-app/library/outputs/'
-      #     arguments: | # Optional arguments
-      #       --acl public-read \
-      #       --cache-control "max-age=86400"
-      #     overwrite: true # default is false
+      - aws-s3/sync: |
+          for word in $CHANGES
+          do
+            from: $word
+            to: 's3://tajweed-app/library/outputs/'$(cut -d'/' -f5 \<<< $word)
+            overwrite: true
+          done
+          
 
                   
     
