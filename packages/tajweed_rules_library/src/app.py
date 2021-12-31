@@ -7,6 +7,7 @@ def run_app(env):
     build_dev()
   elif env == 'prod':
     build_prod()
+  clean_up_pycache()
 
 def build_dev():
   local_controller = LocalController(env='local')
@@ -17,6 +18,9 @@ def build_prod():
   build_dev()
   prod_controller = ProdController(env='prod')
   prod_controller.create_rule_maps()
+
+def clean_up_pycache():
+  os.popen('find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf')
 
 run_app(sys.argv[2])
 
