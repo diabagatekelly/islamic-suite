@@ -68,6 +68,10 @@ jobs:
               echo $CHANGES
               circleci-agent step halt
             fi
+            if [ "$CHANGES" = " " ]; then
+              echo $CHANGES
+              circleci-agent step halt
+            fi
       - aws-s3/sync: 
           arguments: |
             --cache-control "max-age=86400"
@@ -87,3 +91,6 @@ workflows:
     jobs:
       - build-and-test
       - s3-deploy
+        filters:
+          branches:
+            only: develop
