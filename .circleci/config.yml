@@ -57,7 +57,7 @@ jobs:
           command: |
                   for word in $CHANGES
                   do
-                    echo $(cut -d'/' -f1 <<< $word)
+                    echo $(cut -d'/' -f1 \<<< $word)
                   done
       # - aws-s3/sync:
       #     from: $CHANGES
