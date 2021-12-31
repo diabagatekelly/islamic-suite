@@ -71,15 +71,12 @@ jobs:
           command: |
             echo $CHANGES
             echo 'export NAME=$(cut -d'/' -f5 \<<< $CHANGES)' >> $BASH_ENV
-      - aws-s3/sync: 
+      - aws-s3/copy: 
           arguments: |
             --cache-control "max-age=86400"
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
-          from: '~/project/packages/tajweed_rules_library/src/dist'
-          to: 's3://tajweed-app/library/outputs'
-      - aws-s3/copy: 
           from: '~/project/$CHANGES'
           to: 's3://tajweed-app/library/outputs/$NAME'
   
