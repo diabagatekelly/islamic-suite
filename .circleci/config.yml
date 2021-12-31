@@ -10,6 +10,7 @@ orbs:
   # so you dont have to copy and paste it everywhere.
   # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
   python: circleci/python@1.2
+  aws-s3: circleci/aws-s3@x.y.z
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -49,13 +50,20 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: |
                   echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
-
       - run:
           name: Test environment variable
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: |
                   echo $CHANGES
+      - aws-s3/sync:
+          from: bucket
+          to: 's3://my-s3-bucket-name/prefix'
+          arguments: | # Optional arguments
+            --acl public-read \
+            --cache-control "max-age=86400"
+          overwrite: true # default is false
+
                   
     
 
