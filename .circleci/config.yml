@@ -51,15 +51,13 @@ jobs:
           command: |
                   echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
       - aws-s3/sync: 
-          name: S3 Deploy
-          working_directory: ~/project/
           command: |
                   for word in $CHANGES
                   do
                     echo 'export FILE=$(cut -d'/' -f5 \<<< $word) >> BASH_ENV
                   done
                   echo $FILE
-          from: $FILE
+          from: ~/project/$FILE
           to: 's3://tajweed-app/library/outputs/'$(cut -d'/' -f5 \<<< $word)
           overwrite: true
   
