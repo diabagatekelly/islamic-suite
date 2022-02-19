@@ -1,5 +1,18 @@
 class FileToMapGateway():
+  """File to JSON Map Gateway
   
+  Extacts a rule name and a rule map from a file name.
+  Those are then used to create a JSON map for the extacted rule.
+
+  Functions:
+    *get_name_from_file - splits file's name.extension to get the name
+      - parameters: file name with extension
+      - returns: file name as string
+    *get_rule_class_from_name - splits file's name and concatenates
+      the parts into a Pascal Case class name
+			- parameters: rule name
+			- returns: ClassName as a string
+  """
   def __init__(self):
     self
 
