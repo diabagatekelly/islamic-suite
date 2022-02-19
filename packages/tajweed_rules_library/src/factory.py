@@ -31,4 +31,3 @@ class Factory():
   def get_file_to_map_gateway(self):
     """Returns FileToMapGateway class."""
     return FileToMapGateway()
-
