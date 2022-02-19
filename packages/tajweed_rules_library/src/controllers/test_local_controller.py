@@ -36,6 +36,3 @@ class TestLocalController(unittest.TestCase):
     local_file_sys = LocalController(files=FILES_SYS)
     local_file_sys.create_rule_maps()
     mock.assert_called()
-
-    
-  

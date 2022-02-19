@@ -37,4 +37,3 @@ class TestFileToMapGateway(unittest.TestCase):
     
     self.assertEqual(madd, 'Madd6')
     self.assertEqual(qalqalah, 'Qalqalah')
- 
