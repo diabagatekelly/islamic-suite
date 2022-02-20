@@ -2,7 +2,6 @@ import unittest, os, shutil
 from unittest.mock import patch
 from src.controllers.local_controller import LocalController
 from src.use_cases.create_rules_maps import CreateRulesMaps
-from src.use_cases.choose_rule_maps_to_create import ChooseRuleMapsToCreate
 
 ROOT = os.path.abspath(os.path.join(os.getcwd(), 'src'))
 INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/idhaar_mock_input.txt')

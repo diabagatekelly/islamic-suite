@@ -59,12 +59,12 @@ class Main():
     env (str): 'local' or 'prod'
     """
     if env == 'local':
-        self.build_dev()
+      self.build_dev()
     elif env == 'prod':
-        self.build_prod()
+      self.build_prod()
     else:
-        print(
-            'Oops! Something went wrong. Make sure to pass "local" or "prod" as an argument.')
+      print('Oops! Something went wrong. Make sure to pass "local" or "prod" as an argument.')
+
     self.clean_up_pycache()
     print('All done! Check src.outputs or src.dist to see your new maps.')
 
@@ -84,7 +84,6 @@ class Main():
   def clean_up_pycache(self):
     """Removes pycache directories."""
     os.popen('find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf')
-
 
 if __name__ == "__main__":
   main = Main()
