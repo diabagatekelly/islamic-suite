@@ -47,7 +47,7 @@ class LocalController():
 
   def create_rule_maps(self):
     """Create JSON maps for chosen rules.
-    Instantiates CreateRulesMaps with local factory and files.
+      Instantiates CreateRulesMaps with local factory and files.
     """
     rule_creator = CreateRulesMaps(self.factory, files_and_dirs=self.files)
     rule_selector = self._choose_rules_to_map()
@@ -55,12 +55,10 @@ class LocalController():
 
   def _choose_rules_to_map(self):
     """Choose the tajweed rules that need to be mapped,
-    based on whether an JSON map doesn't already exist,
-    or one exists but there have been recent changes to the rule's
-    mapping class.
-    Instantiates ChooseRuleMapsToCreate with local factory and files.
+      based on whether an JSON map doesn't already exist,
+      or one exists but there have been recent changes to the rule's
+      mapping class.
+      Instantiates ChooseRuleMapsToCreate with local factory and files.
     """
-    rule_selector = ChooseRuleMapsToCreate(
-      factory=self.factory, files_and_dirs=self.files
-    )
+    rule_selector = ChooseRuleMapsToCreate(factory=self.factory, files_and_dirs=self.files)
     return rule_selector.get_list_of_rule_maps_to_create()

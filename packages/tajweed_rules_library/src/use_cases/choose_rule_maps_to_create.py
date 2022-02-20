@@ -134,7 +134,7 @@ class ChooseRuleMapsToCreate():
 
   def _get_all_rule_definitions_file_info(self):
     """In DEV, get rule data for all the files in 'entities_dir';
-    In PROD, get rule data for all the files in 'outputs'
+      In PROD, get rule data for all the files in 'outputs'
       - returns: array of objects [{name: 'name.ext', absolute_path: 'path.json'}]
     """
     if self.factory.env == 'local':
@@ -144,7 +144,7 @@ class ChooseRuleMapsToCreate():
 
   def _get_all_existing_rules_file_info(self):
     """In DEV, get rule data for all the files in 'outputs';
-    In PROD, get rule data for all the files in 'dist'
+      In PROD, get rule data for all the files in 'dist'
       - returns: array of objects [{name: 'name.ext', absolute_path: 'path.json'}]
     """
     if self.factory.env == 'local':

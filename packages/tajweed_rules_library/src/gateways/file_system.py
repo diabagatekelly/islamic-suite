@@ -10,25 +10,25 @@ class FileSystem():
 
   Functions:
     *get_files_in_directory - get the files in a given directory
-				- parameters: directory
-				- returns: array of file names
+			- parameters: directory
+			- returns: array of file names
     *_get_nested_directories (private) - get the directories nested within a given directory
-				- parameters: directory
-				- returns: array of objects with a file's name and absolute path
+			- parameters: directory
+			- returns: array of objects with a file's name and absolute path
 		*get_file_last_update_date - get last update date for a file
-				- parameters: file path
-				- returns: float
+			- parameters: file path
+			- returns: float
 		*read_file_by_lines - read file line by by line
-				- parameters: file path
-				- returns: array of strings, where each string is a file line
+			- parameters: file path
+			- returns: array of strings, where each string is a file line
 		*create_absolute_path - concatenates the root path, a directory path, and a rule name to create 
 			an absolute path for a new file json file
-				- parameters: directory path, rule
-				- returns: JSON file absolute path as string
+			- parameters: directory path, rule
+			- returns: JSON file absolute path as string
 		*write_to_file - save content to a file
-				- parameters : file path, content
+			- parameters : file path, content
 		*copy_file_from_original_to_target_dir - copy file to a new directory
-				- parameters: original file path, destination file path
+			- parameters: original file path, destination file path
   """
 	def __init__(self):
 		self
@@ -94,7 +94,7 @@ class FileSystem():
 
 	def create_absolute_path(self, path, rule):
 		"""Concatenates the root path, a directory path, and a rule name
-		to create an absolute path for a new JSON file
+			to create an absolute path for a new JSON file
 			- parameters: directory path, rule name
 			- returns: JSON file absolute path as string
 		"""

@@ -1,4 +1,4 @@
-import unittest, os, shutil, json
+import unittest, os, shutil
 from src.use_cases.create_rules_maps import CreateRulesMaps
 from src.use_cases.choose_rule_maps_to_create import ChooseRuleMapsToCreate
 from src.factory import Factory

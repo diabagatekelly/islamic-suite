@@ -23,6 +23,7 @@ FILES_SYS = {
 	'entities_dir': ENTITIES_DIR,
 	'outputs_dir': OUTPUTS_DIR
 }
+
 mock_factory = Factory()
 mock_create_rule_maps = CreateRulesMaps(mock_factory, MOCK_FILES_SYS)
 mock_choose_rules_to_create = ChooseRuleMapsToCreate(mock_factory, MOCK_FILES_SYS)

@@ -42,7 +42,7 @@ class ProdController():
 
   def create_rule_maps(self):
     """Create JSON maps for chosen rules.
-    Instantiates CreateRulesMaps with local factory and files.
+      Instantiates CreateRulesMaps with local factory and files.
     """
     rule_creator = CreateRulesMaps(self.factory, files_and_dirs=self.files)
     rule_selector = self._choose_rules_to_map()
@@ -50,11 +50,9 @@ class ProdController():
 
   def _choose_rules_to_map(self):
     """Choose the JSON maps that need to be copied to the dist folder,
-    based on whether they don't already exist, or if there have been
-    recent changes to the local outputes JSON maps.
-    Instantiates ChooseRuleMapsToCreate with prod factory and files.
+      based on whether they don't already exist, or if there have been
+      recent changes to the local outputes JSON maps.
+      Instantiates ChooseRuleMapsToCreate with prod factory and files.
     """
-    rule_selector = ChooseRuleMapsToCreate(
-      factory=self.factory, files_and_dirs=self.files
-    )
+    rule_selector = ChooseRuleMapsToCreate(factory=self.factory, files_and_dirs=self.files)
     return rule_selector.get_list_of_rule_maps_to_create()
