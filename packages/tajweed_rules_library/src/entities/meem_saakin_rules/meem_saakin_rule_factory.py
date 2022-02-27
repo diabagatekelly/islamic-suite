@@ -36,12 +36,12 @@ class MeemSaakinRuleFactory():
     """For a given rule, get the details of all its location and saves to an array
       - parameters: meem_type (bare or with_sukoon); rule (ighaam, ikhfa or idhaar)
 			- returns: list of dicts:
-      {
+      [{
         'surah': surah number, 
         'ayah': ayah number, 
         'start': starting letter index (the meem saakin itself)
         'end': ending letter index + a varying number to also cover that letter's vowel
-      }
+      }]
     """
     meem_saakin_indices = []
     if meem_type == 'bare':
