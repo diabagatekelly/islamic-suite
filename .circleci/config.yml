@@ -85,7 +85,7 @@ jobs:
           command: |
             text=$CHANGES
             IFS=' '
-            read -a strarr <<< "$text"
+            read -a strarr \<<< "$text"
             for val in "${strarr[@]}";
             do
               printf "$val\n"
