@@ -94,12 +94,15 @@ jobs:
           name: Check if changed file is in S3
           working_directory: ~/project/packages/tajweed_rules_library
           command: |
-            text=$CHANGES
-            IFS=' '
-            read -a strarr \<<< "$text"
-            for val in "${strarr[@]}";
+            for val in $CHANGES;
             do
-              printf "$val\n"
+              NAME=$(cut -d'/' -f5 \<<< $val)
+              aws s3api head-object --bucket s3://tajweed-app/library/rule_maps --key $val || not_exist=true
+              if [ $not_exist ]; then
+                echo $val "it does not exist"
+              else
+                echo $val "it exists"
+              fi
             done
       - aws-s3/copy: 
           arguments: |
