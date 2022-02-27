@@ -11,6 +11,7 @@ orbs:
   # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
   python: circleci/python@1.2
   aws-s3: circleci/aws-s3@3.0.0
+  aws-cli: circleci/aws-cli@2.0
 
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
@@ -44,6 +45,70 @@ jobs:
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
           command: coverage run -m unittest && coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py
+  s3-deploy2:
+    docker:
+      - image: cimg/python:3.8
+    # Checkout the code as the first step. This is a dedicated CircleCI step.
+    # The python orb's install-packages step will install the dependencies from a Pipfile via Pipenv by default.
+    # Here we're making sure we use just use the system-wide pip. By default it uses the project root's requirements.txt.
+    # Then run your tests!
+    # CircleCI will report the results back to your VCS provider.
+  
+    parameters:
+      aws-access-key-id:
+          default: AWS_ACCESS_KEY_ID
+          description: aws access key id override
+          type: env_var_name
+      aws-region:
+          default: AWS_REGION
+          description: aws region override
+          type: env_var_name
+      aws-secret-access-key:
+          default: AWS_SECRET_ACCESS_KEY
+          description: aws secret access key override
+          type: env_var_name
+      to:
+          default: 's3://tajweed-app/library/rule_maps'
+          description: S3 destination
+          type: string
+    steps:
+        - checkout
+        - python/install-packages:
+            pkg-manager: pip
+            app-dir: ~/project/packages/tajweed_rules_library
+        - aws-cli/setup:
+            aws-access-key-id: << parameters.aws-access-key-id >>
+            aws-region: << parameters.aws-region >>
+            aws-secret-access-key: << parameters.aws-secret-access-key >>
+        - run:
+          name: Get path of updated JSON files
+          working_directory: ~/project/packages/tajweed_rules_library
+          # This assumes pytest is installed via the install-package step above
+          command: |
+            echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
+        - run:
+            name: Kill job if not recent updates
+            working_directory: ~/project/packages/tajweed_rules_library
+            # This assumes pytest is installed via the install-package step above
+            command: |
+              echo changes $CHANGES and name $NAME
+              if [ "$CHANGES" = "" ]; then
+                  circleci-agent step halt
+              fi
+        - run:
+            name: Check if changed file is in S3
+            working_directory: ~/project/packages/tajweed_rules_library
+            command: |
+              for val in $CHANGES;
+              do
+                NAME=$(cut -d'/' -f5 \<<< $val)
+                aws s3api head-object --bucket s3://tajweed-app/library/rule_maps --key $NAME || not_exist=true
+                if [ $not_exist ]; then
+                  echo $NAME "it does not exist"
+                else
+                  echo $NAME "it exists"
+                fi
+              done
   s3-deploy:        
     docker:
       - image: cimg/python:3.8
@@ -122,7 +187,7 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-and-test
-      - s3-deploy:
+      - s3-deploy2:
           requires:
             - build-and-test
           filters:
