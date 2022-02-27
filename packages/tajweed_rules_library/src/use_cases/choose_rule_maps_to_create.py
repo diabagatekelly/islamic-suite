@@ -86,7 +86,7 @@ class ChooseRuleMapsToCreate():
       - parameters: name_list --> ['__init__', 'ighaam', 'ghunnah', 'idghaam']
       - returns: list of rule names ['idghaam', 'ghunnah']
     """
-    filtered_list = [name for name in name_list if name not in ('__init__')]
+    filtered_list = [name for name in name_list if not any(map(name.__contains__, ['init', 'factory', 'test']))]
     final_list = list(set(filtered_list))
     return final_list
   
