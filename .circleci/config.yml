@@ -79,6 +79,17 @@ jobs:
             if [ "$CHANGES" = "" ]; then
                 circleci-agent step halt
             fi
+      - run:
+          name: Check if changed file is in S3
+          working_directory: ~/project/packages/tajweed_rules_library
+          command: |
+            text=$CHANGES
+            IFS=' '
+            read -a strarr <<< "$text"
+            for val in "${strarr[@]}";
+            do
+              printf "$val\n"
+            done
       - aws-s3/copy: 
           arguments: |
             --cache-control "max-age=86400"
