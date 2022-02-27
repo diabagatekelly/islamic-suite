@@ -81,11 +81,11 @@ jobs:
             aws-region: << parameters.aws-region >>
             aws-secret-access-key: << parameters.aws-secret-access-key >>
         - run:
-          name: Get path of updated JSON files
-          working_directory: ~/project/packages/tajweed_rules_library
-          # This assumes pytest is installed via the install-package step above
-          command: |
-            echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
+            name: Get path of updated JSON files
+            working_directory: ~/project/packages/tajweed_rules_library
+            # This assumes pytest is installed via the install-package step above
+            command: |
+              echo 'export CHANGES=$(git diff --name-only main...develop | grep ^packages/tajweed_rules_library/src/dist/)' >> $BASH_ENV
         - run:
             name: Kill job if not recent updates
             working_directory: ~/project/packages/tajweed_rules_library
