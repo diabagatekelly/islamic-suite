@@ -69,8 +69,8 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: |
             echo $CHANGES
-            $(cut -d' ' ${array[$-f1]} \<<< $CHANGES)
-            $(cut -d' ' ${array[$-f2]} \<<< $CHANGES)
+            $(cut -d'' ${array[$-f1]} \<<< $CHANGES)
+            $(cut -d'' ${array[$-f2]} \<<< $CHANGES)
             echo 'export PATH_ARRAY=${array[@]}' >> $BASH_ENV
             echo $PATH_ARRAY
             # echo 'export NAME=$(cut -d'/' -f5 \<<< $CHANGES)' >> $BASH_ENV
