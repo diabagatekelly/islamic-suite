@@ -102,7 +102,7 @@ jobs:
               for val in $CHANGES;
               do
                 NAME=$(cut -d'/' -f5 \<<< $val)
-                aws s3api head-object --bucket s3://tajweed-app/library/rule_maps/ --key $NAME || not_exist=true
+                aws s3api head-object --bucket tajweed-app\library\rule_maps --key $NAME || not_exist=true
                 if [ $not_exist ]; then
                   echo $NAME "it does not exist"
                 else
