@@ -134,18 +134,7 @@ jobs:
           # This assumes pytest is installed via the install-package step above
           command: |
             echo $CHANGES
-            for val in $CHANGES;
-            do 
-              echo $val
-            done
-
-            # array=()
-            # array+=($(cut -d' ' -f1 \<<< $CHANGES))
-            # array+=($(cut -d' ' -f2 \<<< $CHANGES))
-
-            # echo 'export PATH=$array' >> $BASH_ENV
-            # echo $PATH_ARRAY
-            # echo 'export NAME=$(cut -d'/' -f5 \<<< $CHANGES)' >> $BASH_ENV
+            echo 'export NAME=$(cut -d'/' -f5 \<<< $CHANGES)' >> $BASH_ENV
       - run:
           name: Kill job if not recent updates
           working_directory: ~/project/packages/tajweed_rules_library
@@ -155,28 +144,14 @@ jobs:
             if [ "$CHANGES" = "" ]; then
                 circleci-agent step halt
             fi
-      - run:
-          name: Check if changed file is in S3
-          working_directory: ~/project/packages/tajweed_rules_library
-          command: |
-            for val in $CHANGES;
-            do
-              NAME=$(cut -d'/' -f5 \<<< $val)
-              aws s3api head-object --bucket s3://tajweed-app/library/rule_maps --key $val || not_exist=true
-              if [ $not_exist ]; then
-                echo $val "it does not exist"
-              else
-                echo $val "it exists"
-              fi
-            done
-      - aws-s3/copy: 
+      - aws-s3/sync: 
           arguments: |
             --cache-control "max-age=86400"
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           aws-region: AWS_REGION
-          from: '~/project/$CHANGES'
-          to: 's3://tajweed-app/library/rule_maps/$NAME'
+          from: '~/project/packages/tajweed_rules_library/src/dist'
+          to: 's3://tajweed-app/library/rule_maps'
   
           
 
@@ -187,7 +162,7 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-and-test
-      - s3-deploy2:
+      - s3-deploy:
           requires:
             - build-and-test
           filters:
