@@ -97,17 +97,13 @@ jobs:
               fi
         - run:
             name: Check if changed file is in S3
-            working_directory: ~/project/packages/tajweed_rules_library
+            working_directory: ~/project/packages/tajweed_rules_library/src/dist
             command: |
               for val in $CHANGES;
               do
                 NAME=$(cut -d'/' -f5 \<<< $val)
-                aws s3api head-object --bucket tajweed-app\library\rule_maps --key $NAME || not_exist=true
-                if [ $not_exist ]; then
-                  echo $NAME "it does not exist"
-                else
-                  echo $NAME "it exists"
-                fi
+                aws s3 cp $NAME s3://tajweed-app/library/rule_maps
+                echo $NAME added
               done
   s3-deploy:        
     docker:
@@ -144,7 +140,7 @@ jobs:
             if [ "$CHANGES" = "" ]; then
                 circleci-agent step halt
             fi
-      - aws-s3/sync: 
+      - aws-s3/copy: 
           arguments: |
             --cache-control "max-age=86400"
           aws-access-key-id: AWS_ACCESS_KEY_ID
@@ -162,7 +158,7 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build-and-test
-      - s3-deploy:
+      - s3-deploy2:
           requires:
             - build-and-test
           filters:
