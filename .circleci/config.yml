@@ -102,7 +102,7 @@ jobs:
               for val in $CHANGES;
               do
                 NAME=$(cut -d'/' -f5 \<<< $val)
-                aws s3 cp $NAME s3://tajweed-app/library/rule_maps
+                aws s3 cp $NAME s3://tajweed-app/library/rule_maps/
                 echo $NAME added
               done
   s3-deploy:        
