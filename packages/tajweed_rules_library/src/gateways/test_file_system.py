@@ -39,7 +39,7 @@ class TestFileSystem(unittest.TestCase):
     # self.assertIn('ikhfa.py', filenames)
     # self.assertIn('ghunnah.py', filenames)
     # self.assertNotIn('__init__.py', filenames)
-    self.assertFalse({'name': 'idhaar_shafawi.py', 'absolute_path': os.path.join(ENTITIES_DIR, 'meem_saakin_rules', 'entities_map.py')} in filenames)
+    # self.assertFalse({'name': 'idhaar_shafawi.py', 'absolute_path': os.path.join(ENTITIES_DIR, 'meem_saakin_rules', 'entities_map.py')} in filenames)
 
   def test_get_files_in_flat_directory(self):
     content = {'test': 'I am some test content', }

@@ -6,10 +6,9 @@ class IdghaamShafawi():
   If after silent "م" (meem saakin), there appears a "م", idghaam with ghunnah (nasalization)
   will take place. This means the second meem will become incorporated into the first and will 
   be read with nasalization. 
-  The meem saakin alwasy appears at the end of a word, and in the Uthmani script it is bare.
+  The meem saakin always appears at the end of a word, and in the Uthmani script it is bare.
 
-  Example:
-  106:4 ٱلَّذِىٓ أَطْعَمَهُم مِّن جُوعٍ وَءَامَنَهُم مِّنْ خَوْفٍۭ
+  Example:  106:4 ٱلَّذِىٓ أَطْعَمَهُم مِّن جُوعٍ وَءَامَنَهُم مِّنْ خَوْفٍۭ
 
   Constructor:
     *surah_number - the number of the surah (chapter) in which the ayah is found
