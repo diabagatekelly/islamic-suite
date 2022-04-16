@@ -15,6 +15,9 @@ class FileSystem():
     *_get_nested_directories (private) - get the directories nested within a given directory
 			- parameters: directory
 			- returns: array of objects with a file's name and absolute path
+		*_get_factory_path_for_file (private) - get the absolute path for the rule factory associated with a particular rule
+			- parameters: path to directory, filename for given rule
+			- returns: absolute path of factory file
 		*get_file_last_update_date - get last update date for a file
 			- parameters: file path
 			- returns: float
@@ -42,16 +45,22 @@ class FileSystem():
 		subdir_paths = self._get_nested_directories(directory)
 
 		if len(subdir_paths) != 0:
+			# This block iterates over nested directories insise the entities directory.
+			# These are our definition files
 			for path in subdir_paths:
 				for subdir, dirs, files in os.walk(path):
 					for filename in files:
-						if filename.endswith('py'):
+						# Do not return info for __init__.py, tests, or factory files
+						if filename.endswith('py') and not any(map(filename.__contains__, ['init', 'factory', 'test'])):
 							file_stats = {
 								'name': filename,
-								'absolute_path': os.path.join(path, filename)
+								'absolute_path': os.path.join(path, filename),
+								'factory_path': self._get_factory_path_for_file(path, filename)
 							}
 							filenames.append(file_stats)
 		else:
+			# This block iterates over the flat output directories (outputs or dist).
+			# These are our exisiting output JSON files.
 			for subdir, dirs, files in os.walk(directory):
 				for filename in files:
 					file_stats = {
@@ -72,6 +81,14 @@ class FileSystem():
 				if not entry.is_file() and entry.name != '__pycache__':
 					subdirectories_paths.append(entry.path)
 		return subdirectories_paths
+
+	def _get_factory_path_for_file(self, path, filename):
+		"""Get the absolute path for the rule factory associated with a particular rule
+			- parameters: path to directory, filename for given rule
+			- returns: absolute path of factory file
+		"""
+		if any(map(filename.__contains__, ['idghaam_shafawi', 'idhaar_shafawi', 'ikhfa_shafawi'])):
+			return os.path.join(path, 'meem_saakin_rule_factory.py')
 
 	def get_file_last_update_date(self, file_path):
 		"""Get last update date for a file
