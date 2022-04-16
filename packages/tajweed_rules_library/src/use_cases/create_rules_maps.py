@@ -1,4 +1,4 @@
-from src.entities.entities_map import EntitiesMap
+from src.entities_helpers.entities_map import EntitiesMap
 
 class CreateRulesMaps():
   """Create Rules Maps
