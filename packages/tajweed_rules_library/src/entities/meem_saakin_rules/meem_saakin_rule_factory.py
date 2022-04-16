@@ -147,12 +147,10 @@ class MeemSaakinRuleFactory():
       adjustment_for_stop = self.stop_signs.find_stop_sign_for_voweled_letter()
       ending = 0
       if self.ayah_text[index + adjustment_for_stop] in self.stop_signs.list_of_signs:
-        if self._is_meem_saakin_at_end_of_a_word(index + adjustment_for_stop + 1):
         # meem + sukoon (1) + stop sign (3) + space (4) + next letter (5)
-          ending = index + 5
-        else:
-          # meem + sukoon (1) + stop sign (3) + next letter (5)
-          ending = index + 4
+        # for meem saakin the stop signs are always at the end of the word,
+        # so if we found a stop sign we can assume we are at the end
+        ending = index + 5
       else:
         if self._is_meem_saakin_at_end_of_a_word(index + 2):
           # meem + sukoon (1) + space (2) + next letter (3)
