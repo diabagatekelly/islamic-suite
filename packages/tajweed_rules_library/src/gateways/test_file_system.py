@@ -33,7 +33,7 @@ class TestFileSystem(unittest.TestCase):
     filenames = mock_file_system.get_files_in_directory(ENTITIES_DIR)
     self.assertTrue(type(filenames), list)
     self.assertIsInstance(filenames[0], dict)
-    self.assertTrue({'name': 'idhaar_shafawi.py', 'absolute_path': os.path.join(ENTITIES_DIR, 'meem_saakin_rules', 'idhaar_shafawi.py')} in filenames)
+    self.assertTrue({'name': 'idhaar_shafawi.py', 'absolute_path': os.path.join(ENTITIES_DIR, 'meem_saakin_rules', 'idhaar_shafawi.py'), 'factory_path': os.path.join(ENTITIES_DIR, 'meem_saakin_rules', 'meem_saakin_rule_factory.py')} in filenames)
     # self.assertIn('madd_6.py', filenames)
     # self.assertIn('qalqalah.py', filenames)
     # self.assertIn('ikhfa.py', filenames)
@@ -50,6 +50,19 @@ class TestFileSystem(unittest.TestCase):
     self.assertTrue(type(filenames), list)
     self.assertIsInstance(filenames[0], dict)
     self.assertTrue({'name': 'test.json', 'absolute_path': os.path.join(OUTPUTS_DIR, 'specs', 'test.json')} in filenames)
+
+  def test_final_files_list_has_no_tests_or_init_or_factory(self):
+    filenames = mock_file_system.get_files_in_directory(ENTITIES_DIR)
+    names_only = [rule['name'] for rule in filenames]
+    self.assertFalse('__init__.py' in names_only)
+    self.assertFalse('test_meem_saakin_rule_factory.py' in names_only)
+    self.assertFalse('meem_saakin_rule_factory.py' in names_only)
+
+  
+  def test_get_factory_path_for_file(self):
+    test_path = os.path.join(ENTITIES_DIR, 'meem_saakin_rules')
+    factory_path = mock_file_system._get_factory_path_for_file(test_path, 'idghaam_shafawi.py')
+    self.assertEqual(factory_path, os.path.join(test_path, 'meem_saakin_rule_factory.py'))
 
   def test_get_file_last_update_date(self):
     stamp = mock_file_system.get_file_last_update_date(INPUT_FILE)
