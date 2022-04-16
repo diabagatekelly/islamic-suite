@@ -38,12 +38,12 @@ jobs:
           name: Run tests
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
-          command: python -m unittest -v 
+          command: coverage run -m unittest -v 
       - run:
           name: Run test coverage
           working_directory: ~/project/packages/tajweed_rules_library
           # This assumes pytest is installed via the install-package step above
-          command: coverage run -m unittest && coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py
+          command: coverage report --omit=*factory.py,*app.py,*test_*.py,src/*__init__.py,src/*/__init__.py
   s3-deploy:
     docker:
       - image: cimg/python:3.8
