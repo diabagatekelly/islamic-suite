@@ -38,7 +38,7 @@ class Main():
 
   This is the entry point to build each tajweed rule's JSON map.
   The script to run the app from the tajweed_library_rules module is:
-    DEV - pyton -m src.main run_app local
+    DEV - python -m src.main run_app local
     PROD - python -m src.main run_app prod
 
   Running the app in the dev environment saves all JSON maps to the local
