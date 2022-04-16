@@ -9,12 +9,19 @@ INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/idhaar_mock_input.txt')
 TEMP_MOCK_ENTITIES_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'choose_entities')
 MOCK_ENTITIES_DIR = os.path.join(ROOT, 'fixtures/mock_fixtures/entities')
 MOCK_OUTPUTS_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'choose_outputs', 'specs')
+PROD_MOCK_OUTPUTS_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'choose_dist', 'specs')
 
 MOCK_FILES_SYS = {
 	'root': ROOT,
 	'input_file': INPUT_FILE,
 	'entities_dir': TEMP_MOCK_ENTITIES_DIR,
 	'outputs_dir': MOCK_OUTPUTS_DIR
+}
+
+PROD_MOCK_FILES_SYS = {
+'root': ROOT,
+'local_outputs': MOCK_OUTPUTS_DIR,
+'outputs_dir': PROD_MOCK_OUTPUTS_DIR
 }
 
 mock_factory = Factory()
@@ -27,6 +34,8 @@ class TestChooseRuleMapsToCreate(unittest.TestCase):
   def setUpClass(cls):
     if not os.path.exists(MOCK_OUTPUTS_DIR):
       os.makedirs(MOCK_OUTPUTS_DIR)
+    if not os.path.exists(PROD_MOCK_OUTPUTS_DIR):
+      os.makedirs(PROD_MOCK_OUTPUTS_DIR)
     if not os.path.exists(TEMP_MOCK_ENTITIES_DIR):
       shutil.copytree(MOCK_ENTITIES_DIR, TEMP_MOCK_ENTITIES_DIR)
 
@@ -42,6 +51,8 @@ class TestChooseRuleMapsToCreate(unittest.TestCase):
       shutil.rmtree(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'choose_outputs'))
     if TEMP_MOCK_ENTITIES_DIR:
       shutil.rmtree(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'choose_entities'))
+    if PROD_MOCK_OUTPUTS_DIR:
+      shutil.rmtree(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'choose_dist'))
 
   # Helper async methods for removing a map from outputs
   async def evaluate_rules_after_deletion(self):
@@ -99,3 +110,30 @@ class TestChooseRuleMapsToCreate(unittest.TestCase):
     self.assertTrue('idghaam_shafawi' in all_rules_to_create)
     self.assertTrue('ikhfa_shafawi' in all_rules_to_create)
     self.assertTrue('idhaar_shafawi' in all_rules_to_create)
+
+  def test_get_list_of_rule_maps_to_create_in_prod(self):
+    all_rules = mock_choose_rules_to_create.get_list_of_rule_maps_to_create()
+    mock_create_rule_maps.create_rule_maps(all_rules)
+    mock_prod_factory = Factory(env='prod')
+    mock_prod_choose_rules_to_create = ChooseRuleMapsToCreate(mock_prod_factory, PROD_MOCK_FILES_SYS)
+    prod_rules = [rule['name'] for rule in mock_prod_choose_rules_to_create.get_list_of_rule_maps_to_create()]
+
+    self.assertTrue('idghaam_shafawi' in prod_rules)
+    self.assertTrue('idhaar_shafawi' in prod_rules)
+    self.assertTrue('ikhfa_shafawi' in prod_rules)
+
+  def test_get_last_update_in_prod(self):
+    all_rules = mock_choose_rules_to_create.get_list_of_rule_maps_to_create()
+    mock_create_rule_maps.create_rule_maps(all_rules)
+
+    mock_prod_factory = Factory(env='prod')
+    mock_prod_choose_rules_to_create = ChooseRuleMapsToCreate(mock_prod_factory, PROD_MOCK_FILES_SYS)
+    mock_prod_create_rules_maps = CreateRulesMaps(mock_prod_factory, PROD_MOCK_FILES_SYS)
+
+    last_update = mock_prod_choose_rules_to_create._get_rule_definition_file_last_update('idghaam_shafawi')
+    self.assertIsInstance(last_update, float)
+
+    prod_rules = mock_prod_choose_rules_to_create.get_list_of_rule_maps_to_create()
+    mock_prod_create_rules_maps.create_rule_maps(prod_rules)
+    has_recent_update = mock_prod_choose_rules_to_create._rule_definition_has_recent_updates('idghaam_shafawi')
+    self.assertFalse(has_recent_update)

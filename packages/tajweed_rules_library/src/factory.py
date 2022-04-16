@@ -7,7 +7,7 @@ class Factory():
     *File system to JSON map translator gateway
   
   Constructor:
-    *env - defaults to local
+    *env - local (default) or prod
  
   Returns:
     *FileSystem class
