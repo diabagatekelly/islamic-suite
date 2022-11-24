@@ -26,10 +26,8 @@ class LocalController():
       *env - defaults to local
       *files - defaults to local file directories
       *root: the root directory
-      *input_file: the directoy where the Uthmani Quran text file
-      used to create each rule's map is saved
-      *entities_dir: the directory where the classes for mapping each tajweed rule
-      are saved
+      *input_file: the directoy where the Uthmani Quran text file used to create each rule's map is saved
+      *entities_dir: the directory where the classes for mapping each tajweed rule are saved
       *outputs_dir: the directory where outputed JSON maps are saved
 
     Constructor:
@@ -37,8 +35,8 @@ class LocalController():
       *Factory: instantiated with the env parameter
 
     Functions:
-      *_choose_rules_to_map (private) - choose rules to map
-      *create_rule_maps - create JSON maps or chosen rules
+      *_get_list_of_rules_to_map (private) - get the list of rules to map
+      *create_rule_maps - create JSON maps for the specified rules
   """
   def __init__(self, env='local', files=FILES_SYS):
     self
@@ -46,16 +44,16 @@ class LocalController():
     self.files = files
 
   def create_rule_maps(self):
-    """Create JSON maps for chosen rules.
+    """Create JSON maps for specified rules.
       Instantiates CreateRulesMaps with local factory and files.
     """
     rule_creator = CreateRulesMaps(self.factory, files_and_dirs=self.files)
-    rules_to_map = self._choose_rules_to_map()
+    rules_to_map = self._get_list_of_rules_to_map()
     rule_creator.create_rule_maps(rules_to_map)
 
-  def _choose_rules_to_map(self):
+  def _get_list_of_rules_to_map(self):
     """Choose the tajweed rules that need to be mapped,
-      based on which rule factory has recent changes.
+      based on which tajweed rule class has recent changes.
       Instantiates ChooseRuleMapsToCreate with local factory and files.
     """
     rules_to_map = ChooseRuleMapsToCreate(factory=self.factory, files_and_dirs=self.files)

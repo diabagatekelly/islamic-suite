@@ -30,7 +30,7 @@ class TestLocalController(unittest.TestCase):
     local_file_controller = LocalController(files=MOCK_FILES_SYS)
     self.assertEqual(local_file_controller.factory.env, 'local')
 
-  @patch.object(LocalController, '_choose_rules_to_map', return_value=None)
+  @patch.object(LocalController, '_get_list_of_rules_to_map', return_value=None)
   @patch.object(CreateRulesMaps, 'create_rule_maps')
   def test_create_rule_maps_called(self, mock1, mock2):
     local_file_sys = LocalController(files=MOCK_FILES_SYS)
