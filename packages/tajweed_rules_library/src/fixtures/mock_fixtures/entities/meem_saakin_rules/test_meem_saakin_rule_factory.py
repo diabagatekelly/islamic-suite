@@ -1,5 +1,5 @@
 import unittest
-from src.entities.meem_saakin_rules.meem_saakin_rule_factory import MeemSaakinRuleFactory
+from src.entities.meem_saakin_rules.meem_saakin_rules import MeemSaakinRules
 
 ikhfa = 'تَرْمِيهِم بِحِجَارَةٍ مِّن سِجِّيلٍ'
 idghaam = 'ٱلَّذِىٓ أَطْعَمَهُم مِّن جُوعٍ وَءَامَنَهُم مِّنْ خَوْفٍۭ'
@@ -40,50 +40,96 @@ linked_stops_idhaar_shafawi_end = 'قَالَ فَإِنَّهَا مُحَرّ�
 # Voweled
 forbidden_stop_idhaar_shafawi_end = 'ذَٰلِكَ بِأَنَّ ٱللَّهَ لَمْ يَكُ مُغَيِّرًا نِّعْمَةً أَنْعَمَهَا عَلَىٰ قَوْمٍ حَتَّىٰ يُغَيِّرُوا۟ مَا بِأَنفُسِهِمْ ۙ وَأَنَّ ٱللَّهَ سَمِيعٌ عَلِيمٌ'
 
-class TestMeemSaakinRuleFactory(unittest.TestCase):
-  def test_find_bare_meem_saakin_in_text(self):
-    idghaam_factory = MeemSaakinRuleFactory(106, 4, idghaam)
-    indices = idghaam_factory._find_bare_meem_saakin_in_text()
+class TestMeemSaakinRules(unittest.TestCase):
+  def setUp(self):
+    self.meem_saakin_rules = MeemSaakinRules()
+    
+  def tearDown(self):
+    del self.meem_saakin_rules
+    
+  def test_find_meem_saakin_in_text_bare(self):
+    self.meem_saakin_rules.surah_number = 106
+    self.meem_saakin_rules.ayah_number = 4
+    self.meem_saakin_rules.ayah_text= idghaam
+    
+    indices = self.meem_saakin_rules._find_meem_saakin_in_text()
     self.assertListEqual(indices, [19, 43])
     self.assertEqual(idghaam[19], "م")
     self.assertEqual(idghaam[43], "م")
 
-  def test_find_meem_saakin_with_sukoon_in_text(self):
-    idhaar_factory = MeemSaakinRuleFactory(111, 4, idhaar_middle)
-    indices = idhaar_factory._find_meem_saakin_with_sukoon_in_text()
-    self.assertListEqual(indices, [4])
+  def test_find_meem_saakin_in_text_voweled_middle(self):
+    self.meem_saakin_rules.surah_number = 111 
+    self.meem_saakin_rules.ayah_number = 4
+    self.meem_saakin_rules.ayah_text= idhaar_middle
+    
+    indices = self.meem_saakin_rules._find_meem_saakin_in_text()
+    self.assertListEqual(indices, [3])
     self.assertEqual(idhaar_middle[4], "ْ") # indices of sukoons
     self.assertEqual(idhaar_middle[3], "م") # ensure the sukoons are on meem
+
+  def test_find_meem_saakin_in_text_voweled_end(self):
+    self.meem_saakin_rules.surah_number = 111 
+    self.meem_saakin_rules.ayah_number = 4
+    self.meem_saakin_rules.ayah_text= idhaar_end
+    
+    indices = self.meem_saakin_rules._find_meem_saakin_in_text()
+    self.assertListEqual(indices, [4])
+    self.assertEqual(idhaar_end[5], "ْ") # indices of sukoons
+    self.assertEqual(idhaar_end[4], "م") # ensure the sukoons are on meem
+
+  def test_ignore_bare_meem_when_last_letter(self):
+    self.meem_saakin_rules.surah_number = 105 
+    self.meem_saakin_rules.ayah_number = 4 
+    self.meem_saakin_rules.ayah_text= bare_meem_end
+    
+    indices = self.meem_saakin_rules._find_meem_saakin_in_text()
+    self.assertListEqual(indices, [])
+
+  def test_ignore_voweled_meem_when_last_letter(self):
+    self.meem_saakin_rules.surah_number = 112 
+    self.meem_saakin_rules.ayah_number = 4
+    self.meem_saakin_rules.ayah_text= voweled_meem_end
+    
+    indices = self.meem_saakin_rules._find_meem_saakin_in_text()
+    self.assertListEqual(indices, [])
   
   def test_is_ending_letter_an_idghaam_letter(self):
-    idghaam_factory = MeemSaakinRuleFactory(106, 4, idghaam)
+    self.meem_saakin_rules.surah_number = 106 
+    self.meem_saakin_rules.ayah_number = 4
+    self.meem_saakin_rules.ayah_text= idghaam
+    
     self.assertEqual(idghaam[21], "م")
-    self.assertTrue(idghaam_factory._is_ending_letter_an_idghaam_letter(21))
-    self.assertFalse(idghaam_factory._is_ending_letter_an_ikhfa_letter(21))
-    self.assertFalse(idghaam_factory._is_ending_letter_an_idhaar_letter(21))
+    self.assertTrue(self.meem_saakin_rules._is_ending_letter_an_idghaam_letter(21))
+    self.assertFalse(self.meem_saakin_rules._is_ending_letter_an_ikhfa_letter(21))
+    self.assertFalse(self.meem_saakin_rules._is_ending_letter_an_idhaar_letter(21))
 
   def test_is_ending_letter_an_idhaar_letter(self):
-    idhaar_factory = MeemSaakinRuleFactory(111, 4, idhaar_middle)
+    self.meem_saakin_rules.surah_number = 111
+    self.meem_saakin_rules.ayah_number = 4
+    self.meem_saakin_rules.ayah_text= idhaar_middle
+    
     self.assertNotEqual(idghaam[5], "م")
     self.assertNotEqual(idghaam[5], "ب")
-    self.assertTrue(idhaar_factory._is_ending_letter_an_idhaar_letter(5))
-    self.assertFalse(idhaar_factory._is_ending_letter_an_idghaam_letter(5))
-    self.assertFalse(idhaar_factory._is_ending_letter_an_ikhfa_letter(5))
-
-  def test_is_meem_saakin_at_end_of_a_word(self):
-    idhaar_factory = MeemSaakinRuleFactory(111, 4, idhaar_middle)
-    self.assertFalse(idhaar_factory._is_meem_saakin_at_end_of_a_word(3))
+    self.assertTrue(self.meem_saakin_rules._is_ending_letter_an_idhaar_letter(5))
+    self.assertFalse(self.meem_saakin_rules._is_ending_letter_an_idghaam_letter(5))
+    self.assertFalse(self.meem_saakin_rules._is_ending_letter_an_ikhfa_letter(5))
 
   def test_is_ending_letter_an_ikhfa_letter(self):
-    ikhfa_factory = MeemSaakinRuleFactory(105, 4, ikhfa)
+    self.meem_saakin_rules.surah_number = 105 
+    self.meem_saakin_rules.ayah_number = 4 
+    self.meem_saakin_rules.ayah_text= ikhfa
+    
     self.assertEqual(ikhfa[11], "ب")
-    self.assertTrue(ikhfa_factory._is_ending_letter_an_ikhfa_letter(11))
-    self.assertFalse(ikhfa_factory._is_ending_letter_an_idghaam_letter(11))
-    self.assertFalse(ikhfa_factory._is_ending_letter_an_idhaar_letter(11))
+    self.assertTrue(self.meem_saakin_rules._is_ending_letter_an_ikhfa_letter(11))
+    self.assertFalse(self.meem_saakin_rules._is_ending_letter_an_idghaam_letter(11))
+    self.assertFalse(self.meem_saakin_rules._is_ending_letter_an_idhaar_letter(11))
 
   def test_get_all_rule_locations_ikkfa(self):
-    ikhfa_factory = MeemSaakinRuleFactory(105, 4, ikhfa)
-    map = ikhfa_factory.get_all_rule_locations('bare', 'ikhfa')
+    self.meem_saakin_rules.surah_number = 105 
+    self.meem_saakin_rules.ayah_number = 4
+    self.meem_saakin_rules.ayah_text= ikhfa
+    
+    map = self.meem_saakin_rules.get_all_rule_locations('ikhfa_shafawi')
     expectedMaps = [
       {
         'surah': 105,
@@ -95,8 +141,11 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
     self.assertListEqual(map, expectedMaps)
 
   def test_get_all_rule_locations_idghaam(self):
-    idghaam_factory = MeemSaakinRuleFactory(106, 4, idghaam)
-    map = idghaam_factory.get_all_rule_locations('bare', 'idghaam')
+    self.meem_saakin_rules.surah_number = 106
+    self.meem_saakin_rules.ayah_number = 4
+    self.meem_saakin_rules.ayah_text= idghaam
+    
+    map = self.meem_saakin_rules.get_all_rule_locations('idghaam_shafawi')
     expectedMaps = [
       {
         'surah': 106,
@@ -114,8 +163,11 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
     self.assertListEqual(map, expectedMaps)
 
   def test_get_all_rule_locations_idhaar_middle(self):
-    idhaar_factory = MeemSaakinRuleFactory(111, 4, idhaar_middle)
-    map = idhaar_factory.get_all_rule_locations('with_sukoon', 'idhaar')
+    self.meem_saakin_rules.surah_number = 111
+    self.meem_saakin_rules.ayah_number = 4
+    self.meem_saakin_rules.ayah_text= idhaar_middle
+    
+    map = self.meem_saakin_rules.get_all_rule_locations('idhaar_shafawi')
     expectedMaps = [
       {
         'surah': 111,
@@ -127,8 +179,11 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
     self.assertListEqual(map, expectedMaps)
 
   def test_get_all_rule_locations_idhaar_end(self):
-    idhaar_factory = MeemSaakinRuleFactory(112, 4, idhaar_end)
-    map = idhaar_factory.get_all_rule_locations('with_sukoon', 'idhaar')
+    self.meem_saakin_rules.surah_number = 112
+    self.meem_saakin_rules.ayah_number = 4
+    self.meem_saakin_rules.ayah_text= idhaar_end
+    
+    map = self.meem_saakin_rules.get_all_rule_locations('idhaar_shafawi')
     expectedMaps = [
       {
         'surah': 112,
@@ -139,24 +194,17 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
     ]
     self.assertListEqual(map, expectedMaps)
 
-  def test_ignore_bare_meem_when_last_letter(self):
-    bare_factory = MeemSaakinRuleFactory(105, 4, bare_meem_end)
-    indices = bare_factory._find_bare_meem_saakin_in_text()
-    self.assertListEqual(indices, [])
-
-  def test_ignore_voweled_meem_when_last_letter(self):
-    voweled_factory = MeemSaakinRuleFactory(112, 4, voweled_meem_end)
-    indices = voweled_factory._find_meem_saakin_with_sukoon_in_text()
-    self.assertListEqual(indices, [])
-
 
   # TEST STOP SIGNS
 
   # MEEM SAAKIN "MUST STOP ۘ "
   # Voweled
   def test_must_stop_idhaar_shafawi_end(self):
-    idhaar_factory = MeemSaakinRuleFactory(6, 54, must_stop_idhaar_shafawi_end)
-    idhaar_map = idhaar_factory._get_rule_location_details(17, 'with_sukoon', 'idhaar')
+    self.meem_saakin_rules.surah_number = 6
+    self.meem_saakin_rules.ayah_number = 54
+    self.meem_saakin_rules.ayah_text= must_stop_idhaar_shafawi_end
+    
+    idhaar_map = self.meem_saakin_rules._get_rule_location_details(16, 'idhaar_shafawi')
     expectedMap = {
       'surah': 6,
       'ayah': 54,
@@ -168,8 +216,11 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
   # MEEM SAAKIN "PERMISSIBLE STOP ۚ "
   # Bare
   def test_permissible_stop_ikhfa_shafawi_end(self):
-    ikhfa_factory = MeemSaakinRuleFactory(80, 43, permissible_stop_ikhfa_shafawi_end)
-    ikhfa_map = ikhfa_factory._get_rule_location_details(59, 'bare', 'ikhfa')
+    self.meem_saakin_rules.surah_number = 80
+    self.meem_saakin_rules.ayah_number = 43
+    self.meem_saakin_rules.ayah_text= permissible_stop_ikhfa_shafawi_end
+    
+    ikhfa_map = self.meem_saakin_rules._get_rule_location_details(59, 'ikhfa_shafawi')
     expectedMap = {
       'surah': 80,
       'ayah': 43,
@@ -179,8 +230,10 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
     self.assertDictEqual(ikhfa_map, expectedMap)
 
   def test_permissible_stop_idghaam_shafawi_end(self):
-    idghaam_factory = MeemSaakinRuleFactory(11, 56, permissible_stop_idghaam_shafawi_end)
-    idghaam_map = idghaam_factory._get_rule_location_details(49, 'bare', 'idghaam')
+    self.meem_saakin_rules.surah_number = 11
+    self.meem_saakin_rules.ayah_number = 56
+    self.meem_saakin_rules.ayah_text= permissible_stop_idghaam_shafawi_end
+    idghaam_map = self.meem_saakin_rules._get_rule_location_details(49, 'idghaam_shafawi')
     expectedMap = {
       'surah': 11,
       'ayah': 56,
@@ -191,8 +244,10 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
 
   # Voweled
   def test_must_stop_idhaar_shafawi_end(self):
-    idhaar_factory = MeemSaakinRuleFactory(2, 66, permissible_stop_idhaar_shafawi_end)
-    idhaar_map = idhaar_factory._get_rule_location_details(49, 'with_sukoon', 'idhaar')
+    self.meem_saakin_rules.surah_number = 2
+    self.meem_saakin_rules.ayah_number = 66
+    self.meem_saakin_rules.ayah_text= permissible_stop_idhaar_shafawi_end
+    idhaar_map = self.meem_saakin_rules._get_rule_location_details(48, 'idhaar_shafawi')
     expectedMap = {
       'surah': 2,
       'ayah': 66,
@@ -204,8 +259,10 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
   # MEEM SAAKIN "POSSIBLE (PERMISSIBLE) STOP ۖ "
   # Bare
   def test_possible_stop_ikhfa_shafawi_end(self):
-    ikhfa_factory = MeemSaakinRuleFactory(17, 49, possible_stop_ikhfa_shafawi_end)
-    ikhfa_map = ikhfa_factory._get_rule_location_details(78, 'bare', 'ikhfa')
+    self.meem_saakin_rules.surah_number = 17
+    self.meem_saakin_rules.ayah_number = 49
+    self.meem_saakin_rules.ayah_text= possible_stop_ikhfa_shafawi_end
+    ikhfa_map = self.meem_saakin_rules._get_rule_location_details(78, 'ikhfa_shafawi')
     expectedMap = {
       'surah': 17,
       'ayah': 49,
@@ -215,8 +272,10 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
     self.assertDictEqual(ikhfa_map, expectedMap)
 
   def test_possible_stop_idghaam_shafawi_end(self):
-    idghaam_factory = MeemSaakinRuleFactory(2, 214, possible_stop_idghaam_shafawi_end)
-    idghaam_map = idghaam_factory._get_rule_location_details(101, 'bare', 'idghaam')
+    self.meem_saakin_rules.surah_number = 2
+    self.meem_saakin_rules.ayah_number = 214
+    self.meem_saakin_rules.ayah_text= possible_stop_idghaam_shafawi_end
+    idghaam_map = self.meem_saakin_rules._get_rule_location_details(101, 'idghaam_shafawi')
     expectedMap = {
       'surah': 2,
       'ayah': 214,
@@ -227,8 +286,10 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
 
   # Voweled
   def test_possible_stop_idhaar_shafawi_end(self):
-    idhaar_factory = MeemSaakinRuleFactory(2, 66, possible_stop_idhaar_shafawi_end)
-    idhaar_map = idhaar_factory._get_rule_location_details(74, 'with_sukoon', 'idhaar')
+    self.meem_saakin_rules.surah_number = 2
+    self.meem_saakin_rules.ayah_number = 66
+    self.meem_saakin_rules.ayah_text= possible_stop_idhaar_shafawi_end
+    idhaar_map = self.meem_saakin_rules._get_rule_location_details(73, 'idhaar_shafawi')
     expectedMap = {
       'surah': 2,
       'ayah': 66,
@@ -241,8 +302,10 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
   # MEEM SAAKIN "PREFERABLE STOP ۗ "
   # Bare
   def test_preferable_stop_idghaam_shafawi_end(self):
-    idghaam_factory = MeemSaakinRuleFactory(41, 54, preferable_stop_idghaam_shafawi_end)
-    idghaam_map = idghaam_factory._get_rule_location_details(51, 'bare', 'idghaam')
+    self.meem_saakin_rules.surah_number = 41
+    self.meem_saakin_rules.ayah_number = 54 
+    self.meem_saakin_rules.ayah_text= preferable_stop_idghaam_shafawi_end
+    idghaam_map = self.meem_saakin_rules._get_rule_location_details(51, 'idghaam_shafawi')
     expectedMap = {
       'surah': 41,
       'ayah': 54,
@@ -253,8 +316,10 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
 
   # Voweled
   def test_preferable_stop_idhaar_shafawi_end(self):
-    idhaar_factory = MeemSaakinRuleFactory(41, 54, preferable_stop_idhaar_shafawi_end)
-    idhaar_map = idhaar_factory._get_rule_location_details(53, 'with_sukoon', 'idhaar')
+    self.meem_saakin_rules.surah_number = 41
+    self.meem_saakin_rules.ayah_number = 54
+    self.meem_saakin_rules.ayah_text= preferable_stop_idhaar_shafawi_end
+    idhaar_map = self.meem_saakin_rules._get_rule_location_details(52, 'idhaar_shafawi')
     expectedMap = {
       'surah': 41,
       'ayah': 54,
@@ -266,8 +331,10 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
   # MEEM SAAKIN "LINKED STOPS ۛ  ۛ"
   # Voweled
   def test_linked_stops_idhaar_shafawi_end(self):
-    idhaar_factory = MeemSaakinRuleFactory(5, 26, linked_stops_idhaar_shafawi_end)
-    idhaar_map = idhaar_factory._get_rule_location_details(38, 'with_sukoon', 'idhaar')
+    self.meem_saakin_rules.surah_number = 5
+    self.meem_saakin_rules.ayah_number = 26
+    self.meem_saakin_rules.ayah_text= linked_stops_idhaar_shafawi_end
+    idhaar_map = self.meem_saakin_rules._get_rule_location_details(37, 'idhaar_shafawi')
     expectedMap = {
       'surah': 5,
       'ayah': 26,
@@ -279,8 +346,10 @@ class TestMeemSaakinRuleFactory(unittest.TestCase):
   #MEEM SAAKIN "FORBIDDEN STOP ۙ "
   # Voweled
   def test_forbidden_stop_idhaar_shafawi_end(self):
-    idhaar_factory = MeemSaakinRuleFactory(8, 53, forbidden_stop_idhaar_shafawi_end)
-    idhaar_map = idhaar_factory._get_rule_location_details(118, 'with_sukoon', 'idhaar')
+    self.meem_saakin_rules.surah_number = 8
+    self.meem_saakin_rules.ayah_number = 53
+    self.meem_saakin_rules.ayah_text= forbidden_stop_idhaar_shafawi_end
+    idhaar_map = self.meem_saakin_rules._get_rule_location_details(117, 'idhaar_shafawi')
     expectedMap = {
       'surah': 8,
       'ayah': 53,
