@@ -72,6 +72,31 @@ class TestCreateRulesMaps(unittest.TestCase):
     expected_idhaar_shafawi_content = '{"idhaar_shafawi": [{"surah": 111, "ayah": 4, "start": 3, "end": 7}]}'
     self.assertEqual(idhaar_shafawi_content[0], expected_idhaar_shafawi_content)
     
+  def test_getting_correct_map_content_noon_saakin_rules(self):
+    local_rules_to_create = ['NoonSaakinRules']
+    local_create_rule_maps.create_rule_maps(local_rules_to_create)
+    # ['iqlab']
+    
+    idghaam_ghunnah_content = self.get_file_content(os.path.join(OUTPUTS_DIR, 'specs', 'idghaam_ghunnah.json'))
+    idghaam_ghunnah_expected_content = '{"idghaam_ghunnah": [{"surah": 105, "ayah": 4, "start": 20, "end": 25}, {"surah": 106, "ayah": 4, "start": 29, "end": 34}]}'
+    self.assertEqual(idghaam_ghunnah_content[0], idghaam_ghunnah_expected_content)
+
+    ikhfa_content = self.get_file_content(os.path.join(OUTPUTS_DIR, 'specs', 'ikhfa.json'))
+    expected_ikhfa_content = '{"ikhfa": [{"surah": 105, "ayah": 4, "start": 26, "end": 30}, {"surah": 106, "ayah": 4, "start": 24, "end": 28}]}'
+    self.assertEqual(ikhfa_content[0], expected_ikhfa_content)
+    
+    idhaar_content = self.get_file_content(os.path.join(OUTPUTS_DIR, 'specs', 'idhaar.json'))
+    expected_idhaar_content = '{"idhaar": [{"surah": 106, "ayah": 4, "start": 48, "end": 53}]}'
+    self.assertEqual(idhaar_content[0], expected_idhaar_content)
+    
+    idghaam_no_ghunnah_content = self.get_file_content(os.path.join(OUTPUTS_DIR, 'specs', 'idghaam_no_ghunnah.json'))
+    expected_idghaam_no_ghunnah_content = '{"idghaam_no_ghunnah": [{"surah": 56, "ayah": 3, "start": 7, "end": 12}]}'
+    self.assertEqual(idghaam_no_ghunnah_content[0], expected_idghaam_no_ghunnah_content)
+    
+    iqlab_content = self.get_file_content(os.path.join(OUTPUTS_DIR, 'specs', 'iqlab.json'))
+    expected_iqlab_content = '{"iqlab": [{"surah": 104, "ayah": 4, "start": 13, "end": 17}]}'
+    self.assertEqual(iqlab_content[0], expected_iqlab_content)
+    
     
   def test_create_rule_maps_for_prod(self):
     local_rules_to_create = ['MeemSaakinRules']

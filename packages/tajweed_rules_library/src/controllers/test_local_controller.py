@@ -4,7 +4,7 @@ from src.controllers.local_controller import LocalController
 from src.use_cases.create_rules_maps import CreateRulesMaps
 
 ROOT = os.path.abspath(os.path.join(os.getcwd(), 'src'))
-INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/idhaar_mock_input.txt')
+INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/partial_quran_input.txt')
 ENTITIES_DIR = os.path.join(ROOT, 'fixtures/mock_fixtures/entities')
 OUTPUTS_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'outputs', 'specs')
 

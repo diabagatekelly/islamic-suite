@@ -34,8 +34,8 @@ no_marks = 'منة'
 one_mark = 'منةٌ'
 multiple_marks = 'صُمٌّۢ'
 with_fatha_tanween = 'صَفًّا'
+with_fatha_tanween_2 = 'سَبِيلًۢا'
 includes_stop = "حَقًّا ۚ"
-
 
 class TestPunctuationMarks(unittest.TestCase):
   def test_ending_no_marks(self):
@@ -57,6 +57,11 @@ class TestPunctuationMarks(unittest.TestCase):
     ending_index = PunctuationMarks().calculate_adjustment_from_end(with_fatha_tanween)
     self.assertEqual(ending_index, 2)
     self.assertEqual(with_fatha_tanween[ending_index], 'ف')
+    
+  def test_ending_with_fatha_tanween2(self):
+    ending_index = PunctuationMarks().calculate_adjustment_from_end(with_fatha_tanween_2)
+    self.assertEqual(ending_index, 5)
+    self.assertEqual(with_fatha_tanween_2[ending_index], 'ل')
 
   def test_ending_includes_stop(self):
     ending_index = PunctuationMarks().calculate_adjustment_from_end(includes_stop)
