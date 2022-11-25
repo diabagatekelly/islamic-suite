@@ -1,5 +1,5 @@
 import unittest
-from src.entities.noon_saakin_rules.noon_saakin_rules import NoonSaakinRules
+from src.fixtures.mock_fixtures.entities.noon_saakin_rules import NoonSaakinRules
 
 # NOON SAAKIN
 idghaam_ghunnah_middle = "NO INSTANCE FOUND, IDHAAM GHUNNAH ALWAYS AT THE END"
