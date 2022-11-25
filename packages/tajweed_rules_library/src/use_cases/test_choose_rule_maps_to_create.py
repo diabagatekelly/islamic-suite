@@ -7,7 +7,7 @@ from src.use_cases.choose_rule_maps_to_create import ChooseRuleMapsToCreate
 from src.factory import Factory
 
 ROOT = os.path.abspath(os.path.join(os.getcwd(), 'src'))
-INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/idhaar_mock_input.txt')
+INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/partial_quran_input.txt')
 MOCK_ENTITIES_DIR = os.path.join(ROOT, 'fixtures/mock_fixtures/entities')
 MOCK_OUTPUTS_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'choose_outputs', 'specs')
 PROD_MOCK_OUTPUTS_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'choose_dist', 'specs')

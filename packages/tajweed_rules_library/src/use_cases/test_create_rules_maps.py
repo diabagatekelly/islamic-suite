@@ -5,7 +5,7 @@ from src.use_cases.create_rules_maps import CreateRulesMaps
 from src.factory import Factory
 
 ROOT = os.path.abspath(os.path.join(os.getcwd(), 'src'))
-INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/idhaar_mock_input.txt')
+INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/partial_quran_input.txt')
 ENTITIES_DIR = os.path.join(ROOT, 'fixtures/mock_fixtures/entities')
 OUTPUTS_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'create_outputs')
 
@@ -41,6 +41,14 @@ class TestCreateRulesMaps(unittest.TestCase):
     if OUTPUTS_DIR:
       shutil.rmtree(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'create_outputs'))
 
+  def get_file_content(self, file):
+    file_content = []
+    file = open(file, 'r', encoding='utf-8')
+    for line in file.readlines():
+      file_content.append(line)
+    file.close()
+    return file_content
+  
   def test_create_rule_maps_for_local(self):
     rules_to_create = ['MeemSaakinRules']
     local_create_rule_maps.create_rule_maps(rules_to_create)
@@ -48,6 +56,23 @@ class TestCreateRulesMaps(unittest.TestCase):
     self.assertTrue(os.path.exists(os.path.join(OUTPUTS_DIR, 'specs', 'idhaar_shafawi.json')))
     self.assertTrue(os.path.exists(os.path.join(OUTPUTS_DIR, 'specs', 'ikhfa_shafawi.json')))
 
+  def test_getting_correct_map_content_meem_saakin_rules(self):
+    local_rules_to_create = ['MeemSaakinRules']
+    local_create_rule_maps.create_rule_maps(local_rules_to_create)
+    
+    idghaam_shafawi_content = self.get_file_content(os.path.join(OUTPUTS_DIR, 'specs', 'idghaam_shafawi.json'))
+    idghaam_shafawi_expected_content = '{"idghaam_shafawi": [{"surah": 106, "ayah": 4, "start": 19, "end": 23}, {"surah": 106, "ayah": 4, "start": 43, "end": 47}]}'
+    self.assertEqual(idghaam_shafawi_content[0], idghaam_shafawi_expected_content)
+
+    ikhfa_shafawi_content = self.get_file_content(os.path.join(OUTPUTS_DIR, 'specs', 'ikhfa_shafawi.json'))
+    expected_ikhfa_shafawi_content = '{"ikhfa_shafawi": [{"surah": 105, "ayah": 4, "start": 9, "end": 13}]}'
+    self.assertEqual(ikhfa_shafawi_content[0], expected_ikhfa_shafawi_content)
+    
+    idhaar_shafawi_content = self.get_file_content(os.path.join(OUTPUTS_DIR, 'specs', 'idhaar_shafawi.json'))
+    expected_idhaar_shafawi_content = '{"idhaar_shafawi": [{"surah": 111, "ayah": 4, "start": 3, "end": 7}]}'
+    self.assertEqual(idhaar_shafawi_content[0], expected_idhaar_shafawi_content)
+    
+    
   def test_create_rule_maps_for_prod(self):
     local_rules_to_create = ['MeemSaakinRules']
     local_create_rule_maps.create_rule_maps(local_rules_to_create)
