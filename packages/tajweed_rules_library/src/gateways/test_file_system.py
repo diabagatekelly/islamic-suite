@@ -85,16 +85,6 @@ class TestFileSystem(unittest.TestCase):
       self.assertEqual(entire_file, content)
     input_file.close()
       
-  def test_write_text_to_file(self):
-    content = ['I am line 1', 'I am line 2']
-    written_content = []
-    path = os.path.join(OUTPUTS_DIR, 'specs', 'test2.txt')
-    mock_file_system.write_text_to_file(content, path)
-    file = open(path, 'r', encoding='utf-8')
-    for line in file.readlines():
-      written_content.append(line.strip('\n'))
-    file.close()
-    self.assertEqual(written_content, content)
 
   def test_copy_file_from_original_to_target_dir(self):
     content = {'test': 'I am some test content'}

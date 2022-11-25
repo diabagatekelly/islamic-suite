@@ -18,7 +18,6 @@ class FileSystem():
     *create_absolute_path - concatenates the root path, a directory path, and a rule name to create
     an absolute path for a new file json file 
     *write_json_to_file - save json content to a file
-    *write_text_to_file - save list content to a text file
     *copy_file_from_original_to_target_dir - copy file to a new directory
     *empty_directory - delete all the content inside a directory
     *delete_directory - delete a directory and its content
@@ -109,14 +108,6 @@ class FileSystem():
     with open(path, "w") as outfile:
       json.dump(content, outfile)
       outfile.close()
-          
-  def write_text_to_file(self, list_content, path):
-    """Write text inside a list to a text file
-      - parameters : list of strings, file path
-    """
-    with open(path, 'w') as f:
-      f.write('\n'.join(list_content))
-      f.close()
           
   def copy_file_from_original_to_target_dir(self, original, target):
     """Copy file to a new directory
