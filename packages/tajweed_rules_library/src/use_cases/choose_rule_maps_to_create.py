@@ -1,4 +1,5 @@
 from git import Repo
+import os
 
 class ChooseRuleMapsToCreate():
 	"""Choose Rule Maps To Create
@@ -35,10 +36,11 @@ class ChooseRuleMapsToCreate():
 	  *get_list_of_json_maps_to_create (public) - get list of rules that need new maps depending on whether its entity (in dev)
 		is new or has been modified, or all files in the 'outputs' directory in prod
 	"""
-	GIT_REPO = "C:/Users/kelly/Documents/Development-Related/Portfolio-Projects/islamic-ed-suite(angular+python+sql)/tajweed-monorepo/.git"
+	GIT_REPO = "C:/Users/kelly/Documents/Development-Related/Portfolio-Projects/islamic-ed-suite(angular+python+sql)/tajweed-monorepo/.git" or '~/.git'
 
 	def __init__(self, factory, files_and_dirs):
 		self
+		os.environ['GIT_REPO'] = self.GIT_REPO
 		self.factory = factory
 		self.files_and_dirs = files_and_dirs
 
@@ -89,7 +91,7 @@ class ChooseRuleMapsToCreate():
 		"""Use git to find all files in the entities directory that are new or have been modified 
 			- returns: array of file paths
 		"""
-		repo = Repo(self.GIT_REPO)
+		repo = Repo(os.environ['GIT_REPO'])
 		untracked_new_files = [item for item in repo.untracked_files if '/entities/' in item]
 		modified_and_deleted_files = [item.a_path for item in repo.index.diff(None) if '/entities/' in item.a_path]
 		entities_files = [file['name'] for file in self._file_system().get_files_in_directory(self.files_and_dirs['entities_dir'])]
