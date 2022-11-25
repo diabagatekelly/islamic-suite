@@ -7,7 +7,7 @@ class Main():
   """Tajweed Rules Library
 
   The Tajweed Rules Library takes a text file of Uthmani Quran
-  and creates JSON maps of each rules's location in the Quran.
+  and creates JSON maps for each rules's location in the Quran.
 
   The rules currently supported are:
     *Madd Rules
@@ -46,42 +46,42 @@ class Main():
   to a S3 bucket.
 
   Functions:
+    *_build_dev - initializes Local Controller
+    *_build_prod - initializes Prod Controller
+    *_clean_up_pycache - removes pycache from project
+    
     *run_app - accepts the environment (dev or prod) as a parameter and runs the app
-    *build_dev - initializes Local Controller
-    *build_prod - initializes Prod Controller
-    *clean_up_pycache - removes pycache from project
   """
 
   def run_app(self, env):
     """Use in python script to build Tajweed rules's JSON maps.
 
-    Parameters:
-    env (str): 'local' or 'prod'
+      parameters: env ('local' or 'prod')
     """
     if env == 'local':
-      self.build_dev()
+      self._build_dev()
     elif env == 'prod':
-      self.build_prod()
+      self._build_prod()
     else:
       print('Oops! Something went wrong. Make sure to pass "local" or "prod" as an argument.')
 
-    self.clean_up_pycache()
+    self._clean_up_pycache()
     print('All done! Check src.outputs or src.dist to see your new maps.')
 
-  def build_dev(self):
+  def _build_dev(self):
     """Runs app locally, saves maps to local file system."""
     print('Building maps locally. This might take a few minutes...')
     local_controller = LocalController(env='local')
     local_controller.create_rule_maps()
 
-  def build_prod(self):
+  def _build_prod(self):
     """Runs app for production, saves maps to S3 bucket."""
     print('running prod')
-    self.build_dev()
+    self._build_dev()
     prod_controller = ProdController(env='prod')
     prod_controller.create_rule_maps()
 
-  def clean_up_pycache(self):
+  def _clean_up_pycache(self):
     """Removes pycache directories."""
     os.popen('find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf')
 

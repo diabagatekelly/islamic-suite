@@ -1,179 +1,120 @@
+from git import Repo
+import os
+
 class ChooseRuleMapsToCreate():
-  """Choose Rule Maps To Create
+	"""Choose Rule Maps To Create
+
+	The entities folder contains entity modules, each defining the following for a single tajweed rule:
+	  1. how to find that rule in the quran
+	  2. save all the locations of that rule as a map
+
+	This module chooses which tajweed rules need their map created.
+	DEV: depends on whether there have been updates to that rule's entity file,
+	or if it doesn't already have a map in the 'outputs' directory.
+	PROD: depends on whether there have been updates to that rule's DEV map
+	in the outputs directory, or if it doesn't already have a map in the 'dist' directory
+
+	Constructor:
+	  *files_and_dir: object containing relevant directories
+	  *factory: dev or prod factory
+
+	Factory methods:
+	  *_file_to_rule_maps (private) - gets file_to_map gateway from factory
+	  *_file_system (private) - gets file_system from factory
+
+	Module methods:
+		*_get_classnames_list_for_local - For local env, use git to find all new and modified files in the entities diectory,
+  	and return a list of the class names
+		*_get_new_or_modified_files - Get list of files in entities directory that are new
+		or have been modified since last git commit
+		*_get_class_name_from_file - Get class name from file
+		*_get_tajweed_rules_with_recent_updates - Use git to find all files in the entities directory that are new
+  	or have been modified 
+		*_remove_duplicates(self, recently_updated) - Cleans up list of file paths by removing duplicates
+		*_remove_specs(self, recently_updated) - Cleans up list of file paths by removing spec files
+
+	  *get_list_of_json_maps_to_create (public) - get list of rules that need new maps depending on whether its entity (in dev)
+		is new or has been modified, or all files in the 'outputs' directory in prod
+	"""
+	GIT_REPO = os.path.join(os.path.dirname((os.path.dirname(os.getcwd()))), '.git')
+
+	def __init__(self, factory, files_and_dirs):
+		self
+		self.factory = factory
+		self.files_and_dirs = files_and_dirs
+
+	# Methods from factory
+	def _file_to_rule_maps(self):
+		"""Returns file_to_map gateway from pre-initialized dev or prod factory"""
+		return self.factory.get_file_to_map_gateway()
+
+	def _file_system(self):
+		"""Returns file_system gateway from pre-initialized dev or prod factory"""
+		return self.factory.get_file_system()
+
+	# Module methods
+	def get_list_of_json_maps_to_create(self):
+		"""In DEV, use git to find all new and modified files in the entities diectory, and return a list of the class name
+			for the class defined in those files
+		  In PROD, get a list of the files in the 'outputs' directory, so they can be copied to the 'dist' folder
+			- returns: array of classNames (dev) or array of rule objects {name: 'name', absolute_path: 'path.json'}
+		"""
+		if self.factory.env == 'local':
+			return self._get_classnames_list_for_local()
+		elif self.factory.env == 'prod':
+			# Modifies the file details' dict in place by removing the extension from the file name property
+			return list(map(lambda item: {'name': item['name'].split('.')[0], 'absolute_path': item['absolute_path']}, self._file_system().get_files_in_directory(self.files_and_dirs['local_outputs'])))
+
+	def _get_classnames_list_for_local(self):
+		"""For local env, use git to find all new and modified files in the entities diectory, and return a list of the class names
+			- returns: array of classNames (dev)
+		"""
+		list_of_class_names = []
+		file_list = self._get_new_or_modified_files()
+		for item in file_list:
+			list_of_class_names.append(self._get_class_name_from_file(item))
+		return list_of_class_names	
+
+	def _get_new_or_modified_files(self):
+		"""Get list of files in entities directory that are new or have been modified since last git commit
+			- returns: array of file paths
+		"""
+		all_recently_updated = self._get_tajweed_rules_with_recent_updates()
+
+		without_duplicates = self._remove_duplicates(all_recently_updated)
+		without_specs = self._remove_specs(without_duplicates)
+
+		return list(map(lambda str: str.strip(), without_specs))
+
+	def _get_tajweed_rules_with_recent_updates(self):
+		"""Use git to find all files in the entities directory that are new or have been modified 
+			- returns: array of file paths
+		"""
+		repo = Repo(self.GIT_REPO)
+		untracked_new_files = [item for item in repo.untracked_files if '/entities/' in item]
+		modified_and_deleted_files = [item.a_path for item in repo.index.diff(None) if '/entities/' in item.a_path]
+		entities_files = [file['name'] for file in self._file_system().get_files_in_directory(self.files_and_dirs['entities_dir'])]
+		modified_only = [file for file in modified_and_deleted_files if [name for name in entities_files if name in file]]
+		final_modified_and_new_files = untracked_new_files + modified_only
+		return final_modified_and_new_files
   
-  The entities folder contains entity modules, each defining the following for a single tajweed rule:
-    1. how to find that rule in the quran
-    2. save all the locations of that rule as a map
-  
-  This module chooses which tajweed rules need their map created.
-  DEV: depends on whether there have been updates to that rule's entity file, 
-  or if it doesn't already have a map in the 'outputs' directory.
-  PROD: depends on whether there have been updates to that rule's DEV map 
-  in the outputs directory, or if it doesn't already have a map in the 'dist' directory
-  
-  Constructor:
-    *files_and_dir: object containing relevant directories
-    *factory: dev or prod factory
+	def _remove_duplicates(self, recently_updated):
+		"""Cleans up list of file paths by removing duplicates
+			- parameters: name_list --> ['path/to/one', 'path/to/one', 'path/to/two']
+			- returns: list of file paths ['path/to/one', 'path/to/two']
+		"""
+		return list(set(recently_updated))
 
-  Factory methods: 
-    *_file_to_rule_maps (private) - gets file_to_map gateway from factory
-    *_file_system (private) - gets file_system from factory
+	def _remove_specs(self, recently_updated):
+		"""Cleans up list of file paths by removing spec files
+			- parameters: name_list --> ['path/to/one', 'path/to/one_spec', 'path/to/two']
+			- returns: list of file paths ['path/to/one', 'path/to/two']
+		"""
+		return list(filter(lambda file: (not 'test' in file) and ('meem' in file) and (not 'noon' in file), recently_updated))
 
-  Module methods:
-    *_get_rule_name_from_file - uses factory method to extract a rule's name from an entity's file name.extension
-    *_transform_rules_file_info - transform file info by changing the rule's name from a filename (rule.ext) to just the name
-    *_get_all_existing_rules_file_info - get list of files in dev 'outputs' or prod 'dist' directory
-    *_get_all_rule_definitions_file_info - get list of all files in dev 'entities_dir' or prod 'outputs' directory
-    *_get_existing_rules_file_last_update - get last update date for a pre-existing rule in dev 'outputs' or in prod 'dist'
-    *_get_rule_definition_file_last_update - get last update for an entity or its factory in dev 'entities_dir' or for an entity in prod 'outputs'
-    *_rule_definition_has_recent_updates - returns true or false depending on whether a rule file in dev 'entities_dir' or prod 'outputs'
-    has more recent updates than when its map was last created
-    *_get_existing_rules_with_no_updates - return list of pre-existing maps in dev 'outputs' or prod 'dist' for which there have been
-    no recent updates for the equivalent rule definitions in dev 'entities_dir' or prod 'outputs'
-    *_get_all_rule_names - returns list of rule names in dev 'entities_dir' or prod 'outputs'
-    *_remove_non_rule_definitions_files_and_duplicates - clean up all_rule_names list by removing duplicates
-
-    *get_list_of_rule_maps_to_create (public) - get list of rules that need new maps depending on whether its entity (in dev) 
-    or its pre-existing map in 'outputs' (prod) has had recent changes
-  """
-  def __init__(self, factory, files_and_dirs):
-    self
-    self.factory = factory
-    self.files_and_dirs = files_and_dirs
-  
-  # Methods from factory
-  def _file_to_rule_maps(self):
-    """Returns file_to_map gateway from pre-initialized dev or prod factory"""
-    return self.factory.get_file_to_map_gateway()
-
-  def _file_system(self):  
-    """Returns file_system gateway from pre-initialized dev or prod factory"""
-    return self.factory.get_file_system()
-
-  # Module methods
-  def get_list_of_rule_maps_to_create(self):
-    """In DEV, gets list of all rules in 'entities_dir' and generate list of rules with pre-existing maps
-      whose rules have no recent updates, then compares both lists and returns the rules that are in the first list
-      but not the second (in other words, the rules that have no pre-existing map, or have a pre-existing map whose rules
-      have recent updates).
-      In PROD, gets list of rules with pre-existing maps in 'outputs' and generate list of rules with pre-existing prod maps
-      found in 'dist'. It then compares both lists and returns the rules that are in the first list
-      but not the second (in other words, the rules that have no pre-existing prod map, or have a pre-existing map whose equivalent
-      local output has been updated).
-			- returns: array of rule names (dev) or array of rule objects {name: 'name', absolute_path: 'path.json'}
-    """
-    if self.factory.env == 'local':
-      existing_rules_with_no_updates = self._get_existing_rules_with_no_updates()
-      all_rules = self._get_all_rule_names()
-      return [rule for rule in all_rules if rule not in existing_rules_with_no_updates]
-    elif self.factory.env == 'prod':
-      existing_prod_rules_with_no_updates = self._get_existing_rules_with_no_updates()
-      all_files = self._get_all_rule_definitions_file_info()
-      all_local_rules_outputs = self._transform_rules_file_info(all_files)
-      return [rule for rule in all_local_rules_outputs if rule['name'] not in existing_prod_rules_with_no_updates]
-
-  def _get_all_rule_names(self):
-    """Gets rule data for all the rules in dev 'entities_dir' or prod 'outputs'.
-      Then, extracts each rule's name from its data.
-      - returns: list of rule names ['idghaam', 'ghunnah']
-    """
-    all_files = self._get_all_rule_definitions_file_info()
-    all_rule_names = [rule['name'] for rule in self._transform_rules_file_info(all_files)]
-    return self._remove_non_rule_definitions_files_and_duplicates(all_rule_names)
-
-  def _remove_non_rule_definitions_files_and_duplicates(self, name_list):
-    """Cleans up list of rule names by removing duplicates
-      - parameters: name_list --> ['ighaam', 'ghunnah', 'idghaam']
-      - returns: list of rule names ['idghaam', 'ghunnah']
-    """
-    return list(set(name_list))
-  
-  def _get_existing_rules_with_no_updates(self):
-    """Gets list of pre-existing maps in dev 'outputs' or prod 'dist' and check if their equivalent 
-      rule definitions in dev 'entities_dir' or prod 'outputs' has had recent updates. Compiles list of 
-      rules with no recent updates.
-      - returns: list of rule names ['idghaam', 'ghunnah']
-    """
-    existing_rules_with_no_updates = []
-    files = self._get_all_existing_rules_file_info()
-    all_existing_rules = [file["name"] for file in self._transform_rules_file_info(files)]
-    for rule in all_existing_rules:
-      if self._rule_definition_has_recent_updates(rule) == False:
-        existing_rules_with_no_updates.append(rule)
-    return existing_rules_with_no_updates
-  
-  def _rule_definition_has_recent_updates(self, rule_name):
-    """Given a rule name, checks the last update date for that rule/rule's factory in DEV 'entities_dir' vs 'outputs' 
-    or that rule in PROD 'outputs' vs 'dist'. Returns true if any of the possible sources (definition) 's update date >= generated map (existing) update date.
-    >= means MORE RECENT
-      - parameters: rule_name as string
-      - returns: boolean
-    """
-    last_rule_definition_file_update = self._get_rule_definition_file_last_update(rule_name)
-    last_existing_rule_file_update = self._get_existing_rules_file_last_update(rule_name)
-    if self.factory.env == 'local':
-      return (last_rule_definition_file_update[0] >= last_existing_rule_file_update or last_rule_definition_file_update[1] >= last_existing_rule_file_update)
-    elif self.factory.env == 'prod':
-      return last_rule_definition_file_update >= last_existing_rule_file_update
-
-  def _get_rule_definition_file_last_update(self, rule_name):
-    """For a given rule name, get its last update date in dev 'entities_dir' or prod 'outputs';
-    If in DEV and checking 'entities_dir', also check rule's associated factory file's last update.
-      - parameters: rule_name as string
-      - returns: date as float (prod) or list of dates (dev) [rule_last_update, factory_last_update]
-    """
-    all_files = self._get_all_rule_definitions_file_info()
-    rule_definition_file_path = [file["absolute_path"] for file in self._transform_rules_file_info(all_files) if file["name"] == rule_name]
-    rule_definition_last_update = self._file_system().get_file_last_update_date(rule_definition_file_path[0])
-
-    if self.factory.env == 'local':
-      rule_factory_file_path = [file["factory_path"] for file in self._transform_rules_file_info(all_files) if file["name"] == rule_name]
-      rule_factory_last_update = self._file_system().get_file_last_update_date(rule_factory_file_path[0])
-      return [rule_definition_last_update, rule_factory_last_update]
-    elif self.factory.env == 'prod':
-      return rule_definition_last_update
-
-  def _get_existing_rules_file_last_update(self, rule_name):
-    """For a given rule name, get its last update date in dev 'outputs' or prod 'dist'
-      - parameters: rule_name as string
-      - returns: date as float
-    """
-    files = self._get_all_existing_rules_file_info()
-    existing_rule_file_path = [file["absolute_path"] for file in self._transform_rules_file_info(files) if file["name"] == rule_name]
-    return self._file_system().get_file_last_update_date(existing_rule_file_path[0])
-
-  def _get_all_rule_definitions_file_info(self):
-    """In DEV, get rule data for all the files in 'entities_dir';
-      In PROD, get rule data for all the files in 'outputs'
-      - returns: array of objects [{name: 'name.ext', absolute_path: 'path.json'}]
-    """
-    if self.factory.env == 'local':
-      return self._file_system().get_files_in_directory(self.files_and_dirs['entities_dir'])
-    elif self.factory.env == 'prod':
-      return self._file_system().get_files_in_directory(self.files_and_dirs['local_outputs'])
-
-  def _get_all_existing_rules_file_info(self):
-    """In DEV, get rule data for all the files in 'outputs';
-      In PROD, get rule data for all the files in 'dist'
-      - returns: array of objects [{name: 'name.ext', absolute_path: 'path.json'}]
-    """
-    if self.factory.env == 'local':
-      return self._file_system().get_files_in_directory(self.files_and_dirs['outputs_dir'])
-    elif self.factory.env == 'prod':
-      return self._file_system().get_files_in_directory(self.files_and_dirs['outputs_dir'])
-
-  def _transform_rules_file_info(self, rule_data_list):
-    """Transforms rule data by changing the rule's name from a filename (rule.ext) to just the name
-      - parameters: rule_data_list [{name: 'name.ext', absolute_path: 'path.json'}]
-      - returns: [{name: 'name', absolute_path: 'path.json'}]
-    """
-    for rule_data in rule_data_list:
-      rule_data['name'] = self._get_rule_name_from_file(rule_data['name'])
-    return rule_data_list
-  
-  def _get_rule_name_from_file(self, file_name):
-    """Uses factory method to extract a rule's name from an entity's file name.extension
-      - parameters: file_name as string (name.ext)
-      - returns: rule name as string (name)
-    """
-    return self._file_to_rule_maps().get_name_from_file(file_name)
+	def _get_class_name_from_file(self, file_path):
+		"""Get class name from file
+			- returns: className
+		"""
+		class_name_in_file_path = self._file_to_rule_maps().get_name_from_file(file_path.split('/')[5])
+		return self._file_to_rule_maps().get_rule_class_from_name(class_name_in_file_path)
