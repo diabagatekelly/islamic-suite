@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 import os
 import shutil
 import asyncio
@@ -31,6 +32,11 @@ mock_choose_rules_to_create = ChooseRuleMapsToCreate(mock_factory, MOCK_FILES_SY
 mock_prod_factory = Factory(env='prod')
 prod_mock_choose_rules_to_create = ChooseRuleMapsToCreate(mock_prod_factory, PROD_MOCK_FILES_SYS)
 
+new_defaults = list(ChooseRuleMapsToCreate._get_tajweed_rules_with_recent_updates.__defaults__)
+new_defaults[-1] = "/mock_fixtures/entities"
+new_defaults = tuple(new_defaults)
+
+@patch.object(ChooseRuleMapsToCreate._get_tajweed_rules_with_recent_updates, '__defaults__', new_defaults)
 class TestChooseRuleMapsToCreate(unittest.TestCase):
   @classmethod
   def setUpClass(cls):
@@ -74,6 +80,18 @@ class TestChooseRuleMapsToCreate(unittest.TestCase):
     local_list = mock_choose_rules_to_create.get_list_of_json_maps_to_create()
     self.assertEqual(len(local_list), 0)
     asyncio.run(self.write_to_entities_file('temp_file_meem_to_delete.py'))
+    
+  def test_test_file_not_mapped(self):
+    asyncio.run(self.write_to_entities_file('test_temp_file_to_delete.py', '2'))
+    local_list = mock_choose_rules_to_create.get_list_of_json_maps_to_create()
+    self.assertEqual(len(local_list), 0)
+    asyncio.run(self.delete_entities_file('test_temp_file_to_delete.py'))
+    
+  def test_init_file_not_mapped(self):
+    asyncio.run(self.write_to_entities_file('temp_init_file_to_delete.py', '2'))
+    local_list = mock_choose_rules_to_create.get_list_of_json_maps_to_create()
+    self.assertEqual(len(local_list), 0)
+    asyncio.run(self.delete_entities_file('temp_init_file_to_delete.py'))
     
   def test_new_file_is_mapped(self):
     asyncio.run(self.write_to_entities_file('temp_file_meem2_to_delete.py', '2'))

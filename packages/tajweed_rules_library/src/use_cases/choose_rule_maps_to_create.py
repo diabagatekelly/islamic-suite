@@ -31,7 +31,7 @@ class ChooseRuleMapsToCreate():
 		*_get_tajweed_rules_with_recent_updates - Use git to find all files in the entities directory that are new
   	or have been modified 
 		*_remove_duplicates(self, recently_updated) - Cleans up list of file paths by removing duplicates
-		*_remove_specs(self, recently_updated) - Cleans up list of file paths by removing spec files
+		*_remove_specs_and_init(self, recently_updated) - Cleans up list of file paths by removing spec and init files
 
 	  *get_list_of_json_maps_to_create (public) - get list of rules that need new maps depending on whether its entity (in dev)
 		is new or has been modified, or all files in the 'outputs' directory in prod
@@ -82,17 +82,18 @@ class ChooseRuleMapsToCreate():
 		all_recently_updated = self._get_tajweed_rules_with_recent_updates()
 
 		without_duplicates = self._remove_duplicates(all_recently_updated)
-		without_specs = self._remove_specs(without_duplicates)
+		without_specs = self._remove_specs_and_init(without_duplicates)
 
 		return list(map(lambda str: str.strip(), without_specs))
 
-	def _get_tajweed_rules_with_recent_updates(self):
+	def _get_tajweed_rules_with_recent_updates(self, directory_string='src/entities'):
 		"""Use git to find all files in the entities directory that are new or have been modified 
+			- parameters: directory_string (string in directory path to help filtering)
 			- returns: array of file paths
 		"""
 		repo = Repo(self.GIT_REPO)
-		untracked_new_files = [item for item in repo.untracked_files if '/entities/' in item]
-		modified_and_deleted_files = [item.a_path for item in repo.index.diff(None) if '/entities/' in item.a_path]
+		untracked_new_files = [item for item in repo.untracked_files if directory_string in item]
+		modified_and_deleted_files = [item.a_path for item in repo.index.diff(None) if directory_string in item.a_path]
 		entities_files = [file['name'] for file in self._file_system().get_files_in_directory(self.files_and_dirs['entities_dir'])]
 		modified_only = [file for file in modified_and_deleted_files if [name for name in entities_files if name in file]]
 		final_modified_and_new_files = untracked_new_files + modified_only
@@ -105,12 +106,12 @@ class ChooseRuleMapsToCreate():
 		"""
 		return list(set(recently_updated))
 
-	def _remove_specs(self, recently_updated):
-		"""Cleans up list of file paths by removing spec files
+	def _remove_specs_and_init(self, recently_updated):
+		"""Cleans up list of file paths by removing spec and init files
 			- parameters: name_list --> ['path/to/one', 'path/to/one_spec', 'path/to/two']
 			- returns: list of file paths ['path/to/one', 'path/to/two']
 		"""
-		return list(filter(lambda file: (not 'test' in file) and ('meem' in file) and (not 'noon' in file), recently_updated))
+		return list(filter(lambda file: (not 'test' in file) and (not 'init' in file), recently_updated))
 
 	def _get_class_name_from_file(self, file_path):
 		"""Get class name from file

@@ -36,17 +36,11 @@ class TestFileSystem(unittest.TestCase):
       shutil.rmtree(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'outputs'))
 
   def test_get_files_in_nested_directory(self):
-    # Test needs to be updated to reflect file_stats object
     filenames = mock_file_system.get_files_in_directory(ENTITIES_DIR)
     self.assertTrue(type(filenames), list)
     self.assertIsInstance(filenames[0], dict)
     self.assertTrue({'name': 'meem_saakin_rules.py', 'absolute_path': os.path.join(ENTITIES_DIR, 'meem_saakin_rules', 'meem_saakin_rules.py')} in filenames)
-    # self.assertIn('madd_6.py', filenames)
-    # self.assertIn('qalqalah.py', filenames)
-    # self.assertIn('ikhfa.py', filenames)
-    # self.assertIn('ghunnah.py', filenames)
-    # self.assertNotIn('__init__.py', filenames)
-    # self.assertFalse({'name': 'idhaar_shafawi.py', 'absolute_path': os.path.join(ENTITIES_DIR, 'meem_saakin_rules', 'tajweed_rules_map.py')} in filenames)
+    self.assertTrue({'name': 'noon_saakin_rules.py', 'absolute_path': os.path.join(ENTITIES_DIR, 'noon_saakin_rules', 'noon_saakin_rules.py')} in filenames)
 
   def test_get_files_in_flat_directory(self):
     content = {'test': 'I am some test content', }
