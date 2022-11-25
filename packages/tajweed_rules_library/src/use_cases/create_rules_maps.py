@@ -17,7 +17,6 @@ class CreateRulesMaps():
     *factory: dev or prod factory
 
   Factory methods: 
-    *_file_to_rule_maps (private) - gets file_to_map gateway from factory
     *_file_system (private) - gets file_system from factory
 
   Module methods:
@@ -37,10 +36,6 @@ class CreateRulesMaps():
     self.files_and_dirs = files_and_dirs
 
   # Methods from factory
-  def _file_to_rule_maps(self):
-    """Returns file_to_map gateway from pre-initialized dev or prod factory"""
-    return self.factory.get_file_to_map_gateway()
-
   def _file_system(self):
     """Returns file_system gateway from pre-initialized dev or prod factory"""
     return self.factory.get_file_system()

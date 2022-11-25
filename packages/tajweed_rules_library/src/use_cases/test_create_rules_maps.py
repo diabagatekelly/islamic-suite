@@ -48,7 +48,7 @@ class TestCreateRulesMaps(unittest.TestCase):
       file_content.append(line)
     file.close()
     return file_content
-  
+
   def test_create_rule_maps_for_local(self):
     rules_to_create = ['MeemSaakinRules']
     local_create_rule_maps.create_rule_maps(rules_to_create)
