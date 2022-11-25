@@ -52,8 +52,6 @@ class MeemSaakinRules():
     *_is_ending_letter_an_idhaar_letter - checks if letter following meem saakin is anything but "م" or "ب"
 
     *get_all_rule_locations (public) - for a given rule, get the details of all its locations and save to a list
-    *set_ayah_details (public) - registers the surah_number (the number of the surah (chapter) in which the ayah is found),
-    ayah_number (the number of the ayah (verse)), and ayah_text (the text of the ayah) for the ayah currently being mapped
   """
 
   def __init__(self):
