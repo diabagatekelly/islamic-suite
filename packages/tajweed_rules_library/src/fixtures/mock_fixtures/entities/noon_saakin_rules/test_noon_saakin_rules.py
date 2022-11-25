@@ -169,7 +169,6 @@ class TestNoonSaakinRules(unittest.TestCase):
     self.noon_saakin_rules.ayah_text = ft_fatha_tanween_stop_end
     
     indices = self.noon_saakin_rules._find_tanween_base_in_text()
-    print(indices, '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
     self.assertEqual(len(indices), 1)
 
   def test_ignore_fatha_tanween_on_ta_marbouta_at_end(self):
