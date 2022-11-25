@@ -5,7 +5,7 @@ import json
 from src.gateways.file_system import FileSystem
 
 ROOT = os.path.abspath(os.path.join(os.getcwd(), 'src'))
-INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/idhaar_mock_input.txt')
+INPUT_FILE = os.path.join(ROOT, 'fixtures/mock_fixtures/partial_quran_input.txt')
 ENTITIES_DIR = os.path.join(ROOT, 'fixtures/mock_fixtures/entities')
 OUTPUTS_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'outputs')
 
@@ -69,8 +69,8 @@ class TestFileSystem(unittest.TestCase):
     file_content = mock_file_system.read_file_by_lines(INPUT_FILE)
     first_line = file_content[0].strip('\n')
     last_line = file_content[len(file_content)-1].strip('/n')
-    self.assertEqual(first_line, '2|1|بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ الٓمٓ')
-    self.assertEqual(last_line, '2|286|لَا يُكَلِّفُ ٱللَّهُ نَفْسًا إِلَّا وُسْعَهَا ۚ لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا ٱكْتَسَبَتْ ۗ رَبَّنَا لَا تُؤَاخِذْنَآ إِن نَّسِينَآ أَوْ أَخْطَأْنَا ۚ رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَآ إِصْرًا كَمَا حَمَلْتَهُۥ عَلَى ٱلَّذِينَ مِن قَبْلِنَا ۚ رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِۦ ۖ وَٱعْفُ عَنَّا وَٱغْفِرْ لَنَا وَٱرْحَمْنَآ ۚ أَنتَ مَوْلَىٰنَا فَٱنصُرْنَا عَلَى ٱلْقَوْمِ ٱلْكَٰفِرِينَ')
+    self.assertEqual(first_line, '105|4|تَرْمِيهِم بِحِجَارَةٍ مِّن سِجِّيلٍ')
+    # self.assertEqual(last_line, '111|4|وَٱمْرَأَتُهُۥ حَمَّالَةَ ٱلْحَطَبِ')
 
   def test_create_absolute_path(self):
     absolute_path = mock_file_system.create_absolute_path(FILES_SYS, 'test')
