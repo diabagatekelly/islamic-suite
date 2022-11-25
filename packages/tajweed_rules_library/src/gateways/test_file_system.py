@@ -63,8 +63,8 @@ class TestFileSystem(unittest.TestCase):
     file_content = mock_file_system.read_file_by_lines(INPUT_FILE)
     first_line = file_content[0].strip('\n')
     last_line = file_content[len(file_content)-1].strip('/n')
-    self.assertEqual(first_line, '105|4|تَرْمِيهِم بِحِجَارَةٍ مِّن سِجِّيلٍ')
-    # self.assertEqual(last_line, '111|4|وَٱمْرَأَتُهُۥ حَمَّالَةَ ٱلْحَطَبِ')
+    self.assertEqual(first_line, '56|3|خَافِضَةٌ رَّافِعَةٌ')
+    self.assertEqual(last_line, '111|4|وَٱمْرَأَتُهُۥ حَمَّالَةَ ٱلْحَطَبِ')
 
   def test_create_absolute_path(self):
     absolute_path = mock_file_system.create_absolute_path(FILES_SYS, 'test')
