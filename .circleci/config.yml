@@ -37,6 +37,7 @@ jobs:
       - run:
           name: Run tests
           working_directory: ~/project/packages/tajweed_rules_library
+          path: ~/project
           # This assumes pytest is installed via the install-package step above
           command: coverage run -m unittest -v 
       - run:
