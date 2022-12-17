@@ -97,7 +97,7 @@ class MaddRules():
     indices_for_madd = [
       letter_index for letter_index, letter in enumerate(self.ayah_text)
       if (letter in ["ا", "و", "ى", "ي"] and self.ayah_text[letter_index + 1] not in 
-      (self.punctuation_marks.non_sukoon_vowels + self.punctuation_marks.sukoon)) or (letter in "ٰۦۥ")
+      (self.punctuation_marks.non_sukoon_vowels_no_madd + self.punctuation_marks.sukoon)) or (letter in "ٰۦۥ")
     ]
     print(indices_for_madd)
     return indices_for_madd
