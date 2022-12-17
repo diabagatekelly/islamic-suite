@@ -15,6 +15,40 @@ class NoonSaakinRules():
       by a Idghaam letter (ي)
     - Idghaam with/without Ghunnah has no instance in the middle
     - Iqlab has no fatha tanween instance
+    
+  Rules
+    Idghaam with Ghunnah and with no Ghunnah 
+    If after silent "ن" (noon saakin) or tanween, there appears any of the following letters "ي ن م و"  idghaam with ghunnah (nasalization)
+    will take place. This means the second letter will become incorporated into the noon and will 
+    be read with nasalization. 
+    Example:  وَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ شَرًّا يَرَهُۥ
+    If the letters that follow are "ل ر", idghaam will take place with no ghunnah (nazalization)
+    Example: وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ
+    Exceptions: The noon saakin in the words 'صِنْوَانٌ' ,'دُنْيا' and 'قِنْوَانٌ' is an exception whereby it is pronounced
+    with Idhaar (clearly) rather than Idghaam (merging) even though it is followed 
+    by a Idghaam letter (ي)
+    NOTE: Idghaam with/without Ghunnah has no instance in the middle of a word
+    
+    Idhaar
+    If after silent "ن" (noon saakin) or tanween, there appears any of the following letters "ٱ ع غ ح خ ه ء", 
+    idhaar will take place. This means the second letter will NOT become incorporated into the noon,
+    but will rather be pronounced clearly.
+    The meem saakin can appear in the middle or at the end of a word, and in the Uthmani script it carries a sukoon.
+    Examples: 
+    (middle) مَّتَٰعًا لَّكُمْ وَلِأَنْعَٰمِكُمْ
+    (end) خَلَقَ ٱلْإِنسَٰنَ مِنْ عَلَقٍ
+    (tanween) يَٰوَيْلَتَىٰ لَيْتَنِى لَمْ أَتَّخِذْ فُلَانًا خَلِيلًا
+    
+    Ikhfa
+    If after silent "ن" (noon saakin) or tanween, there appears any of the following letters "ت ث ج د ذ ز س ش ص ض ط ظ ف ق ك", 
+    ikhfa will take place. This means the sound of the noon saakin will be concealed.
+    Example: وَلَآ أَنتُمْ عَٰبِدُونَ مَآ أَعْبُدُ
+    
+    Iqlab
+    If after silent "ن" (noon saakin) or tanween, there appears a "ب", the noon is changed into the sound
+    of meem saakin with ghunnah.
+    Example: كَلَّا ۖ لَيُنۢبَذَنَّ فِى ٱلْحُطَمَةِ
+    NOTE: Iqlab has no fatha tanween instance
 
   Properties:
     *_surah_number: number of the surah (Quran chapter) where the verse being mapped is found

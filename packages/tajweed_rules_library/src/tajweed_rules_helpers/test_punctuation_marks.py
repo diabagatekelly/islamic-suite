@@ -36,8 +36,14 @@ multiple_marks = 'صُمٌّۢ'
 with_fatha_tanween = 'صَفًّا'
 with_fatha_tanween_2 = 'سَبِيلًۢا'
 includes_stop = "حَقًّا ۚ"
+sukoon_after_wow = "قَالُواْ"
 
 class TestPunctuationMarks(unittest.TestCase):
+  def test_ending_sukoon_after_wow(self):
+    ending_index = PunctuationMarks().calculate_adjustment_from_end(sukoon_after_wow)
+    self.assertEqual(ending_index, 5)
+    self.assertEqual(sukoon_after_wow[ending_index], 'و')
+    
   def test_ending_no_marks(self):
     ending_index = PunctuationMarks().calculate_adjustment_from_end(no_marks)
     self.assertEqual(ending_index, 2)
