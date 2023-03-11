@@ -46,7 +46,7 @@ class PunctuationMarks():
     self.madd_vowels = ["ٓ"]
     self.non_sukoon_vowels_no_madd = ["َ", "ِ", "ُ", "ً", "ٍ", "ٌ", "ّ", "ٰ"]
     self.non_sukoon_vowels = self.madd_vowels + self.non_sukoon_vowels_no_madd
-    self.sukoon = ["ْ", "۠"]
+    self.sukoon = ["ْ", "۠", "۟"]
     self.miscellaneous = [" ", 'ا']
 
   def calculate_adjustment_from_beginning(self, ayah_text, starting_letter_index):

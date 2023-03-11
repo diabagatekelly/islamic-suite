@@ -1,6 +1,8 @@
 import unittest
 from src.entities.madd_rules.madd_rules import MaddRules
+from src.tajweed_rules_helpers.punctuation_marks import PunctuationMarks
 
+# Madd base letters
 madd_alif = "مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ"
 madd_dagger_alif = "إِنَّ ٱلْإِنسَٰنَ لَفِى خُسْرٍ"
 madd_full_yaa = "أَلَمْ يَجِدْكَ يَتِيمًا فَـَٔاوَىٰ"
@@ -8,9 +10,35 @@ madd_yaa_no_dots = "فِى عَمَدٍ مُّمَدَّدَةٍۭ"
 madd_dagger_yaa = "مَآءً فَأَخْرَجَ بِهِۦ مِنَ ٱلثَّمَرَٰتِ رِزْقًا لَّكُمْ"
 madd_wow = "ٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ"
 madd_dagger_wow = "وَٱمْرَأَتُهُۥ حَمَّالَةَ ٱلْحَطَبِ"
-# hamza_before_no_madd = "أُو۟لَٰٓئِكَ هُمْ خَيْرُ ٱلْبَرِيَّةِ"
-# hamza_after_no_madd = "111|2|مَآ أَغْنَىٰ عَنْهُ مَالُهُۥ وَمَا كَسَبَ"
-sukoon_after_no_madd = "وَلَآ أَنَا۠ عَابِدٌ مَّا عَبَدتُّمْ"
+alif_with_sukoon_no_madd = "وَلَآ أَنَا۠ عَابِدٌ مَّا عَبَدتُّمْ"
+wow_with_sukoon_no_madd = "فَمَنِ ٱبْتَغَىٰ وَرَآءَ ذَٰلِكَ فَأُو۟لَٰٓئِكَ هُمُ ٱلْعَادُونَ"
+yaa_with_sukoon_no_madd = "وَمَا جَعَلْنَا لِبَشَرٍ مِّن قَبْلِكَ ٱلْخُلْدَ ۖ أَفَإِي۟ن مِّتَّ فَهُمُ ٱلْخَٰلِدُونَ"
+madd_leen_wow = "مَٰلِكِ يَوْمِ ٱلدِّينِ"
+madd_leen_yaa = "فَوَيْلٌ لِّلْمُصَلِّينَ"
+
+
+#Madd asli
+#asli_alif = "مَآءً فَأَخْرَجَ بِهِۦ مِنَ ٱلثَّمَرَٰتِ رِزْقًا لَّكُمْ" madd dagger yaa
+#asli_yaa = "69|24|كُلُوا۟ وَٱشْرَبُوا۟ هَنِيٓـًٔۢا بِمَآ أَسْلَفْتُمْ فِى ٱلْأَيَّامِ ٱلْخَالِيَةِ"
+#asli_dummah = "26|111|قَالُوٓا۟ أَنُؤْمِنُ لَكَ وَٱتَّبَعَكَ ٱلْأَرْذَلُونَ" asli no hamza after wow
+
+# TODO: write tests for finding madd rule
+# TODO: test madd rule dictionary
+
+#Madd Fari
+# asli_no_hamzah_before_alif = "96|7|أَن رَّءَاهُ ٱسْتَغْنَىٰٓ"
+# asli_no_hamzah_before_yaa = "32|29|قُلْ يَوْمَ ٱلْفَتْحِ لَا يَنفَعُ ٱلَّذِينَ كَفَرُوٓا۟ إِيمَٰنُهُمْ وَلَا هُمْ يُنظَرُونَ"
+# asli_no_hamzah_before_wow = "98|4|وَمَا تَفَرَّقَ ٱلَّذِينَ أُوتُوا۟ ٱلْكِتَٰبَ إِلَّا مِنۢ بَعْدِ مَا جَآءَتْهُمُ ٱلْبَيِّنَةُ"
+
+# asli_no_hamzah_after_alif = "111|2|مَآ أَغْنَىٰ عَنْهُ مَالُهُۥ وَمَا كَسَبَ"
+# asli_no_hamzah_after_yaa = "77|43|كُلُوا۟ وَٱشْرَبُوا۟ هَنِيٓـًٔۢا بِمَا كُنتُمْ تَعْمَلُونَ"
+# asli_no_hamzah_after_wow = "26|111|قَالُوٓا۟ أَنُؤْمِنُ لَكَ وَٱتَّبَعَكَ ٱلْأَرْذَلُونَ"
+
+# asli_no_sukoon_after_alif = "10|91|ءَآلْـَٰٔنَ وَقَدْ عَصَيْتَ قَبْلُ وَكُنتَ مِنَ ٱلْمُفْسِدِينَ"
+# asli_no_sukoon_after_yaa = Found none
+# asli_no_sukoon_after_woow = "39|64|قُلْ أَفَغَيْرَ ٱللَّهِ تَأْمُرُوٓنِّىٓ أَعْبُدُ أَيُّهَا ٱلْجَٰهِلُونَ"
+
+
 
 
 class TestMaddRules(unittest.TestCase):
@@ -25,7 +53,7 @@ class TestMaddRules(unittest.TestCase):
     self.madd_rules.ayah_number = 6
     self.madd_rules.ayah_text = madd_alif
     
-    indices = self.madd_rules._find_madd_letter_in_text()
+    indices = self.madd_rules._find_madd_letters_in_text()
     self.assertListEqual(indices, [23])
     self.assertEqual(madd_alif[23], "ا")
     
@@ -34,7 +62,7 @@ class TestMaddRules(unittest.TestCase):
     self.madd_rules.ayah_number = 2
     self.madd_rules.ayah_text = madd_dagger_alif
     
-    indices = self.madd_rules._find_madd_letter_in_text()
+    indices = self.madd_rules._find_madd_letters_in_text()
     self.assertListEqual(indices, [14, 22])
     self.assertEqual(madd_dagger_alif[14], "ٰ")
 
@@ -44,7 +72,7 @@ class TestMaddRules(unittest.TestCase):
     self.madd_rules.ayah_number = 6
     self.madd_rules.ayah_text = madd_full_yaa
     
-    indices = self.madd_rules._find_madd_letter_in_text()
+    indices = self.madd_rules._find_madd_letters_in_text()
     self.assertListEqual(indices, [20, 23, 30, 34])
     self.assertEqual(madd_full_yaa[20], "ي")
     
@@ -53,7 +81,7 @@ class TestMaddRules(unittest.TestCase):
     self.madd_rules.ayah_number = 9
     self.madd_rules.ayah_text = madd_yaa_no_dots
     
-    indices = self.madd_rules._find_madd_letter_in_text()
+    indices = self.madd_rules._find_madd_letters_in_text()
     self.assertListEqual(indices, [2])
     self.assertEqual(madd_yaa_no_dots[2], "ى")
     
@@ -62,7 +90,7 @@ class TestMaddRules(unittest.TestCase):
     self.madd_rules.ayah_number = 22
     self.madd_rules.ayah_text = madd_dagger_yaa
 
-    indices = self.madd_rules._find_madd_letter_in_text()
+    indices = self.madd_rules._find_madd_letters_in_text()
     self.assertListEqual(indices, [2, 22, 38, 48])
     self.assertEqual(madd_dagger_yaa[22], "ۦ")
     
@@ -71,7 +99,7 @@ class TestMaddRules(unittest.TestCase):
     self.madd_rules.ayah_number = 5
     self.madd_rules.ayah_text = madd_wow
     
-    indices = self.madd_rules._find_madd_letter_in_text()
+    indices = self.madd_rules._find_madd_letters_in_text()
     self.assertListEqual(indices, [6, 21, 27, 36])
     self.assertEqual(madd_wow[27], "و")
     
@@ -80,17 +108,58 @@ class TestMaddRules(unittest.TestCase):
     self.madd_rules.ayah_number = 4
     self.madd_rules.ayah_text = madd_dagger_wow
     
-    indices = self.madd_rules._find_madd_letter_in_text()
+    indices = self.madd_rules._find_madd_letters_in_text()
     self.assertListEqual(indices, [13, 20])
     self.assertEqual(madd_dagger_wow[13], "ۥ")
     
-  def test_sukoon_after_no_madd(self):
+  def test_alif_with_sukoon_no_madd(self):
     self.madd_rules.surah_number = 109
     self.madd_rules.ayah_number = 4
-    self.madd_rules.ayah_text = sukoon_after_no_madd
+    self.madd_rules.ayah_text = alif_with_sukoon_no_madd
 
-    indices = self.madd_rules._find_madd_letter_in_text()
+    indices = self.madd_rules._find_madd_letters_in_text()
     self.assertListEqual(indices, [4, 16, 25])
-    self.assertEqual(sukoon_after_no_madd[11], "ا")
+    self.assertEqual(alif_with_sukoon_no_madd[11], "ا")
+    self.assertTrue(alif_with_sukoon_no_madd[12] in PunctuationMarks().sukoon)
+    
+  def test_wow_with_sukoon_no_madd(self):
+    self.madd_rules.surah_number = 70
+    self.madd_rules.ayah_number = 31
+    self.madd_rules.ayah_text = wow_with_sukoon_no_madd
+    indices = self.madd_rules._find_madd_letters_in_text()
+    
+    self.assertListEqual(indices, [15, 21, 28, 42, 59, 62])
+    self.assertEqual(wow_with_sukoon_no_madd[38], "و")
+    self.assertTrue(wow_with_sukoon_no_madd[39] in PunctuationMarks().sukoon)
+  
+  def test_yaa_with_sukoon_no_madd(self):
+    self.madd_rules.surah_number = 21
+    self.madd_rules.ayah_number = 34
+    self.madd_rules.ayah_text = yaa_with_sukoon_no_madd
+    indices = self.madd_rules._find_madd_letters_in_text()
+    
+    self.assertListEqual(indices, [4, 14, 80, 85])
+    self.assertEqual(yaa_with_sukoon_no_madd[57], "ي")
+    self.assertTrue(yaa_with_sukoon_no_madd[58] in PunctuationMarks().sukoon)
+    
+  def test_madd_leen_wow(self):
+    self.madd_rules.surah_number = 1
+    self.madd_rules.ayah_number = 4
+    self.madd_rules.ayah_text = madd_leen_wow
+    indices = self.madd_rules._find_madd_letters_in_text()
+    
+    self.assertListEqual(indices, [2, 10, 20])
+    self.assertEqual(madd_leen_wow[10], "و")
+    self.assertTrue(madd_leen_wow[11] in PunctuationMarks().sukoon)
+    
+  def test_madd_leen_yaa(self):
+    self.madd_rules.surah_number = 107
+    self.madd_rules.ayah_number = 4
+    self.madd_rules.ayah_text = madd_leen_yaa
+    indices = self.madd_rules._find_madd_letters_in_text()
+    
+    self.assertListEqual(indices, [4, 21])
+    self.assertEqual(madd_leen_yaa[4], "ي")
+    self.assertTrue(madd_leen_yaa[5] in PunctuationMarks().sukoon)
     
   
