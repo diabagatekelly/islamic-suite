@@ -18,14 +18,11 @@ madd_leen_yaa = "فَوَيْلٌ لِّلْمُصَلِّينَ"
 
 
 #Madd asli
-#asli_alif = "مَآءً فَأَخْرَجَ بِهِۦ مِنَ ٱلثَّمَرَٰتِ رِزْقًا لَّكُمْ" madd dagger yaa
-#asli_yaa = "69|24|كُلُوا۟ وَٱشْرَبُوا۟ هَنِيٓـًٔۢا بِمَآ أَسْلَفْتُمْ فِى ٱلْأَيَّامِ ٱلْخَالِيَةِ"
-#asli_dummah = "26|111|قَالُوٓا۟ أَنُؤْمِنُ لَكَ وَٱتَّبَعَكَ ٱلْأَرْذَلُونَ" asli no hamza after wow
+asli_alif = "مَآءً فَأَخْرَجَ بِهِۦ مِنَ ٱلثَّمَرَٰتِ رِزْقًا لَّكُمْ"
+asli_yaa = "كُلُوا۟ وَٱشْرَبُوا۟ هَنِيٓـًٔۢا بِمَآ أَسْلَفْتُمْ فِى ٱلْأَيَّامِ ٱلْخَالِيَةِ"
+asli_dummah = "قَالُوٓا۟ أَنُؤْمِنُ لَكَ وَٱتَّبَعَكَ ٱلْأَرْذَلُونَ"
 
-# TODO: write tests for finding madd rule
-# TODO: test madd rule dictionary
-
-#Madd Fari
+# Madd Fari
 # asli_no_hamzah_before_alif = "96|7|أَن رَّءَاهُ ٱسْتَغْنَىٰٓ"
 # asli_no_hamzah_before_yaa = "32|29|قُلْ يَوْمَ ٱلْفَتْحِ لَا يَنفَعُ ٱلَّذِينَ كَفَرُوٓا۟ إِيمَٰنُهُمْ وَلَا هُمْ يُنظَرُونَ"
 # asli_no_hamzah_before_wow = "98|4|وَمَا تَفَرَّقَ ٱلَّذِينَ أُوتُوا۟ ٱلْكِتَٰبَ إِلَّا مِنۢ بَعْدِ مَا جَآءَتْهُمُ ٱلْبَيِّنَةُ"
@@ -37,6 +34,9 @@ madd_leen_yaa = "فَوَيْلٌ لِّلْمُصَلِّينَ"
 # asli_no_sukoon_after_alif = "10|91|ءَآلْـَٰٔنَ وَقَدْ عَصَيْتَ قَبْلُ وَكُنتَ مِنَ ٱلْمُفْسِدِينَ"
 # asli_no_sukoon_after_yaa = Found none
 # asli_no_sukoon_after_woow = "39|64|قُلْ أَفَغَيْرَ ٱللَّهِ تَأْمُرُوٓنِّىٓ أَعْبُدُ أَيُّهَا ٱلْجَٰهِلُونَ"
+
+# TODO: write tests for finding madd fari rule
+# TODO: test madd fari rule dictionary
 
 
 
@@ -73,7 +73,7 @@ class TestMaddRules(unittest.TestCase):
     self.madd_rules.ayah_text = madd_full_yaa
     
     indices = self.madd_rules._find_madd_letters_in_text()
-    self.assertListEqual(indices, [20, 23, 30, 34])
+    self.assertListEqual(indices, [20, 30, 34])
     self.assertEqual(madd_full_yaa[20], "ي")
     
   def test_madd_yaa_no_dots(self):
@@ -91,7 +91,7 @@ class TestMaddRules(unittest.TestCase):
     self.madd_rules.ayah_text = madd_dagger_yaa
 
     indices = self.madd_rules._find_madd_letters_in_text()
-    self.assertListEqual(indices, [2, 22, 38, 48])
+    self.assertListEqual(indices, [2, 22, 38])
     self.assertEqual(madd_dagger_yaa[22], "ۦ")
     
   def test_madd_wow(self):
@@ -162,4 +162,95 @@ class TestMaddRules(unittest.TestCase):
     self.assertEqual(madd_leen_yaa[4], "ي")
     self.assertTrue(madd_leen_yaa[5] in PunctuationMarks().sukoon)
     
+    
+  # Madd Asli
+  def test_asli_alif(self):
+    self.madd_rules.surah_number = 2
+    self.madd_rules.ayah_number = 22
+    self.madd_rules.ayah_text = asli_alif
+    
+
+    madd_asli_alif_map = self.madd_rules.get_all_rule_locations('madd_asli')
+    expectedMap = [
+      {
+      'surah': 2,
+      'ayah': 22,
+      'start': 20,
+      'end': 24
+      },
+      {
+      'surah': 2,
+      'ayah': 22,
+      'start': 36,
+      'end': 39
+      }]
+    
+    self.assertListEqual(madd_asli_alif_map, expectedMap)
+    
+  def test_asli_yaa(self):
+    self.madd_rules.surah_number = 69
+    self.madd_rules.ayah_number = 24
+    self.madd_rules.ayah_text = asli_yaa
+    
+    print(asli_yaa[28], asli_yaa[27])
+    
+
+    madd_asli_yaa_map = self.madd_rules.get_all_rule_locations('madd_asli')
+    expectedMap = [
+      {
+      'surah': 69,
+      'ayah': 24,
+      'start': 2,
+      'end': 8
+      },
+      {
+      'surah': 69,
+      'ayah': 24,
+      'start': 15,
+      'end': 21
+      },
+      {
+      'surah': 69,
+      'ayah': 24,
+      'start': 53,
+      'end': 57
+      },
+      {
+      'surah': 69,
+      'ayah': 24,
+      'start': 62,
+      'end': 66
+      },
+      {
+      'surah': 69,
+      'ayah': 24,
+      'start': 72,
+      'end': 75
+      }]
+    
+    self.assertListEqual(madd_asli_yaa_map, expectedMap)
+    
+    
+  def test_asli_dummah(self):
+    self.madd_rules.surah_number = 26
+    self.madd_rules.ayah_number = 111
+    self.madd_rules.ayah_text = asli_dummah
+
+    madd_asli_dummah_map = self.madd_rules.get_all_rule_locations('madd_asli')
+    expectedMap = [
+      {
+      'surah': 26,
+      'ayah': 111,
+      'start': 0,
+      'end': 3
+      },
+      {
+      'surah': 26,
+      'ayah': 111,
+      'start': 48,
+      'end': 51
+      }]
+    
+    self.assertListEqual(madd_asli_dummah_map, expectedMap)
+ 
   

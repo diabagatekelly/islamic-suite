@@ -15,7 +15,7 @@ The app is structured as a monorepository comprised of 3 packages:
   2. Run all specs - python -m unittest -v
   3. Run a single spec - python -m unittest -v { path from src to test } (ie. src.entities_helpers.test_punctuation_marks.TestPunctuationMarks.test_calculate_punctuation_mark_adjustment)
   4. Coverage - coverage run -m unittest (from virtual env)
-  5. Coverage (omitting specs and factory) - coverage html --omit=venv,src/factory.py,src/*/test_*.py,src/__init__.py*,src/*/__init__.py*
+  5. Coverage (omitting specs and factory) - coverage html --omit=venv/*,src/factory.py,src/*/test_*.py,src/__init__.py*,src/*/__init__.py*
 
 ### Build JSON maps
   1. cd packages/tajweed_rules_library
