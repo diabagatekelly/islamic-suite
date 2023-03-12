@@ -38,16 +38,20 @@ class PunctuationMarks():
   Methods:
     *calculate_adjustment_from_beginning (public) - calculates the adjusted number to add to the starting index to find the ending index for any rule
     *calculate_adjustment_from_end (public) - finds the index of the last letter in the ayah, after counting back from any marks or stop signs
+    *find_closest_preceding_letter (public) - find the closest preceding letter after skipping over any marks
   """
 
   def __init__(self):
     self.stop_signs = ["ۗ", "ۚ", "ۜ", "ۛ", "ۙ", "ۘ", "ۖ"]
     self.iqlab_meem = ["ۢ", 'ۭ']
     self.madd_vowels = ["ٓ"]
-    self.non_sukoon_vowels_no_madd = ["َ", "ِ", "ُ", "ً", "ٍ", "ٌ", "ّ", "ٰ"]
+    self.single_vowels = ["َ", "ِ", "ُ", "ّ"]
+    self.tanweens = ["ً", "ٍ", "ٌ"]
+    self.daggers = ["ۦ ", "ۥ", "ٰ"]
+    self.non_sukoon_vowels_no_madd = self.single_vowels + self.tanweens + self.daggers
     self.non_sukoon_vowels = self.madd_vowels + self.non_sukoon_vowels_no_madd
     self.sukoon = ["ْ", "۠", "۟"]
-    self.miscellaneous = [" ", 'ا']
+    self.miscellaneous = [" ", 'ا', "ـ"]
 
   def calculate_adjustment_from_beginning(self, ayah_text, starting_letter_index):
     """Calculates the adjusted number to add to the starting index to find the ending index for any rule
@@ -61,6 +65,20 @@ class PunctuationMarks():
     while ayah_text[current_index] in all_possible_punctuation:
       adjustment += 1
       current_index += 1
+    return adjustment
+  
+  def find_closest_preceding_letter(self, ayah_text, starting_letter_index):
+    """Find the closest preceding letter after skipping over any marks
+      - parameters: ayah_text, starting_letter_index
+      - retuns: adjustment to subtract from starting_letter_index as integer
+    """
+    adjustment = 1
+    current_index = starting_letter_index - 1
+    all_possible_punctuation = self.stop_signs + \
+      self. iqlab_meem + self.non_sukoon_vowels + self.sukoon + self.miscellaneous
+    while ayah_text[current_index] in all_possible_punctuation:
+      adjustment += 1
+      current_index -= 1
     return adjustment
 
   def calculate_adjustment_from_end(self, ayah_text):

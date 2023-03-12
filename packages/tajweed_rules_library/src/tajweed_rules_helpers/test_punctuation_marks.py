@@ -38,6 +38,8 @@ with_fatha_tanween_2 = 'سَبِيلًۢا'
 includes_stop = "حَقًّا ۚ"
 sukoon_after_wow = "قَالُواْ"
 
+find_first_preceding_letter = "كُلُوا۟"
+
 class TestPunctuationMarks(unittest.TestCase):
   def test_ending_sukoon_after_wow(self):
     ending_index = PunctuationMarks().calculate_adjustment_from_end(sukoon_after_wow)
@@ -183,6 +185,12 @@ class TestPunctuationMarks(unittest.TestCase):
     self.assertTrue(mark)
     self.assertFalse(letter)
     self.assertFalse(space)
+    
+  def test_find_first_preceding_letter(self):
+    adjustment = PunctuationMarks().find_closest_preceding_letter(find_first_preceding_letter, 2)
+    self.assertEqual(adjustment, 2)
+    first_letter = find_first_preceding_letter[2]
+    self.assertEqual(first_letter, 'ل')
 
 
 # MEEM SAAKIN "MUST STOP ۘ "

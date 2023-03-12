@@ -97,7 +97,7 @@ class MaddRules():
 
     all_rule_locations = []
 
-    for index in self._find_madd_letter_in_text():
+    for index in self._find_madd_letters_in_text():
       rule_location = self._get_rule_location_details(index, rule)
       if rule_location:
         all_rule_locations.append(rule_location)
@@ -126,6 +126,8 @@ class MaddRules():
       letter_index for letter_index, letter in enumerate(self.ayah_text) 
       if letter in ["ا", "و", "ي", "ى"] 
       and self.ayah_text[letter_index + 1] not in all_vowels_except_madd
+      and self.ayah_text[letter_index - 1] not in self.punctuation_marks.tanweens
+      and self.ayah_text[letter_index - 1] not in self.punctuation_marks.iqlab_meem
     ]
     return indices_for_full_madd
   
@@ -172,18 +174,37 @@ class MaddRules():
         'end': ending letter index + 2 to also cover that letter's vowel
       }
     """
-    starting_letter_index = index
-    ending_letter_index = starting_letter_index + \
-      self.punctuation_marks.calculate_adjustment_from_beginning(self.ayah_text, starting_letter_index)
-
-    #if madd asli
-      #filter out madd asli
-    #else
-      #filter out madd fari
+    first_preceding_letter = index - self.punctuation_marks.find_closest_preceding_letter(self.ayah_text, index)
+    ending_letter_index = index + \
+      self.punctuation_marks.calculate_adjustment_from_beginning(self.ayah_text, index)
       
-    #return dict 
-      # start index - 1
-      # ending_letter 
+      
+    if rule == 'madd_asli' and self._is_letter_at_index_madd_asli(first_preceding_letter, ending_letter_index):
+      print(index, 'index*****************')
+      print(self.ayah_text[first_preceding_letter], 'start', first_preceding_letter)
+      print(self.ayah_text[ending_letter_index], 'end', ending_letter_index)
+      return {
+        'surah': self.surah_number,
+        'ayah': self.ayah_number,
+        'start': first_preceding_letter,
+        'end': ending_letter_index
+      }
+
+      
+  def _is_letter_at_index_madd_asli(self, starting_index, ending_index):
+    return not (self._is_preceded_by_hamza(starting_index) 
+    or self._is_followed_by_hamza(ending_index) or self._is_followed_by_sukoon(ending_index))
+      
+  def _is_preceded_by_hamza(self, starting_index):
+    return self.ayah_text[starting_index] in ['ء', 'ؤ', "ئ", "أ", "إ", "ٔ"]
+  
+  def _is_followed_by_hamza(self, ending_index):
+    return self.ayah_text[ending_index] in ['ء', 'ؤ', "ئ", "أ", "إ", "ٔ"]
+  
+  def _is_followed_by_sukoon(self, ending_index):
+    sukoon_and_shaddah = self.punctuation_marks.sukoon + ["ّ"]
+    return self.ayah_text[ending_index + 1] in sukoon_and_shaddah
+    
       
 
       
