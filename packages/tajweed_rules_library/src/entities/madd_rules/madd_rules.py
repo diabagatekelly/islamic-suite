@@ -101,7 +101,6 @@ class MaddRules():
       rule_location = self._get_rule_location_details(index, rule)
       if rule_location:
         all_rule_locations.append(rule_location)
-
     return all_rule_locations
   
 
@@ -180,6 +179,13 @@ class MaddRules():
       
       
     if rule == 'madd_asli' and self._is_letter_at_index_madd_asli(first_preceding_letter, ending_letter_index):
+      return {
+        'surah': self.surah_number,
+        'ayah': self.ayah_number,
+        'start': first_preceding_letter,
+        'end': ending_letter_index
+      }
+    elif rule == 'madd_fari' and not self._is_letter_at_index_madd_asli(first_preceding_letter, ending_letter_index):
       print(index, 'index*****************')
       print(self.ayah_text[first_preceding_letter], 'start', first_preceding_letter)
       print(self.ayah_text[ending_letter_index], 'end', ending_letter_index)
@@ -203,6 +209,9 @@ class MaddRules():
   
   def _is_followed_by_sukoon(self, ending_index):
     sukoon_and_shaddah = self.punctuation_marks.sukoon + ["ّ"]
+    if ending_index == len(self.ayah_text) - 1:
+      return False
+    
     return self.ayah_text[ending_index + 1] in sukoon_and_shaddah
     
       

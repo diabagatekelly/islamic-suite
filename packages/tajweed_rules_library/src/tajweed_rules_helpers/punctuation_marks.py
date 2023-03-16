@@ -58,8 +58,15 @@ class PunctuationMarks():
       - parameters: ayah_text, starting_letter_index
       - retuns: adjustment to add to starting_letter_index as integer
     """
+    if starting_letter_index == len(ayah_text) - 1:
+      return 0
+    
     adjustment = 1
     current_index = starting_letter_index + 1
+    
+    if current_index == len(ayah_text) - 1:
+      return adjustment
+    
     all_possible_punctuation = self.stop_signs + \
       self. iqlab_meem + self.non_sukoon_vowels + self.sukoon + self.miscellaneous
     while ayah_text[current_index] in all_possible_punctuation:

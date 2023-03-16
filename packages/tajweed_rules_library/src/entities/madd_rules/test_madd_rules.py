@@ -23,8 +23,8 @@ asli_yaa = "كُلُوا۟ وَٱشْرَبُوا۟ هَنِيٓـًٔۢا بِ�
 asli_dummah = "قَالُوٓا۟ أَنُؤْمِنُ لَكَ وَٱتَّبَعَكَ ٱلْأَرْذَلُونَ"
 
 # Madd Fari
-# asli_no_hamzah_before_alif = "96|7|أَن رَّءَاهُ ٱسْتَغْنَىٰٓ"
-# asli_no_hamzah_before_yaa = "32|29|قُلْ يَوْمَ ٱلْفَتْحِ لَا يَنفَعُ ٱلَّذِينَ كَفَرُوٓا۟ إِيمَٰنُهُمْ وَلَا هُمْ يُنظَرُونَ"
+asli_no_hamzah_before_alif = "أَن رَّءَاهُ ٱسْتَغْنَىٰٓ"
+asli_no_hamzah_before_yaa = "قُلْ يَوْمَ ٱلْفَتْحِ لَا يَنفَعُ ٱلَّذِينَ كَفَرُوٓا۟ إِيمَٰنُهُمْ وَلَا هُمْ يُنظَرُونَ"
 # asli_no_hamzah_before_wow = "98|4|وَمَا تَفَرَّقَ ٱلَّذِينَ أُوتُوا۟ ٱلْكِتَٰبَ إِلَّا مِنۢ بَعْدِ مَا جَآءَتْهُمُ ٱلْبَيِّنَةُ"
 
 # asli_no_hamzah_after_alif = "111|2|مَآ أَغْنَىٰ عَنْهُ مَالُهُۥ وَمَا كَسَبَ"
@@ -252,5 +252,45 @@ class TestMaddRules(unittest.TestCase):
       }]
     
     self.assertListEqual(madd_asli_dummah_map, expectedMap)
+    
+# Madd Fari
+
+  def test_asli_no_hamzah_before_alif(self):
+    self.madd_rules.surah_number = 96
+    self.madd_rules.ayah_number = 7
+    self.madd_rules.ayah_text = asli_no_hamzah_before_alif
+
+    asli_no_hamzah_before_alif_map = self.madd_rules.get_all_rule_locations('madd_fari')
+    expectedMap = [
+      {
+      'surah': 96,
+      'ayah': 7,
+      'start': 7,
+      'end': 10
+      }]
+    
+    self.assertListEqual(asli_no_hamzah_before_alif_map, expectedMap)
+    
+  def test_asli_no_hamzah_before_yaa(self):
+    self.madd_rules.surah_number = 32
+    self.madd_rules.ayah_number = 29
+    self.madd_rules.ayah_text = asli_no_hamzah_before_yaa
+    
+    asli_no_hamzah_before_yaa_map = self.madd_rules.get_all_rule_locations('madd_fari')
+    expectedMap = [
+      {
+        'surah': 32,
+        'ayah': 29,
+        'start': 48,
+        'end': 55
+      },
+      {
+        'surah': 32,
+        'ayah': 29,
+        'start': 55,
+        'end': 58
+      }]
+    
+    self.assertListEqual(asli_no_hamzah_before_yaa_map, expectedMap)
  
   
